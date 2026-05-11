@@ -79,6 +79,40 @@ def _nfc(s: str) -> str:
     return unicodedata.normalize("NFC", s)
 
 
+# source 부분일치 정규화: 공백 제거 → 흔한 한국어 연결어 제거
+# (한 번에 alternation 하면 공백 사이 연결어가 매칭 안 됨 → 2단계 처리)
+_SOURCE_CONNECTOR_RE = re.compile(r"에관한|관한|의|및|와|과")
+
+
+def _normalize_source(s: str) -> str:
+    s = re.sub(r"\s+", "", _nfc(s))
+    return _SOURCE_CONNECTOR_RE.sub("", s)
+
+
+def source_match(query: str, source_label: str) -> bool:
+    """source 부분일치 매칭 (3단계).
+
+    1) 직접 substring — "인사규정" in "인사규정 시행세칙"
+    2) 공백 토큰 모두 등장 — "공공기관 운영" → 두 토큰 모두 등장
+    3) 정규화 substring (공백·연결어 제거) — "공공기관운영"이 "공공기관의 운영에 관한 법률"에 매칭
+    """
+    if not query:
+        return True
+    q = _nfc(query).strip()
+    s = _nfc(source_label)
+    if not q:
+        return True
+    if q in s:
+        return True
+    tokens = [t for t in re.split(r"\s+", q) if len(t) >= 2]
+    if tokens and all(t in s for t in tokens):
+        return True
+    nq = _normalize_source(q)
+    if nq and nq in _normalize_source(s):
+        return True
+    return False
+
+
 # 단락 시작 마커 — 이 줄은 이전 줄과 합치지 않고 새 단락으로 시작
 _PARA_START_RE = re.compile(
     r"^("
@@ -295,15 +329,28 @@ def score_article(a: Article, tokens: list[str], idf: Optional[dict[str, float]]
     return score, first_pos
 
 
+# 본문 메타 태그 — snippet 출력 가독성을 위해 정리
+# 예: <개정 2018.12.28., 2025.06.27.>, <신설 2022.07.12.>, [제목개정 2023.10.06.]
+_META_NOISE_RE = re.compile(
+    r"<(?:개정|신설|삭제|단서개정|제목개정|전부개정)[^>]*?>"
+    r"|\[(?:개정|신설|삭제|제목개정|단서개정|전부개정)[^\]]*?\]"
+)
+
+
+def _strip_meta(text: str) -> str:
+    return re.sub(r"\s{2,}", " ", _META_NOISE_RE.sub("", text)).strip()
+
+
 def make_snippet(body: str, pos: int, span: int = 80) -> str:
     if not body:
         return ""
     if pos < 0:
         s = body[: span * 2].replace("\n", " ")
+        s = _strip_meta(s)
         return s + ("…" if len(body) > span * 2 else "")
     start = max(0, pos - span)
     end = min(len(body), pos + span)
-    s = body[start:end].replace("\n", " ")
+    s = _strip_meta(body[start:end].replace("\n", " "))
     if start > 0:
         s = "…" + s
     if end < len(body):
@@ -321,14 +368,13 @@ def search(
     tokens = tokenize(query)
     if not tokens:
         return []
-    source_nfc = _nfc(source) if source else None
     idf = compute_idf(tokens, articles)
 
     scored = []
     for a in articles:
         if category and a.category != category:
             continue
-        if source_nfc and source_nfc not in a.source:
+        if source and not source_match(source, a.source):
             continue
         sc, pos = score_article(a, tokens, idf)
         if sc <= 0:
@@ -374,10 +420,9 @@ def get_article(source: str, article: str) -> list[dict]:
     if parsed is None:
         return []
     no, sub = parsed
-    src_nfc = _nfc(source).strip()
     out = []
     for a in load_index():
-        if src_nfc and src_nfc not in a.source:
+        if source and not source_match(source, a.source):
             continue
         if a.article_no == no and a.article_sub == sub:
             out.append({
@@ -445,7 +490,7 @@ def verify_citation(text: str) -> list[dict]:
                 "raw_match": full_cite,
                 "status": "ok",
                 "article_title": hit.article_title,
-                "body_excerpt": hit.body[:150].replace("\n", " "),
+                "body_excerpt": _strip_meta(hit.body[:250].replace("\n", " "))[:150],
             })
         else:
             results.append({
@@ -480,12 +525,11 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
     if parsed is None:
         return {"error": f"invalid article token: {article!r}"}
     no, sub = parsed
-    src_nfc = _nfc(source).strip()
     articles = load_index()
 
     targets = [
         a for a in articles
-        if src_nfc in a.source and a.article_no == no and a.article_sub == sub
+        if source_match(source, a.source) and a.article_no == no and a.article_sub == sub
     ]
     if not targets:
         return {"error": f"target not found: {source} 제{no}조" + (f"의{sub}" if sub else "")}
@@ -522,7 +566,7 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
                     "scope": "cross_regulation",
                     "citation": f"{cited.source} {cited.article}",
                     "article_title": cited.article_title,
-                    "snippet": cited.body[:120].replace("\n", " "),
+                    "snippet": _strip_meta(cited.body[:200].replace("\n", " "))[:120],
                 })
                 continue
         outgoing.append({
@@ -553,7 +597,7 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
                 "scope": "same_regulation",
                 "citation": f"{target_source} {cited.article}",
                 "article_title": cited.article_title,
-                "snippet": cited.body[:120].replace("\n", " "),
+                "snippet": _strip_meta(cited.body[:200].replace("\n", " "))[:120],
             })
 
     # ===== INCOMING =====
@@ -609,7 +653,7 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
 def _around(body: str, pos: int, span: int = 60) -> str:
     start = max(0, pos - span)
     end = min(len(body), pos + span)
-    s = body[start:end].replace("\n", " ")
+    s = _strip_meta(body[start:end].replace("\n", " "))
     return ("…" if start > 0 else "") + s + ("…" if end < len(body) else "")
 
 
@@ -666,7 +710,7 @@ def find_questions(
                 ref = {
                     "citation": f"{arts[0]['source']} {m.group(2)}",
                     "article_title": arts[0]["article_title"],
-                    "body_excerpt": arts[0]["body"][:200].replace("\n", " "),
+                    "body_excerpt": _strip_meta(arts[0]["body"][:350].replace("\n", " "))[:200],
                 }
             else:
                 ref = {
