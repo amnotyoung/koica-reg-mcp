@@ -312,7 +312,17 @@ def compute_idf(tokens: list[str], articles: list[Article]) -> dict[str, float]:
     return idf
 
 
-def score_article(a: Article, tokens: list[str], idf: Optional[dict[str, float]] = None) -> tuple[float, int]:
+def _bigrams(s: str) -> list[str]:
+    """음절 2-gram 분해. 'koica' → ['ko','oi','ic','ca'], '사례금' → ['사례','례금']."""
+    return [s[i:i + 2] for i in range(len(s) - 1)]
+
+
+def score_article(
+    a: Article,
+    tokens: list[str],
+    idf: Optional[dict[str, float]] = None,
+    fuzzy: bool = False,
+) -> tuple[float, int]:
     score = 0.0
     first_pos = -1
     body = a.body
@@ -328,6 +338,20 @@ def score_article(a: Article, tokens: list[str], idf: Optional[dict[str, float]]
             pos = body.find(tok)
             if first_pos < 0 or pos < first_pos:
                 first_pos = pos
+        elif fuzzy and len(tok) >= 3:
+            # 정확 매칭 실패 + fuzzy 모드: bi-gram 부분 매칭
+            # "사례비" 검색 시 본문 "사례금"의 "사례" bigram에 점수 부여
+            bgs = _bigrams(tok)
+            bg_match_count = sum(1 for b in bgs if b in body)
+            if bg_match_count >= len(bgs) * 0.5:
+                bg_hits = sum(body.count(b) for b in bgs)
+                score += (bg_hits / len(bgs)) * 0.3 * w
+                if first_pos < 0:
+                    for b in bgs:
+                        p = body.find(b)
+                        if p >= 0:
+                            first_pos = p
+                            break
     return score, first_pos
 
 
@@ -365,6 +389,7 @@ def search(
     category: Optional[str] = None,
     source: Optional[str] = None,
     limit: int = 10,
+    fuzzy: bool = False,
 ) -> list[dict]:
     articles = load_index()
     tokens = tokenize(query)
@@ -378,7 +403,7 @@ def search(
             continue
         if source and not source_match(source, a.source):
             continue
-        sc, pos = score_article(a, tokens, idf)
+        sc, pos = score_article(a, tokens, idf, fuzzy=fuzzy)
         if sc <= 0:
             continue
         scored.append((sc, pos, a))
@@ -857,7 +882,7 @@ def cmd_build(_args: argparse.Namespace) -> None:
 
 
 def cmd_search(args: argparse.Namespace) -> None:
-    results = search(args.query, args.category, args.source, args.limit)
+    results = search(args.query, args.category, args.source, args.limit, fuzzy=args.fuzzy)
     if args.json:
         print(json.dumps(results, ensure_ascii=False, indent=2))
         return
@@ -883,6 +908,7 @@ def main() -> None:
     ps.add_argument("--category", help="law/hr/project/volunteer/partnership/finance/management")
     ps.add_argument("--source", help="규정명 부분일치 (예: 인사규정)")
     ps.add_argument("--limit", type=int, default=10)
+    ps.add_argument("--fuzzy", action="store_true", help="음절 bi-gram 부분 매칭")
     ps.add_argument("--json", action="store_true")
     ps.set_defaults(func=cmd_search)
 

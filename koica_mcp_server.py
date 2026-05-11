@@ -31,6 +31,7 @@ def search_regulation(
     category: Optional[str] = None,
     source: Optional[str] = None,
     limit: int = 10,
+    fuzzy: bool = False,
 ) -> list[dict]:
     """KOICA 규정·법률을 조문 단위로 검색.
 
@@ -39,11 +40,16 @@ def search_regulation(
         category: 카테고리 필터 (law/hr/project/volunteer/partnership/finance/management)
         source: 규정명 부분일치 (예: "인사규정")
         limit: 반환 결과 수 (기본 10)
+        fuzzy: 음절 bi-gram 부분 매칭 활성화 (기본 False). 정확 매칭이
+            없을 때 토큰을 2-gram으로 쪼개 부분 매칭 점수를 부여한다.
+            "사례비"로 검색해 "사례금"이 본문에 있는 경우를 잡을 때 유용.
+            일반 검색에서는 noise를 만들 수 있으니, 1차 검색 결과가
+            비거나 명백히 부족할 때만 fuzzy=True로 재시도하길 권장.
 
     Returns:
         조문 단위 결과 배열. 각 항목은 source/article/article_title/snippet/citation/score 포함.
     """
-    return ks.search(query, category=category, source=source, limit=limit)
+    return ks.search(query, category=category, source=source, limit=limit, fuzzy=fuzzy)
 
 
 @mcp.tool()
