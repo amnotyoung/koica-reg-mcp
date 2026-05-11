@@ -29,6 +29,11 @@ CATEGORY_AGGREGATE_FILES = {
     "partnership.md", "finance.md", "management.md",
 }
 
+# 별표·별지 헤더 — 라인 어디에 있든 매칭 (한 라인에 여러 개 등장 가능)
+_ATTACHMENT_HEAD_RE = re.compile(
+    r"\[\s*(?P<kind>별표|별지)\s+(?P<number>(?:제\s*)?[\d\-]+(?:호)?\s*(?:서식)?)\s*\]\s*"
+)
+
 HEADER_RE = re.compile(r"^# (.+?)(?:\s*\((.+?)\))?\s*$")
 # Format A (마크다운 정형): "## 제N장 …", "### 제N조(제목)" 또는 "## 제N조(제목)"
 CHAPTER_MD_RE = re.compile(r"^## (제\d+(?:편|장|절).+?)\s*$")
@@ -75,6 +80,25 @@ class Article:
     @property
     def citation(self) -> str:
         return f"{self.source} {self.article}"
+
+
+@dataclass
+class Attachment:
+    """규정의 별표·별지 (행정처분 기준표, 서식 등)."""
+    category: str
+    source: str
+    revision: str
+    file: str
+    kind: str          # "별표" / "별지"
+    label: str         # 원본 라벨 그대로 (예: "[별표 1]", "[별지 제3호 서식]")
+    number: str        # 번호 부분만 (예: "1", "1-1", "제3호")
+    title: str         # 라벨 뒤 제목
+    body: str
+    deleted: bool      # 본문에 <삭제 ...> 메타가 있는지
+
+    @property
+    def citation(self) -> str:
+        return f"{self.source} {self.label}"
 
 
 def _nfc(s: str) -> str:
@@ -164,7 +188,7 @@ def reflow(text: str) -> str:
     return "\n".join(paragraphs)
 
 
-def parse_md(path: Path, category: str) -> list[Article]:
+def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]]:
     text = _nfc(path.read_text(encoding="utf-8"))
     lines = text.splitlines()
 
@@ -172,11 +196,37 @@ def parse_md(path: Path, category: str) -> list[Article]:
     revision = ""
     chapter = ""
     articles: list[Article] = []
+    attachments: list[Attachment] = []
     cur: Optional[dict] = None
     body_lines: list[str] = []
+    # 별표·별지 캡처 상태
+    in_attachment: Optional[dict] = None
+    att_body_lines: list[str] = []
+
+    def flush_att() -> None:
+        """현재 진행 중인 별표·별지를 attachments에 추가."""
+        nonlocal in_attachment, att_body_lines
+        if in_attachment is not None:
+            body = reflow("\n".join(att_body_lines)).strip()
+            deleted = bool(re.search(r"<\s*삭제\s*[^>]*>", body)) or "삭제" in in_attachment["title"]
+            attachments.append(Attachment(
+                category=category,
+                source=source,
+                revision=revision,
+                file=str(path.relative_to(ROOT)),
+                kind=in_attachment["kind"],
+                label=in_attachment["label"],
+                number=in_attachment["number"],
+                title=in_attachment["title"],
+                body=body,
+                deleted=deleted,
+            ))
+        in_attachment = None
+        att_body_lines = []
 
     def flush() -> None:
         nonlocal cur, body_lines
+        flush_att()
         if cur is not None:
             articles.append(Article(
                 category=category,
@@ -189,6 +239,24 @@ def parse_md(path: Path, category: str) -> list[Article]:
             ))
         cur = None
         body_lines = []
+
+    def open_attachment(kind: str, number: str, title: str) -> None:
+        nonlocal in_attachment, att_body_lines
+        flush_att()
+        # 진행 중 조문 body는 attachment 직전까지로 닫고, 다음 조문이 나오면 새 조문 시작
+        # 단, 조문 자체를 닫지는 않음 — 같은 조문 안에 attachment만 분리되는 경우도 있을 수 있어
+        # 일반적으로는 별표가 규정 마지막에 모이므로 안전.
+        num = re.sub(r"\s+", "", number.replace("호", "호"))
+        # 라벨 정규화 (공백 정리)
+        label_inner = f"{kind} {number}".strip()
+        label_inner = re.sub(r"\s+", " ", label_inner)
+        in_attachment = {
+            "kind": kind,
+            "label": f"[{label_inner}]",
+            "number": re.sub(r"\s+", "", number),
+            "title": title.strip(),
+        }
+        att_body_lines = []
 
     def open_article(no: int, sub: int, title: str, rest: str) -> None:
         nonlocal cur
@@ -203,6 +271,26 @@ def parse_md(path: Path, category: str) -> list[Article]:
         if rest:
             body_lines.append(rest.strip())
 
+    def absorb_attachment_line(line: str) -> bool:
+        """line 안의 모든 [별표/별지] 헤더를 분리 처리. 처리 성공 시 True."""
+        matches = list(_ATTACHMENT_HEAD_RE.finditer(line))
+        if not matches:
+            return False
+        # 첫 매칭 이전 부분은 직전 attachment의 body 마지막 줄로 (없으면 무시)
+        prefix = line[: matches[0].start()].strip()
+        if prefix and in_attachment is not None:
+            att_body_lines.append(prefix)
+        # 각 매칭을 attachment로 열고, 매칭 사이의 텍스트를 그 attachment의 body 시작으로
+        for i, m in enumerate(matches):
+            kind = m.group("kind")
+            number = m.group("number")
+            after_start = m.end()
+            after_end = matches[i + 1].start() if i + 1 < len(matches) else len(line)
+            tail = line[after_start:after_end].strip()
+            # tail은 보통 "제목 <메타>" 형태. 줄 끝까지를 title + 본문 첫 줄로
+            open_attachment(kind, number, tail)
+        return True
+
     for line in lines:
         # 헤더 (문서 첫 줄)
         if line.startswith("# "):
@@ -211,6 +299,11 @@ def parse_md(path: Path, category: str) -> list[Article]:
                 source = m.group(1).strip()
                 revision = (m.group(2) or "").strip()
             continue
+
+        # 별표·별지 라인 — 어디서든 등장 가능 (조문 진행 중에도)
+        if "[별표" in line or "[별지" in line:
+            if absorb_attachment_line(line):
+                continue
         # Format A: 마크다운 ## / ### (조문은 ##·### 모두 허용)
         if line.startswith("##"):
             m_art = ARTICLE_MD_RE.match(line)
@@ -241,48 +334,89 @@ def parse_md(path: Path, category: str) -> list[Article]:
                 m_art.group(4),
             )
             continue
-        if cur is not None:
+        if in_attachment is not None:
+            att_body_lines.append(line.strip())
+        elif cur is not None:
             body_lines.append(line.strip())
 
     flush()
-    return articles
+    return articles, attachments
 
 
-def build_index() -> list[Article]:
+def build_index() -> tuple[list[Article], list[Attachment]]:
     if not DATA_DIR.exists():
         raise FileNotFoundError(f"data 폴더 없음: {DATA_DIR}")
     articles: list[Article] = []
+    attachments: list[Attachment] = []
     skipped = []
     for md in sorted(DATA_DIR.glob("*.md")):
         if md.name in CATEGORY_AGGREGATE_FILES:
             skipped.append(md.name)
             continue
         category = md.stem.split("_", 1)[0]
-        parsed = parse_md(md, category)
-        articles.extend(parsed)
+        arts, atts = parse_md(md, category)
+        articles.extend(arts)
+        attachments.extend(atts)
     INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
     INDEX_PATH.write_text(
-        json.dumps([asdict(a) for a in articles], ensure_ascii=False),
+        json.dumps(
+            {
+                "version": 2,
+                "articles": [asdict(a) for a in articles],
+                "attachments": [asdict(a) for a in attachments],
+            },
+            ensure_ascii=False,
+        ),
         encoding="utf-8",
     )
-    print(f"빌드: {len(articles)}개 조문 / 합본 스킵 {len(skipped)}개 → {INDEX_PATH}", file=sys.stderr)
-    return articles
+    print(
+        f"빌드: {len(articles)}개 조문 + {len(attachments)}개 별표·별지 / 합본 스킵 {len(skipped)}개 → {INDEX_PATH}",
+        file=sys.stderr,
+    )
+    return articles, attachments
 
 
 _INDEX_CACHE: Optional[list[Article]] = None
+_ATTACHMENT_CACHE: Optional[list[Attachment]] = None
+
+
+def _read_index_file() -> tuple[list[Article], list[Attachment]]:
+    raw = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
+    # v2 형식: {articles: [...], attachments: [...]}
+    # v1 형식 (호환성): list[Article]
+    if isinstance(raw, dict) and "articles" in raw:
+        arts = [Article(**r) for r in raw["articles"]]
+        atts = [Attachment(**r) for r in raw.get("attachments", [])]
+    else:
+        arts = [Article(**r) for r in raw]
+        atts = []
+    return arts, atts
 
 
 def load_index(use_cache: bool = True) -> list[Article]:
-    global _INDEX_CACHE
+    global _INDEX_CACHE, _ATTACHMENT_CACHE
     if use_cache and _INDEX_CACHE is not None:
         return _INDEX_CACHE
     if not INDEX_PATH.exists():
         raise FileNotFoundError(f"인덱스 없음. 먼저 'build' 실행: {INDEX_PATH}")
-    raw = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
-    arts = [Article(**r) for r in raw]
+    arts, atts = _read_index_file()
     if use_cache:
         _INDEX_CACHE = arts
+        _ATTACHMENT_CACHE = atts
     return arts
+
+
+def load_attachments(use_cache: bool = True) -> list[Attachment]:
+    global _ATTACHMENT_CACHE
+    if use_cache and _ATTACHMENT_CACHE is not None:
+        return _ATTACHMENT_CACHE
+    if not INDEX_PATH.exists():
+        raise FileNotFoundError(f"인덱스 없음. 먼저 'build' 실행: {INDEX_PATH}")
+    arts, atts = _read_index_file()
+    if use_cache:
+        _INDEX_CACHE = arts
+        _ATTACHMENT_CACHE = atts
+    return atts
 
 
 def tokenize(query: str) -> list[str]:
@@ -390,6 +524,7 @@ def search(
     source: Optional[str] = None,
     limit: int = 10,
     fuzzy: bool = False,
+    include_attachments: bool = False,
 ) -> list[dict]:
     articles = load_index()
     tokens = tokenize(query)
@@ -397,7 +532,7 @@ def search(
         return []
     idf = compute_idf(tokens, articles)
 
-    scored = []
+    scored: list[tuple] = []
     for a in articles:
         if category and a.category != category:
             continue
@@ -406,22 +541,60 @@ def search(
         sc, pos = score_article(a, tokens, idf, fuzzy=fuzzy)
         if sc <= 0:
             continue
-        scored.append((sc, pos, a))
+        scored.append((sc, pos, "article", a))
+
+    if include_attachments:
+        for a in load_attachments():
+            if a.deleted:
+                continue
+            if category and a.category != category:
+                continue
+            if source and not source_match(source, a.source):
+                continue
+            sc = 0.0
+            pos = -1
+            for tok in tokens:
+                w = idf.get(tok, 1.0)
+                if tok in a.title:
+                    sc += 5.0 * w
+                cnt = a.body.count(tok)
+                if cnt:
+                    sc += float(cnt) * w
+                    p = a.body.find(tok)
+                    if pos < 0 or p < pos:
+                        pos = p
+            if sc > 0:
+                scored.append((sc, pos, "attachment", a))
 
     scored.sort(key=lambda r: r[0], reverse=True)
     out = []
-    for sc, pos, a in scored[:limit]:
-        out.append({
-            "category": a.category,
-            "source": a.source,
-            "revision": a.revision,
-            "chapter": a.chapter,
-            "article": a.article,
-            "article_title": a.article_title,
-            "citation": a.citation,
-            "snippet": make_snippet(a.body, pos),
-            "score": round(sc, 2),
-        })
+    for sc, pos, kind, item in scored[:limit]:
+        if kind == "article":
+            out.append({
+                "type": "article",
+                "category": item.category,
+                "source": item.source,
+                "revision": item.revision,
+                "chapter": item.chapter,
+                "article": item.article,
+                "article_title": item.article_title,
+                "citation": item.citation,
+                "snippet": make_snippet(item.body, pos),
+                "score": round(sc, 2),
+            })
+        else:
+            out.append({
+                "type": "attachment",
+                "category": item.category,
+                "source": item.source,
+                "revision": item.revision,
+                "kind": item.kind,
+                "label": item.label,
+                "title": item.title,
+                "citation": item.citation,
+                "snippet": make_snippet(item.body, pos),
+                "score": round(sc, 2),
+            })
     return out
 
 
@@ -759,6 +932,65 @@ def find_questions(
     return out
 
 
+def list_attachments(
+    source: Optional[str] = None,
+    category: Optional[str] = None,
+    kind: Optional[str] = None,
+    include_deleted: bool = False,
+) -> list[dict]:
+    """별표·별지 목록을 source/category/kind로 필터링하여 반환."""
+    atts = load_attachments()
+    out = []
+    for a in atts:
+        if category and a.category != category:
+            continue
+        if source and not source_match(source, a.source):
+            continue
+        if kind and a.kind != kind:
+            continue
+        if not include_deleted and a.deleted:
+            continue
+        out.append({
+            "category": a.category,
+            "source": a.source,
+            "kind": a.kind,
+            "label": a.label,
+            "title": a.title,
+            "deleted": a.deleted,
+            "citation": a.citation,
+            "body_excerpt": _strip_meta(a.body[:200].replace("\n", " "))[:150] if a.body else "",
+        })
+    out.sort(key=lambda x: (x["source"], x["kind"], x["label"]))
+    return out
+
+
+def get_attachment(source: str, label: str) -> list[dict]:
+    """source 부분일치 + label 매칭으로 별표·별지 본문 전체 반환.
+
+    label은 "[별표 1]", "별표 1", "1" 등 자유 형식. 공백·괄호 무시 정규화로 매칭.
+    """
+    src_q = _nfc(source).strip()
+    lab_q = re.sub(r"[\[\]\s]+", "", _nfc(label)).lower()  # "별표1", "별지제3호서식" 형태로
+    out = []
+    for a in load_attachments():
+        if not source_match(src_q, a.source):
+            continue
+        norm_label = re.sub(r"[\[\]\s]+", "", a.label).lower()
+        if lab_q in norm_label or norm_label.endswith(lab_q):
+            out.append({
+                "category": a.category,
+                "source": a.source,
+                "revision": a.revision,
+                "kind": a.kind,
+                "label": a.label,
+                "title": a.title,
+                "deleted": a.deleted,
+                "citation": a.citation,
+                "body": a.body,
+            })
+    return out
+
+
 def _restart_instruction() -> dict:
     """현재 OS에 맞는 Claude Desktop 재시작 안내."""
     p = platform.system()
@@ -841,7 +1073,7 @@ def self_update() -> dict:
         except Exception:
             pass
     try:
-        articles = build_index()
+        articles, attachments = build_index()
     except Exception as e:
         return {
             **result,
@@ -849,8 +1081,9 @@ def self_update() -> dict:
             "message": f"인덱스 빌드 실패: {e}",
         }
 
-    global _INDEX_CACHE
-    _INDEX_CACHE = None  # 다음 호출에서 새 인덱스 로드
+    global _INDEX_CACHE, _ATTACHMENT_CACHE
+    _INDEX_CACHE = None
+    _ATTACHMENT_CACHE = None
 
     result["steps"].append({
         "step": "build",
@@ -920,6 +1153,18 @@ def main() -> None:
     pv = sub.add_parser("verify", help="텍스트의 인용 조문 검증")
     pv.add_argument("text", help="검증할 텍스트 (따옴표로 감싸기)")
     pv.set_defaults(func=lambda a: print(json.dumps(verify_citation(a.text), ensure_ascii=False, indent=2)))
+
+    pa = sub.add_parser("attachments", help="별표·별지 목록")
+    pa.add_argument("--source")
+    pa.add_argument("--category")
+    pa.add_argument("--kind", choices=["별표", "별지"])
+    pa.add_argument("--include-deleted", action="store_true")
+    pa.set_defaults(func=lambda a: print(json.dumps(list_attachments(a.source, a.category, a.kind, a.include_deleted), ensure_ascii=False, indent=2)))
+
+    pat = sub.add_parser("attachment", help="별표·별지 본문 조회")
+    pat.add_argument("source")
+    pat.add_argument("label", help="예: '별표 1', '[별지 제3호 서식]'")
+    pat.set_defaults(func=lambda a: print(json.dumps(get_attachment(a.source, a.label), ensure_ascii=False, indent=2)))
 
     pu = sub.add_parser("update", help="저장소 최신 갱신 (git pull + build)")
     pu.set_defaults(func=lambda _a: print(json.dumps(self_update(), ensure_ascii=False, indent=2)))

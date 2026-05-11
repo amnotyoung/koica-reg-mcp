@@ -32,6 +32,7 @@ def search_regulation(
     source: Optional[str] = None,
     limit: int = 10,
     fuzzy: bool = False,
+    include_attachments: bool = False,
 ) -> list[dict]:
     """KOICA 규정·법률을 조문 단위로 검색.
 
@@ -43,13 +44,57 @@ def search_regulation(
         fuzzy: 음절 bi-gram 부분 매칭 활성화 (기본 False). 정확 매칭이
             없을 때 토큰을 2-gram으로 쪼개 부분 매칭 점수를 부여한다.
             "사례비"로 검색해 "사례금"이 본문에 있는 경우를 잡을 때 유용.
-            일반 검색에서는 noise를 만들 수 있으니, 1차 검색 결과가
-            비거나 명백히 부족할 때만 fuzzy=True로 재시도하길 권장.
+        include_attachments: 별표·별지도 검색 대상에 포함 (기본 False).
+            행정처분 기준표·서식 등을 찾을 때만 켜세요. 일반 조문 검색에서는
+            별표·별지가 결과 품질을 떨어뜨릴 수 있어 기본은 OFF.
 
     Returns:
-        조문 단위 결과 배열. 각 항목은 source/article/article_title/snippet/citation/score 포함.
+        결과 배열. 항목의 type 필드로 "article"/"attachment" 구분.
+        article: source/article/article_title/snippet/citation/score
+        attachment: source/kind/label/title/snippet/citation/score
     """
-    return ks.search(query, category=category, source=source, limit=limit, fuzzy=fuzzy)
+    return ks.search(
+        query,
+        category=category,
+        source=source,
+        limit=limit,
+        fuzzy=fuzzy,
+        include_attachments=include_attachments,
+    )
+
+
+@mcp.tool()
+def list_attachments(
+    source: Optional[str] = None,
+    category: Optional[str] = None,
+    kind: Optional[str] = None,
+    include_deleted: bool = False,
+) -> list[dict]:
+    """규정의 별표·별지 목록 (행정처분 기준표, 서식 등).
+
+    별표·별지는 본문 조문과 분리되어 별도 인덱싱됩니다. 기본 검색
+    (search_regulation)은 본문 조문만 대상이며, 별표·별지를 함께 검색하려면
+    search_regulation의 include_attachments=True 옵션을 사용하세요.
+
+    Args:
+        source: 규정명 부분일치 (예: "감사규정 시행세칙")
+        category: 카테고리 필터
+        kind: "별표" 또는 "별지"로만 필터
+        include_deleted: 본문에 <삭제 …> 메타가 있는 항목 포함 여부 (기본 False)
+    """
+    return ks.list_attachments(source=source, category=category, kind=kind, include_deleted=include_deleted)
+
+
+@mcp.tool()
+def get_attachment(source: str, label: str) -> list[dict]:
+    """별표·별지 본문 전체 조회.
+
+    Args:
+        source: 규정명 부분일치 (예: "민관협력사업")
+        label: 별표·별지 라벨. "[별표 1]", "별표 1", "1" 등 자유 형식.
+            공백·괄호 무시하고 정규화 매칭됨.
+    """
+    return ks.get_attachment(source, label)
 
 
 @mcp.tool()
