@@ -76,6 +76,25 @@ python3 koica_search.py refs "직제규정" "제9조"
 
 Claude Desktop을 **완전 종료(Cmd+Q)** 후 재실행하면 입력창 하단 도구 메뉴에 `koica-reg` 9개 도구가 보입니다.
 
+### 4. Codex에 연결 (선택)
+
+OpenAI Codex CLI도 외부 stdio MCP 서버를 전역 설정으로 등록할 수 있습니다.
+
+```bash
+codex mcp add koica-reg -- /opt/anaconda3/bin/python3 /절대/경로/koica-reg-mcp/koica_mcp_server.py
+codex mcp list
+```
+
+> `command` 위치에는 `mcp` 패키지가 설치된 Python 절대 경로를 적습니다 (`which python3`로 확인). venv를 쓰신다면 `<venv>/bin/python` 경로로 대체.
+
+등록 후 Codex를 재시작하면 `koica-reg` 네임스페이스의 도구가 노출됩니다.
+
+호환성 검증 결과:
+- `codex mcp add`로 stdio MCP 서버 등록
+- `codex mcp list` / `codex mcp get koica-reg`에서 enabled 상태 확인
+- Codex 세션에서 다음 도구의 stdio 호출이 정상 동작함을 확인: `list_sources(category="hr")`, `search_regulation(query="인사위원회 구성", category="hr")`, `get_article(source="인사규정", article="제11조")`
+- 나머지 도구도 동일한 stdio 채널을 통해 노출되므로 호환됩니다
+
 ---
 
 ## 사용 예시
