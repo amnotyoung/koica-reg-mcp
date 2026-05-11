@@ -11,7 +11,9 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import platform
 import re
+import subprocess
 import sys
 import unicodedata
 from dataclasses import asdict, dataclass
@@ -732,6 +734,124 @@ def find_questions(
     return out
 
 
+def _restart_instruction() -> dict:
+    """현재 OS에 맞는 Claude Desktop 재시작 안내."""
+    p = platform.system()
+    if p == "Darwin":
+        return {
+            "os": "macOS",
+            "instruction": "Claude Desktop을 완전 종료(Cmd+Q 또는 메뉴바 → Quit) 후 다시 실행해 주세요.",
+        }
+    if p == "Windows":
+        return {
+            "os": "Windows",
+            "instruction": "Claude Desktop을 완전 종료 후 다시 실행해 주세요. (시스템 트레이의 Claude 아이콘 우클릭 → Quit, 또는 작업관리자에서 Claude 프로세스 종료)",
+        }
+    return {
+        "os": p,
+        "instruction": "Claude Desktop을 완전 종료한 뒤 다시 실행해 주세요.",
+    }
+
+
+def self_update() -> dict:
+    """저장소를 최신으로 갱신(git pull)하고 인덱스를 재빌드.
+
+    Claude Desktop 등 MCP 클라이언트에서 자연어로 "도구 업데이트" 호출 시 사용.
+    코드 파일이 바뀐 경우 클라이언트 재시작이 필요하므로, OS에 맞는 재시작 안내를
+    함께 반환한다.
+    """
+    result: dict = {"steps": []}
+
+    # 1) git pull --ff-only (충돌 방지)
+    try:
+        r = subprocess.run(
+            ["git", "pull", "--ff-only"],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except FileNotFoundError:
+        return {"status": "error", "message": "git 명령을 찾을 수 없습니다. PATH에 git이 있는지 확인하세요."}
+    except subprocess.TimeoutExpired:
+        return {"status": "error", "message": "git pull이 60초 안에 끝나지 않았습니다. 네트워크를 확인하세요."}
+
+    git_output = (r.stdout + "\n" + r.stderr).strip()
+    result["steps"].append({"step": "git pull", "returncode": r.returncode, "output": git_output})
+
+    if r.returncode != 0:
+        return {
+            **result,
+            "status": "error",
+            "message": "git pull 실패. 충돌이나 인증 문제일 수 있습니다.",
+        }
+
+    already_up_to_date = (
+        "Already up to date" in git_output
+        or "Already up-to-date" in git_output
+        or "이미 최신" in git_output
+    )
+    if already_up_to_date:
+        return {
+            **result,
+            "status": "no_change",
+            "message": "이미 최신 상태입니다. 업데이트할 내용이 없습니다.",
+            "restart_required": False,
+        }
+
+    # 변경된 파일 추출 (.py 파일이 바뀌었으면 재시작 필수)
+    changed_files: list[str] = []
+    for line in git_output.splitlines():
+        m = re.match(r"^\s*([^\s|]+\.(?:py|md|json|txt))\s*\|", line)
+        if m:
+            changed_files.append(m.group(1))
+    code_changed = any(f.endswith(".py") for f in changed_files)
+    data_changed = any("data/" in f or f.endswith(".md") for f in changed_files)
+
+    # 2) build
+    prev_count = 0
+    if INDEX_PATH.exists():
+        try:
+            prev_count = len(json.loads(INDEX_PATH.read_text(encoding="utf-8")))
+        except Exception:
+            pass
+    try:
+        articles = build_index()
+    except Exception as e:
+        return {
+            **result,
+            "status": "error",
+            "message": f"인덱스 빌드 실패: {e}",
+        }
+
+    global _INDEX_CACHE
+    _INDEX_CACHE = None  # 다음 호출에서 새 인덱스 로드
+
+    result["steps"].append({
+        "step": "build",
+        "article_count_before": prev_count,
+        "article_count_after": len(articles),
+        "delta": len(articles) - prev_count,
+    })
+
+    restart = _restart_instruction()
+    return {
+        **result,
+        "status": "ok",
+        "changed_files": changed_files,
+        "code_changed": code_changed,
+        "data_changed": data_changed,
+        "restart_required": code_changed,
+        "restart_instruction": restart["instruction"],
+        "detected_os": restart["os"],
+        "message": (
+            f"최신 코드와 인덱스를 받았습니다. {restart['instruction']}"
+            if code_changed
+            else "데이터만 갱신되었습니다. Claude Desktop 재시작 없이 즉시 사용할 수 있습니다."
+        ),
+    }
+
+
 def cmd_build(_args: argparse.Namespace) -> None:
     build_index()
 
@@ -774,6 +894,9 @@ def main() -> None:
     pv = sub.add_parser("verify", help="텍스트의 인용 조문 검증")
     pv.add_argument("text", help="검증할 텍스트 (따옴표로 감싸기)")
     pv.set_defaults(func=lambda a: print(json.dumps(verify_citation(a.text), ensure_ascii=False, indent=2)))
+
+    pu = sub.add_parser("update", help="저장소 최신 갱신 (git pull + build)")
+    pu.set_defaults(func=lambda _a: print(json.dumps(self_update(), ensure_ascii=False, indent=2)))
 
     pr = sub.add_parser("refs", help="조문 인용 관계 (outgoing/incoming)")
     pr.add_argument("source")

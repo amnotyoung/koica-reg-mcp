@@ -112,6 +112,24 @@ def find_questions(
 
 
 @mcp.tool()
+def update() -> dict:
+    """koica-reg-mcp 저장소를 최신으로 갱신합니다 (git pull + 인덱스 재빌드).
+
+    사용자가 "도구 업데이트", "최신으로 받아줘" 같은 자연어로 요청할 때 호출합니다.
+
+    동작:
+        1) git pull --ff-only — 원격에서 최신 코드/데이터 받기
+        2) python3 koica_search.py build — 인덱스 재빌드
+        3) 변경 파일·조문 수 변화·OS별 재시작 안내 반환
+
+    코드 파일(.py)이 바뀐 경우 Claude Desktop 재시작이 필요합니다. 데이터만
+    바뀐 경우(규정 추가/갱신)는 재시작 없이 즉시 사용 가능합니다. 반환값의
+    restart_required와 restart_instruction을 사용자에게 그대로 전달하세요.
+    """
+    return ks.self_update()
+
+
+@mcp.tool()
 def list_sources(category: Optional[str] = None) -> list[dict]:
     """인덱싱된 규정·법률 목록.
 
