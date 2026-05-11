@@ -1,0 +1,34 @@
+# 빌드 산출물
+data/index.json
+
+# 시험문제 데이터 (출처 불명, 별도 보관)
+data/questions.json
+
+# 원본 PDF (시험범위 자료 — repo 미포함)
+붙임2. 시험범위(40)/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# macOS
+.DS_Store
+
+# 에디터·세션
+.claude/
+.vscode/
+.idea/
+*.swp
+
+# 설정 백업
+*.bak.json
+*.backup
+
+# 환경 변수
+.env
+.env.local
