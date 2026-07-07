@@ -32,3 +32,6 @@ venv/
 # 환경 변수
 .env
 .env.local
+
+# ALIO 동기화 캐시 (HWP/원시 md)
+data/_cache/

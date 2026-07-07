@@ -34,7 +34,10 @@ _ATTACHMENT_HEAD_RE = re.compile(
     r"\[\s*(?P<kind>별표|별지)\s+(?P<number>(?:제\s*)?[\d\-]+(?:호)?\s*(?:서식)?)\s*\]\s*"
 )
 
-HEADER_RE = re.compile(r"^# (.+?)(?:\s*\((.+?)\))?\s*$")
+# 제목 헤더: 규정명 + (선택) 개정 정보.
+# 규정명 자체에 괄호가 있을 수 있어(예: "오다(ODA)전문가…기준"), 말미 괄호는
+# 개정 정보 형태(개정/제정/호 포함)일 때만 revision으로 인식한다.
+HEADER_RE = re.compile(r"^# (.+?)(?:\s*\(([^()]*(?:개정|제정|호)[^()]*)\))?\s*$")
 # Format A (마크다운 정형): "## 제N장 …", "### 제N조(제목)" 또는 "## 제N조(제목)"
 CHAPTER_MD_RE = re.compile(r"^## (제\d+(?:편|장|절).+?)\s*$")
 ARTICLE_MD_RE = re.compile(r"^#{2,3} (제(\d+)조(?:의(\d+))?)\s*\((.+?)\)\s*$")
@@ -1069,7 +1072,9 @@ def self_update() -> dict:
     prev_count = 0
     if INDEX_PATH.exists():
         try:
-            prev_count = len(json.loads(INDEX_PATH.read_text(encoding="utf-8")))
+            raw = json.loads(INDEX_PATH.read_text(encoding="utf-8"))
+            # v2: {"articles": [...]}, v1(호환): [...]
+            prev_count = len(raw["articles"]) if isinstance(raw, dict) else len(raw)
         except Exception:
             pass
     try:
