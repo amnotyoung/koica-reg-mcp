@@ -1,0 +1,52 @@
+name: ALIO 규정 자동 동기화
+
+# KOICA 현행 규정을 alio.go.kr에서 주기적으로 다시 받아 저장소를 최신 상태로 유지한다.
+# 사용자는 별도 조작 없이 `update` 도구(git pull + build)로 최신 규정을 받게 된다.
+
+on:
+  schedule:
+    - cron: "0 0 * * 1"      # 매주 월요일 00:00 UTC (09:00 KST)
+  workflow_dispatch:          # 수동 실행 버튼
+
+permissions:
+  contents: write
+
+concurrency:
+  group: alio-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Node.js (kordoc 실행용)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: ALIO 동기화 실행
+        run: python3 alio_sync.py --fresh --no-build
+        # --no-build: index.json은 gitignore 대상이라 커밋하지 않는다.
+        #             사용자가 git pull 후 build 하거나 update 도구로 재빌드한다.
+
+      - name: 변경분 커밋 & 푸시
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/extracted data/sources.json
+          if git diff --cached --quiet; then
+            echo "변경 없음 — 이미 최신 상태"
+          else
+            COUNT=$(python3 -c "import json;print(json.load(open('data/sources.json')).get('count','?'))")
+            git commit -m "chore(sync): ALIO 현행 규정 자동 동기화 (${COUNT}개, $(date -u +%Y-%m-%d))"
+            git push
+            echo "동기화 커밋 완료"
+          fi

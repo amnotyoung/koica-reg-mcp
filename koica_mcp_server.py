@@ -16,6 +16,8 @@ Claude Desktop / Cursor / Windsurf 등 MCP 호환 클라이언트에서 사용.
 
 from __future__ import annotations
 
+import subprocess
+import sys
 from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
@@ -34,12 +36,13 @@ def search_regulation(
     fuzzy: bool = False,
     include_attachments: bool = False,
 ) -> list[dict]:
-    """KOICA 규정·법률을 조문 단위로 검색.
+    """KOICA 현행 규정을 조문 단위로 검색.
 
     Args:
         query: 자연어 검색어 (예: "인사위원회 구성")
-        category: 카테고리 필터 (law/hr/project/volunteer/partnership/finance/management)
-        source: 규정명 부분일치 (예: "인사규정")
+        category: 규정 유형 필터 (규정/시행세칙/지침/기준/정관). 대부분은
+            source(규정명)나 전문검색이 더 유용하며, 유형으로 좁힐 때만 사용.
+        source: 규정명 부분일치 (예: "인사규정") — 가장 자주 쓰는 필터
         limit: 반환 결과 수 (기본 10)
         fuzzy: 음절 bi-gram 부분 매칭 활성화 (기본 False). 정확 매칭이
             없을 때 토큰을 2-gram으로 쪼개 부분 매칭 점수를 부여한다.
@@ -78,7 +81,7 @@ def list_attachments(
 
     Args:
         source: 규정명 부분일치 (예: "감사규정 시행세칙")
-        category: 카테고리 필터
+        category: 규정 유형 필터 (규정/시행세칙/지침/기준/정관)
         kind: "별표" 또는 "별지"로만 필터
         include_deleted: 본문에 <삭제 …> 메타가 있는 항목 포함 여부 (기본 False)
     """
@@ -102,7 +105,7 @@ def get_article(source: str, article: str) -> list[dict]:
     """규정명·조문 번호로 조문 본문 전체 조회.
 
     Args:
-        source: 규정명 부분일치 (예: "인사규정", "공공기관운영")
+        source: 규정명 부분일치 (예: "인사규정", "국별협력사업")
         article: 조문 번호 (예: "제11조", "11", "15의2", "제15조의2")
 
     Returns:
@@ -181,14 +184,80 @@ def update() -> dict:
 
 
 @mcp.tool()
-def list_sources(category: Optional[str] = None) -> list[dict]:
-    """인덱싱된 규정·법률 목록.
+def sync_from_alio(timeout_sec: int = 1200) -> dict:
+    """ALIO(alio.go.kr)에서 KOICA 현행 규정을 직접 받아 최신으로 동기화.
+
+    공공기관 경영정보 공개시스템의 KOICA 규정 목록(apbaId=C0146,
+    reportFormRootNo=21110)을 조회 → 각 규정의 현행본(최신 개정본) 다운로드 →
+    본문 추출 → 인덱스 재빌드까지 한 번에 수행합니다. 사용자가 "코이카 규정
+    ALIO에서 최신으로 동기화해줘", "규정 새로 받아와" 처럼 요청할 때 호출합니다.
+
+    주의:
+      - 전 규정 다운로드·추출로 수 분이 걸립니다.
+      - Node.js/npx가 필요합니다(문서 추출 kordoc 실행). 없으면 오류를 반환하니
+        Node 설치 후 재시도하거나 터미널에서 `python3 alio_sync.py`를 실행하세요.
+      - 데이터만 갱신되므로 클라이언트 재시작 없이 즉시 반영됩니다.
 
     Args:
-        category: 특정 카테고리만 보기 (선택)
+        timeout_sec: 최대 대기 시간(초, 기본 1200). 초과 시 오류 반환.
 
     Returns:
-        [{"source": "인사규정", "category": "hr", "revision": "...", "article_count": 84}, …]
+        동기화 결과 요약(규정 수·조문 수, 실행 로그 tail).
+    """
+    from pathlib import Path
+
+    script = Path(ks.ROOT) / "alio_sync.py"
+    if not script.exists():
+        return {"status": "error", "message": f"동기화 스크립트 없음: {script}"}
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(script)],
+            cwd=str(ks.ROOT), capture_output=True, text=True, timeout=timeout_sec,
+        )
+    except subprocess.TimeoutExpired:
+        return {
+            "status": "error",
+            "message": f"{timeout_sec}초 내 완료되지 않았습니다. 터미널에서 "
+                       "'python3 alio_sync.py'로 직접 실행해 주세요.",
+        }
+
+    out = (proc.stdout + "\n" + proc.stderr).strip()
+    tail = "\n".join(out.splitlines()[-8:])
+    lowered = out.lower()
+    if "npx" in lowered and ("not found" in lowered or "enoent" in lowered or "command not found" in lowered):
+        return {
+            "status": "error",
+            "message": "Node.js/npx가 필요합니다(kordoc 실행). Node를 설치한 뒤 다시 시도하세요.",
+            "output_tail": tail,
+        }
+    if proc.returncode != 0:
+        return {"status": "error", "message": "동기화 실패", "output_tail": tail}
+
+    # 데이터만 바뀌었으므로 인메모리 인덱스 캐시만 무효화 → 재시작 불필요
+    ks._INDEX_CACHE = None
+    ks._ATTACHMENT_CACHE = None
+    arts = ks.load_index()
+    return {
+        "status": "ok",
+        "restart_required": False,
+        "source_count": len({a.source for a in arts}),
+        "article_count": len(arts),
+        "message": f"ALIO 최신 규정으로 동기화 완료 — {len({a.source for a in arts})}개 규정 / "
+                   f"{len(arts)}개 조문. 재시작 없이 바로 사용할 수 있습니다.",
+        "output_tail": tail,
+    }
+
+
+@mcp.tool()
+def list_sources(category: Optional[str] = None) -> list[dict]:
+    """인덱싱된 KOICA 현행 규정 목록.
+
+    Args:
+        category: 규정 유형만 보기 (규정/시행세칙/지침/기준/정관, 선택)
+
+    Returns:
+        [{"source": "인사규정", "category": "규정", "revision": "2026.06.12 개정",
+          "article_count": 73}, …]
     """
     arts = ks.load_index()
     by_src: dict[str, dict] = {}
