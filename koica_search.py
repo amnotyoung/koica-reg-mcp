@@ -3,7 +3,7 @@
 사용:
     python koica_search.py build
     python koica_search.py search "인사위원회"
-    python koica_search.py search "공공기관운영위원회 심의" --category law
+    python koica_search.py search "징계 시효" --category 규정
 """
 
 from __future__ import annotations
@@ -40,10 +40,15 @@ _ATTACHMENT_HEAD_RE = re.compile(
 HEADER_RE = re.compile(r"^# (.+?)(?:\s*\(([^()]*(?:개정|제정|호)[^()]*)\))?\s*$")
 # Format A (마크다운 정형): "## 제N장 …", "### 제N조(제목)" 또는 "## 제N조(제목)"
 CHAPTER_MD_RE = re.compile(r"^## (제\d+(?:편|장|절).+?)\s*$")
-ARTICLE_MD_RE = re.compile(r"^#{2,3} (제(\d+)조(?:의(\d+))?)\s*\((.+?)\)\s*$")
+# 조문 헤더 — 닫는 괄호 뒤에 본문이 같은 줄에 붙어도 인식(group5=인라인 본문).
+# kordoc 추출본은 "### 제9조(조직) ① 협력단의…"처럼 본문을 헤더에 붙이는 경우가 많다.
+ARTICLE_MD_RE = re.compile(r"^#{2,3} (제(\d+)조(?:의(\d+))?)\s*\((.+?)\)\s*(.*)$")
 # Format B (PDF 평문): "      제1장 총칙", "제1조(목적) 본문…"
 CHAPTER_PLAIN_RE = re.compile(r"^\s*(제\d+(?:편|장|절))\s+(\S.{0,40})\s*$")
 ARTICLE_PLAIN_RE = re.compile(r"^\s*제(\d+)조(?:의(\d+))?\s*\(([^)]+)\)\s*(.*)$")
+# 부칙(附則) 경계 마커 — 이 라인 이후의 조문은 부칙 조문(본칙 제N조와 번호 충돌).
+# 예: "부칙 <1991.04.24.>", "부 칙 <2016.07.19.>", "**부칙 <…>**"
+SUPPL_MARK_RE = re.compile(r"^\**\s*부\s*칙(?:\s*<|\s*\**\s*$|\s)")
 
 KOREAN_JOSA = (
     "에게서", "으로부터", "로부터", "에서", "께서", "에게", "한테",
@@ -79,6 +84,7 @@ class Article:
     article_sub: int
     article_title: str
     body: str
+    is_supplementary: bool = False  # 부칙(附則) 조문 여부 — 본칙 제N조와 번호 충돌 구분용
 
     @property
     def citation(self) -> str:
@@ -114,7 +120,9 @@ _SOURCE_CONNECTOR_RE = re.compile(r"에관한|관한|의|및|와|과")
 
 
 def _normalize_source(s: str) -> str:
-    s = re.sub(r"\s+", "", _nfc(s))
+    # 공백 + 유니코드 중점 변종(·U+00B7 ․U+2024 ‧U+2027 ・U+30FB) 제거 후 연결어 제거.
+    # 문서마다 "설치·운영"/"설치․운영" 표기가 갈려 정비 레이더의 모규정 매칭이 새던 것 보정.
+    s = re.sub(r"[\s·․‧・]+", "", _nfc(s))
     return _SOURCE_CONNECTOR_RE.sub("", s)
 
 
@@ -198,6 +206,7 @@ def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]
     source = _nfc(path.stem)
     revision = ""
     chapter = ""
+    in_supplementary = False   # 부칙 구간 진입 여부
     articles: list[Article] = []
     attachments: list[Attachment] = []
     cur: Optional[dict] = None
@@ -270,6 +279,7 @@ def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]
             "article_no": no,
             "article_sub": sub,
             "article_title": title.strip(),
+            "is_supplementary": in_supplementary,
         }
         if rest:
             body_lines.append(rest.strip())
@@ -303,6 +313,11 @@ def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]
                 revision = (m.group(2) or "").strip()
             continue
 
+        # 부칙 경계 — 이후 조문은 부칙 조문으로 표시 (본칙 제N조와 번호 충돌 구분)
+        if SUPPL_MARK_RE.match(line.strip()):
+            in_supplementary = True
+            continue
+
         # 별표·별지 라인 — 어디서든 등장 가능 (조문 진행 중에도)
         if "[별표" in line or "[별지" in line:
             if absorb_attachment_line(line):
@@ -311,7 +326,8 @@ def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]
         if line.startswith("##"):
             m_art = ARTICLE_MD_RE.match(line)
             if m_art:
-                open_article(int(m_art.group(2)), int(m_art.group(3) or 0), m_art.group(4), "")
+                open_article(int(m_art.group(2)), int(m_art.group(3) or 0),
+                             m_art.group(4), m_art.group(5) or "")
                 continue
             if line.startswith("## "):
                 flush()
@@ -606,6 +622,8 @@ ARTICLE_TOKEN_RE = re.compile(r"^\s*(?:제)?(\d+)조?(?:의(\d+))?\s*$")
 CITATION_RE = re.compile(
     r"제(\d+)조(?:의(\d+))?(?:\s*제\d+항)?(?:\s*제\d+호)?(?:\s*\(([^)]{2,40})\))?"
 )
+# 조문 직후 괄호가 제목이 아니라 정의·부연(예: "(이하 '직원')")이면 제목검증 대상 제외
+_DEF_PAREN_RE = re.compile(r"이하|약칭|['\"‘’“”]|(?:이)?라\s*(?:한다|칭한다)")
 
 
 def _title_key(s: str) -> str:
@@ -614,15 +632,17 @@ def _title_key(s: str) -> str:
 
 
 def _title_matches(cited: str, actual: str) -> bool:
-    """인용에 붙은 조문제목이 실제 제목과 부합하는지 (관대한 판정).
+    """인용에 붙은 조문제목이 실제 제목과 부합하는지 판정.
 
-    정확일치·포함 또는 음절 bigram Jaccard ≥ 0.4 이면 일치로 본다.
-    (엉뚱한 제목을 붙인 환각만 걸러내고, 축약·이표기는 통과)
+    - 정확일치, 또는 **인용 제목이 실제 제목의 부분**(축약 인용: "정의"⊂"용어의 정의")은 일치.
+    - 반대로 **인용이 실제보다 길어 별도 수식어를 붙인 경우**("육아휴직" vs 실제 "휴직")는
+      환각으로 보고 불일치 처리 — 이전의 `a in c` 통과를 제거한 핵심 수정.
+    - 그 밖엔 음절 bigram Jaccard ≥ 0.4 이면 이표기로 보고 일치.
     """
     c, a = _title_key(cited), _title_key(actual)
     if not c or not a:
         return True
-    if c == a or c in a or a in c:
+    if c == a or c in a:   # 인용이 실제의 부분(축약)은 허용, 그 역(수식어 추가)은 불허
         return True
     cb, ab = set(_bigrams(c)), set(_bigrams(a))
     if not cb or not ab:
@@ -643,28 +663,45 @@ def _parse_article_token(token: str) -> Optional[tuple[int, int]]:
     return None
 
 
+def _source_selector(query: Optional[str], articles: list[Article]):
+    """source 매칭 술어. 질의가 어떤 규정명과 **정확 일치(NFC)** 하면 그 규정으로
+    한정하고, 아니면 부분일치(source_match). '직제규정'이 '직제규정 시행세칙'까지
+    번지는 모호성을 차단한다."""
+    if not query:
+        return lambda s: True
+    q = _nfc(query).strip()
+    if any(a.source == q for a in articles):
+        return lambda s: s == q
+    return lambda s: source_match(query, s)
+
+
 def get_article(source: str, article: str) -> list[dict]:
-    """source 부분일치 + article 정확매칭으로 조문 본문 전체 반환."""
+    """source 매칭(정확일치 우선) + article 정확매칭으로 조문 본문 반환.
+
+    본칙(비-부칙) 조문을 우선한다 — 본칙 매칭이 있으면 부칙 제N조는 제외.
+    (부칙 제1조/제2조가 본칙과 같은 번호로 중복되던 오염을 해소.)
+    """
     parsed = _parse_article_token(article)
     if parsed is None:
         return []
     no, sub = parsed
-    out = []
-    for a in load_index():
-        if source and not source_match(source, a.source):
-            continue
-        if a.article_no == no and a.article_sub == sub:
-            out.append({
-                "category": a.category,
-                "source": a.source,
-                "revision": a.revision,
-                "chapter": a.chapter,
-                "article": a.article,
-                "article_title": a.article_title,
-                "citation": a.citation,
-                "body": a.body,
-            })
-    return out
+    arts = load_index()
+    src_ok = _source_selector(source, arts)
+    matches = [a for a in arts
+               if src_ok(a.source) and a.article_no == no and a.article_sub == sub]
+    main = [a for a in matches if not a.is_supplementary]
+    chosen = main if main else matches
+    return [{
+        "category": a.category,
+        "source": a.source,
+        "revision": a.revision,
+        "chapter": a.chapter,
+        "article": a.article,
+        "article_title": a.article_title,
+        "citation": a.citation,
+        "body": a.body,
+        "is_supplementary": a.is_supplementary,
+    } for a in chosen]
 
 
 def _article_range_for(source_nfc: str, articles: list[Article]) -> str:
@@ -715,14 +752,19 @@ def verify_citation(text: str) -> list[dict]:
             })
             continue
         no, sub = int(m.group(1)), int(m.group(2) or 0)
-        hit = next(
-            (a for a in articles
-             if a.source == matched_src and a.article_no == no and a.article_sub == sub),
-            None,
-        )
+        cand = [a for a in articles
+                if a.source == matched_src and a.article_no == no and a.article_sub == sub]
+        # 인용 직전에 "부칙"이 있으면 부칙 조문 우선, 아니면 본칙 우선
+        prefer_suppl = "부칙" in text_nfc[max(0, m.start() - 15): m.start()]
+        main = [a for a in cand if not a.is_supplementary]
+        suppl = [a for a in cand if a.is_supplementary]
+        ordered = (suppl + main) if prefer_suppl else (main + suppl)
+        hit = ordered[0] if ordered else None
         if hit:
             cited_title = (m.group(3) or "").strip()
-            if cited_title and not _title_matches(cited_title, hit.article_title):
+            # 정의·부연 괄호(이하 …)는 제목이 아니므로 내용검증 제외
+            check_title = bool(cited_title) and not _DEF_PAREN_RE.search(cited_title)
+            if check_title and not _title_matches(cited_title, hit.article_title):
                 results.append({
                     "citation": f"{matched_src} {art}",
                     "raw_match": full_cite,
@@ -738,7 +780,7 @@ def verify_citation(text: str) -> list[dict]:
                     "raw_match": full_cite,
                     "status": "ok",
                     "article_title": hit.article_title,
-                    "title_verified": bool(cited_title),
+                    "title_verified": check_title,
                     "body_excerpt": _strip_meta(hit.body[:250].replace("\n", " "))[:150],
                 })
         else:
@@ -780,13 +822,16 @@ def find_references(source: str, article: str, limit: int = 20,
     no, sub = parsed
     articles = load_index()
 
+    src_ok = _source_selector(source, articles)
     targets = [
         a for a in articles
-        if source_match(source, a.source) and a.article_no == no and a.article_sub == sub
+        if src_ok(a.source) and a.article_no == no and a.article_sub == sub
     ]
     if not targets:
         return {"error": f"target not found: {source} 제{no}조" + (f"의{sub}" if sub else "")}
 
+    # 본칙(비-부칙) 조문을 target으로 우선 — 부칙 제N조 오선택 방지
+    targets.sort(key=lambda a: a.is_supplementary)
     target = targets[0]
     target_source = target.source
     target_art = target.article
@@ -947,25 +992,40 @@ def _revision_date(revision: str) -> Optional[tuple]:
     return (int(m.group(1)), int(m.group(2)), int(m.group(3))) if m else None
 
 
+def _parent_candidates(by_source: dict, cat_of: dict, child: str) -> dict:
+    """모규정 후보(규정/정관 유형)의 {정규화명: 원본명} 맵."""
+    return {_normalize_source(s): s for s in by_source
+            if s != child and cat_of.get(s) in _PARENT_TYPES}
+
+
 def _guess_parent(child: str, by_source: dict, cat_of: dict) -> Optional[str]:
-    """시행세칙/지침의 모(母)규정명 추론 — 이름 규칙 우선, 실패 시 제1조 「」 인용."""
-    # 1) 이름 규칙: "X 시행세칙"/"X 세칙" → "X" (모규정 유형일 때만)
+    """시행세칙/지침의 모(母)규정명 추론 — 이름 규칙 우선, 실패 시 제1조 「」 인용.
+
+    비교는 모두 `_normalize_source`(공백·중점·연결어 제거)로 수행해, 문서마다 다른
+    공백/유니코드 중점 표기 차이로 모규정을 놓치던 미탐을 없앤다.
+    """
+    cands = _parent_candidates(by_source, cat_of, child)
+    # 1) 이름 규칙: "X 시행세칙"/"X 세칙" → X (정규화 일치하는 모규정)
     for suf in (" 시행세칙", " 세칙"):
         if child.endswith(suf):
-            cand = child[: -len(suf)].strip()
-            if cat_of.get(cand) in _PARENT_TYPES:
-                return cand
-    # 2) 제1조(목적) 본문의 「규정명」 인용 중 모규정 유형만 채택
+            key = _normalize_source(child[: -len(suf)])
+            if key in cands:
+                return cands[key]
+    # 2) 제1조(목적, 본칙) 본문의 「규정명」 인용을 정규화 매칭
     arts = by_source.get(child, [])
-    first = next((a for a in arts if a.article_no == 1 and a.article_sub == 0), arts[0] if arts else None)
+    first = next((a for a in arts if a.article_no == 1 and a.article_sub == 0
+                  and not a.is_supplementary), None)
+    if first is None:
+        first = next((a for a in arts if a.article_no == 1 and a.article_sub == 0),
+                     arts[0] if arts else None)
     if first:
         for m in _PARENT_CITE_RE.finditer(first.body):
-            name = m.group(1).strip()
-            if name != child and cat_of.get(name) in _PARENT_TYPES:
-                return name
-            for src in by_source:
-                if src != child and cat_of.get(src) in _PARENT_TYPES and (name in src or src in name):
-                    return src
+            nk = _normalize_source(m.group(1))
+            if nk in cands:                       # 정확(정규화) 일치 우선
+                return cands[nk]
+            partial = [orig for k, orig in cands.items() if nk and (nk in k or k in nk)]
+            if partial:
+                return max(partial, key=len)      # 최장 후보 (first-match-wins 위험 완화)
     return None
 
 
@@ -994,10 +1054,18 @@ def compliance_radar(source: Optional[str] = None) -> list[dict]:
     for src in by_source:
         if cat_of[src] not in _CHILD_TYPES:
             continue
-        if source and not source_match(source, src):
-            continue
         parent = _guess_parent(src, by_source, cat_of)
+        # source 필터: 하위규정명 또는 모규정명에 매칭 (모규정 기준 조회 지원)
+        if source and not (source_match(source, src)
+                           or (parent and source_match(source, parent))):
+            continue
         if not parent:
+            # 모규정 추론 실패 — 조용히 스킵하지 않고 no_parent로 노출(점검 불가 투명화)
+            out.append({
+                "source": src, "type": cat_of[src], "revision": rev_of[src],
+                "parent": None, "parent_revision": None, "status": "no_parent",
+                "note": "이름 규칙/제1조 인용에서 인덱스 내 모규정을 찾지 못함 — 점검 불가",
+            })
             continue
         cd, pd = _revision_date(rev_of[src]), _revision_date(rev_of[parent])
         entry = {
@@ -1015,7 +1083,8 @@ def compliance_radar(source: Optional[str] = None) -> list[dict]:
             entry["status"] = "unknown"
             entry["note"] = "개정일 파싱 불가"
         out.append(entry)
-    out.sort(key=lambda x: (x["status"] != "review_needed", x["source"]))
+    _order = {"review_needed": 0, "unknown": 1, "ok": 2, "no_parent": 3}
+    out.sort(key=lambda x: (_order.get(x["status"], 9), x["source"]))
     return out
 
 
@@ -1126,19 +1195,30 @@ def list_attachments(
     return out
 
 
-def get_attachment(source: str, label: str) -> list[dict]:
-    """source 부분일치 + label 매칭으로 별표·별지 본문 전체 반환.
+def _att_num_key(n: str) -> str:
+    """별표·별지 번호 비교 키 — 공백·'서식' 제거. '별표 1'≠'별표 10' 경계 구분용."""
+    return re.sub(r"\s+", "", _nfc(n)).replace("서식", "")
 
-    label은 "[별표 1]", "별표 1", "1" 등 자유 형식. 공백·괄호 무시 정규화로 매칭.
+
+def get_attachment(source: str, label: str) -> list[dict]:
+    """source 부분일치 + label **경계 있는 정확매칭**으로 별표·별지 본문 반환.
+
+    label은 "[별표 1]", "별표 1", "별지 제3호 서식" 등 자유 형식. 번호는 정확일치라
+    "별표 1"이 별표 10·11·1-1을 잡던 과다매칭을 없앴다(종류(별표/별지)도 함께 대조).
     """
-    src_q = _nfc(source).strip()
-    lab_q = re.sub(r"[\[\]\s]+", "", _nfc(label)).lower()  # "별표1", "별지제3호서식" 형태로
+    atts = load_attachments()
+    src_ok = _source_selector(source, atts)   # 규정명 정확일치 우선 (형제 규정 흡수 방지)
+    q = re.sub(r"[\[\]]", "", _nfc(label)).strip()
+    mk = re.match(r"^\s*(별표|별지)?\s*(.*)$", q)
+    q_kind = (mk.group(1) or "") if mk else ""
+    q_num = _att_num_key(mk.group(2) if mk else q)
     out = []
-    for a in load_attachments():
-        if not source_match(src_q, a.source):
+    for a in atts:
+        if not src_ok(a.source):
             continue
-        norm_label = re.sub(r"[\[\]\s]+", "", a.label).lower()
-        if lab_q in norm_label or norm_label.endswith(lab_q):
+        if q_kind and a.kind != q_kind:
+            continue
+        if q_num and _att_num_key(a.number) == q_num:
             out.append({
                 "category": a.category,
                 "source": a.source,
@@ -1302,7 +1382,7 @@ def main() -> None:
 
     ps = sub.add_parser("search", help="조문 검색")
     ps.add_argument("query")
-    ps.add_argument("--category", help="law/hr/project/volunteer/partnership/finance/management")
+    ps.add_argument("--category", help="규정 유형: 규정/시행세칙/지침/기준/정관/세칙")
     ps.add_argument("--source", help="규정명 부분일치 (예: 인사규정)")
     ps.add_argument("--limit", type=int, default=10)
     ps.add_argument("--fuzzy", action="store_true", help="음절 bi-gram 부분 매칭")
