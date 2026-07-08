@@ -602,7 +602,33 @@ def search(
 
 
 ARTICLE_TOKEN_RE = re.compile(r"^\s*(?:제)?(\d+)조?(?:의(\d+))?\s*$")
-CITATION_RE = re.compile(r"제(\d+)조(?:의(\d+))?(?:\s*제\d+항)?(?:\s*제\d+호)?")
+# 인용: 제N조[의M] [제N항][제N호] 뒤에 (조문제목)이 붙으면 내용검증에 사용
+CITATION_RE = re.compile(
+    r"제(\d+)조(?:의(\d+))?(?:\s*제\d+항)?(?:\s*제\d+호)?(?:\s*\(([^)]{2,40})\))?"
+)
+
+
+def _title_key(s: str) -> str:
+    """제목 비교용 정규화 — 공백·문장부호 제거."""
+    return re.sub(r"[\s·․.,'\"()\[\]「」]", "", _nfc(s))
+
+
+def _title_matches(cited: str, actual: str) -> bool:
+    """인용에 붙은 조문제목이 실제 제목과 부합하는지 (관대한 판정).
+
+    정확일치·포함 또는 음절 bigram Jaccard ≥ 0.4 이면 일치로 본다.
+    (엉뚱한 제목을 붙인 환각만 걸러내고, 축약·이표기는 통과)
+    """
+    c, a = _title_key(cited), _title_key(actual)
+    if not c or not a:
+        return True
+    if c == a or c in a or a in c:
+        return True
+    cb, ab = set(_bigrams(c)), set(_bigrams(a))
+    if not cb or not ab:
+        return True
+    jac = len(cb & ab) / len(cb | ab)
+    return jac >= 0.4
 
 
 def _parse_article_token(token: str) -> Optional[tuple[int, int]]:
@@ -653,7 +679,14 @@ def _article_range_for(source_nfc: str, articles: list[Article]) -> str:
 def verify_citation(text: str) -> list[dict]:
     """텍스트 내 모든 '{규정명} 제N조[의M]' 인용을 인덱스로 교차검증.
 
-    각 인용에 대해 status: ok / not_found / unknown_source.
+    각 인용에 대해 status:
+      - ok: 규정·조문 실재 (인용에 조문제목이 붙었으면 제목까지 일치)
+      - content_mismatch: 조문은 실재하나 붙은 제목이 실제와 다름 (내용 환각)
+      - not_found: 규정은 알지만 해당 조문 없음
+      - unknown_source: 직전 텍스트에서 알려진 규정명을 못 찾음
+
+    content_mismatch는 "인사규정 제11조(육아휴직)"처럼 존재하는 조문번호에
+    엉뚱한 제목을 붙인 LLM 환각을 잡는다.
     """
     text_nfc = _nfc(text)
     articles = load_index()
@@ -688,13 +721,26 @@ def verify_citation(text: str) -> list[dict]:
             None,
         )
         if hit:
-            results.append({
-                "citation": f"{matched_src} {art}",
-                "raw_match": full_cite,
-                "status": "ok",
-                "article_title": hit.article_title,
-                "body_excerpt": _strip_meta(hit.body[:250].replace("\n", " "))[:150],
-            })
+            cited_title = (m.group(3) or "").strip()
+            if cited_title and not _title_matches(cited_title, hit.article_title):
+                results.append({
+                    "citation": f"{matched_src} {art}",
+                    "raw_match": full_cite,
+                    "status": "content_mismatch",
+                    "cited_title": cited_title,
+                    "actual_title": hit.article_title,
+                    "message": f"{matched_src} {art}의 실제 제목은 '{hit.article_title}' — "
+                               f"인용에 붙은 '{cited_title}'와 불일치(내용 환각 가능)",
+                })
+            else:
+                results.append({
+                    "citation": f"{matched_src} {art}",
+                    "raw_match": full_cite,
+                    "status": "ok",
+                    "article_title": hit.article_title,
+                    "title_verified": bool(cited_title),
+                    "body_excerpt": _strip_meta(hit.body[:250].replace("\n", " "))[:150],
+                })
         else:
             results.append({
                 "citation": f"{matched_src} {art}",
@@ -713,7 +759,8 @@ _EXTERNAL_CITE_RE = re.compile(
 )
 
 
-def find_references(source: str, article: str, limit: int = 20) -> dict:
+def find_references(source: str, article: str, limit: int = 20,
+                    include_mermaid: bool = False) -> dict:
     """대상 조문의 정방향(outgoing) · 역방향(incoming) 인용 관계.
 
     outgoing: 이 조문 본문이 인용한 다른 조문들 (인덱스 매칭 포함).
@@ -723,6 +770,9 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
       - same_regulation: 같은 규정 안
       - cross_regulation: 다른 KOICA 규정/법 (인덱스 매칭됨)
       - external: 인덱스에 없는 외부 법령 (예: 공공재정환수법)
+
+    include_mermaid=True 이면 반환 dict에 "mermaid" 키로 flowchart 코드를 함께
+    담는다 (claude.ai 등에서 인용망을 바로 시각화).
     """
     parsed = _parse_article_token(article)
     if parsed is None:
@@ -840,7 +890,7 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
                     break
                 pos = idx + len(target_source)
 
-    return {
+    result = {
         "target": {
             "source": target.source,
             "article": target.article,
@@ -851,6 +901,31 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
         "incoming": incoming[:limit],
         "counts": {"outgoing": len(outgoing), "incoming": len(incoming)},
     }
+    if include_mermaid:
+        result["mermaid"] = _mermaid_graph(result)
+    return result
+
+
+def _mermaid_graph(result: dict) -> str:
+    """find_references 결과를 mermaid flowchart 코드로. incoming→target→outgoing."""
+    lines = ["flowchart LR"]
+    ids: dict[str, str] = {}
+
+    def node(label: str, style: str = "") -> str:
+        if label not in ids:
+            ids[label] = f"n{len(ids)}"
+            safe = label.replace('"', "'").replace("[", "(").replace("]", ")")
+            lines.append(f'  {ids[label]}["{safe}"]{style}')
+        return ids[label]
+
+    tgt = result["target"]["citation"]
+    tgt_id = node(tgt)
+    lines.append(f"  style {tgt_id} fill:#dbeafe,stroke:#2563eb")
+    for i in result["incoming"]:
+        lines.append(f"  {node(i['citation'])} --> {tgt_id}")
+    for o in result["outgoing"]:
+        lines.append(f"  {tgt_id} --> {node(o['citation'])}")
+    return "\n".join(lines)
 
 
 def _around(body: str, pos: int, span: int = 60) -> str:
@@ -858,6 +933,90 @@ def _around(body: str, pos: int, span: int = 60) -> str:
     end = min(len(body), pos + span)
     s = _strip_meta(body[start:end].replace("\n", " "))
     return ("…" if start > 0 else "") + s + ("…" if end < len(body) else "")
+
+
+# ── 규정 정비 레이더 (하위 규정 vs 모규정 개정 대조) ────────────────────
+_RADAR_DATE_RE = re.compile(r"(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})")
+_PARENT_CITE_RE = re.compile(r"「([^」]{2,40}?)」")
+_CHILD_TYPES = {"시행세칙", "세칙", "지침"}
+_PARENT_TYPES = {"규정", "정관"}
+
+
+def _revision_date(revision: str) -> Optional[tuple]:
+    m = _RADAR_DATE_RE.search(revision or "")
+    return (int(m.group(1)), int(m.group(2)), int(m.group(3))) if m else None
+
+
+def _guess_parent(child: str, by_source: dict, cat_of: dict) -> Optional[str]:
+    """시행세칙/지침의 모(母)규정명 추론 — 이름 규칙 우선, 실패 시 제1조 「」 인용."""
+    # 1) 이름 규칙: "X 시행세칙"/"X 세칙" → "X" (모규정 유형일 때만)
+    for suf in (" 시행세칙", " 세칙"):
+        if child.endswith(suf):
+            cand = child[: -len(suf)].strip()
+            if cat_of.get(cand) in _PARENT_TYPES:
+                return cand
+    # 2) 제1조(목적) 본문의 「규정명」 인용 중 모규정 유형만 채택
+    arts = by_source.get(child, [])
+    first = next((a for a in arts if a.article_no == 1 and a.article_sub == 0), arts[0] if arts else None)
+    if first:
+        for m in _PARENT_CITE_RE.finditer(first.body):
+            name = m.group(1).strip()
+            if name != child and cat_of.get(name) in _PARENT_TYPES:
+                return name
+            for src in by_source:
+                if src != child and cat_of.get(src) in _PARENT_TYPES and (name in src or src in name):
+                    return src
+    return None
+
+
+def compliance_radar(source: Optional[str] = None) -> list[dict]:
+    """시행세칙·지침이 모(母)규정 개정에 뒤처졌는지 자동 점검(정비 레이더).
+
+    각 하위 규정의 모규정을 이름 규칙/제1조 인용으로 추론하고, 모규정 개정일이
+    하위 규정 개정일보다 최근이면 'review_needed'(정비 검토 대상)로 플래그한다.
+    한국 조례 정비 관행(상위법 개정 추적)을 KOICA 규정 체계에 옮긴 것.
+
+    Args:
+        source: 특정 규정만 점검(부분일치). 없으면 전체에서 정비 필요 목록 반환.
+
+    Returns:
+        [{source, type, revision, parent, parent_revision, status, note}, …]
+        status: review_needed(모규정이 더 최근) / ok / unknown(개정일 파싱 불가)
+    """
+    articles = load_index()
+    by_source: dict[str, list] = {}
+    for a in articles:
+        by_source.setdefault(a.source, []).append(a)
+    cat_of = {s: arts[0].category for s, arts in by_source.items()}
+    rev_of = {s: arts[0].revision for s, arts in by_source.items()}
+
+    out = []
+    for src in by_source:
+        if cat_of[src] not in _CHILD_TYPES:
+            continue
+        if source and not source_match(source, src):
+            continue
+        parent = _guess_parent(src, by_source, cat_of)
+        if not parent:
+            continue
+        cd, pd = _revision_date(rev_of[src]), _revision_date(rev_of[parent])
+        entry = {
+            "source": src, "type": cat_of[src], "revision": rev_of[src],
+            "parent": parent, "parent_revision": rev_of[parent],
+        }
+        if cd and pd and pd > cd:
+            gap = (pd[0] - cd[0]) * 12 + (pd[1] - cd[1])
+            entry["status"] = "review_needed"
+            entry["note"] = f"모규정이 약 {max(gap, 1)}개월 뒤 개정됨 → 정비 검토 대상"
+        elif cd and pd:
+            entry["status"] = "ok"
+            entry["note"] = "모규정 개정 시점까지 반영됨"
+        else:
+            entry["status"] = "unknown"
+            entry["note"] = "개정일 파싱 불가"
+        out.append(entry)
+    out.sort(key=lambda x: (x["status"] != "review_needed", x["source"]))
+    return out
 
 
 _QUESTIONS_CACHE: Optional[list[dict]] = None
@@ -1178,7 +1337,12 @@ def main() -> None:
     pr.add_argument("source")
     pr.add_argument("article")
     pr.add_argument("--limit", type=int, default=20)
-    pr.set_defaults(func=lambda a: print(json.dumps(find_references(a.source, a.article, a.limit), ensure_ascii=False, indent=2)))
+    pr.add_argument("--mermaid", action="store_true", help="mermaid flowchart 코드 포함")
+    pr.set_defaults(func=lambda a: print(json.dumps(find_references(a.source, a.article, a.limit, include_mermaid=a.mermaid), ensure_ascii=False, indent=2)))
+
+    prd = sub.add_parser("radar", help="규정 정비 레이더 (시행세칙·지침 vs 모규정 개정 대조)")
+    prd.add_argument("source", nargs="?", help="특정 규정만 (생략 시 전체)")
+    prd.set_defaults(func=lambda a: print(json.dumps(compliance_radar(a.source), ensure_ascii=False, indent=2)))
 
     pq = sub.add_parser("question", help="시험문제 검색")
     pq.add_argument("query", nargs="?")

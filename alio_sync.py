@@ -49,6 +49,10 @@ REPORT_ROOT = "21110"            # 규정/사규
 LIST_REFERER = f"{BASE}/item/itemOrganList.do?apbaId={APBA_ID}&reportFormRootNo={REPORT_ROOT}"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
 
+# kordoc 버전 고정 — 환경 간(로컬/CI) 추출 결과 재현성 확보(버전 드리프트로 인한
+# 불필요한 diff 방지). 새 버전 반영 시 이 값을 올리고 한 번 재동기화한다.
+KORDOC_VERSION = "3.17.0"
+
 # 규정 유형 — 이름 끝 접미사로 판정 (더 구체적인 것 먼저)
 TYPE_SUFFIXES = ["시행세칙", "세칙", "규정", "지침", "기준", "정관", "규칙", "매뉴얼"]
 
@@ -220,7 +224,7 @@ def kordoc_convert(resolved: list[dict], fresh: bool = False) -> None:
         log("  kordoc: 변환할 파일 없음 (전부 캐시됨)")
         return
     log(f"  kordoc: {len(todo)}개 변환 시작 (npx kordoc)…")
-    cmd = ["npx", "-y", "-p", "kordoc@latest", "-p", "pdfjs-dist",
+    cmd = ["npx", "-y", "-p", f"kordoc@{KORDOC_VERSION}", "-p", "pdfjs-dist",
            "kordoc", *todo, "-d", str(MD_CACHE), "--silent"]
     proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
     if proc.returncode != 0:
