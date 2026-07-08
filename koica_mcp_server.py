@@ -129,7 +129,8 @@ def verify_citation(text: str) -> list[dict]:
 
 
 @mcp.tool()
-def find_references(source: str, article: str, limit: int = 20) -> dict:
+def find_references(source: str, article: str, limit: int = 20,
+                    include_mermaid: bool = False) -> dict:
     """대상 조문의 정방향·역방향 인용 관계 그래프.
 
     - outgoing: 이 조문이 인용한 다른 조문 (cross_regulation / same_regulation / external)
@@ -142,8 +143,29 @@ def find_references(source: str, article: str, limit: int = 20) -> dict:
         source: 규정명 부분일치 (예: "직제규정")
         article: 조문 번호 (예: "제9조", "15의2")
         limit: 각 방향 최대 결과 수 (기본 20)
+        include_mermaid: True면 반환값에 "mermaid"(flowchart 코드) 포함.
+            claude.ai 등에서 인용망을 바로 시각화할 때 사용.
     """
-    return ks.find_references(source, article, limit=limit)
+    return ks.find_references(source, article, limit=limit, include_mermaid=include_mermaid)
+
+
+@mcp.tool()
+def compliance_radar(source: Optional[str] = None) -> list[dict]:
+    """규정 정비 레이더 — 시행세칙·지침이 모(母)규정 개정에 뒤처졌는지 점검.
+
+    "모규정이 개정됐는데 시행세칙/지침은 아직 옛날 그대로 아닌가?"를 자동 탐지.
+    각 하위 규정의 모규정을 이름 규칙/제1조 인용으로 찾아 개정일을 대조하고,
+    모규정이 더 최근이면 정비 검토 대상(review_needed)으로 플래그합니다.
+    "규정 정비할 것 있나", "개정 뒤처진 세칙 찾아줘" 등으로 요청 시 사용.
+
+    Args:
+        source: 특정 규정만 점검(부분일치). 생략 시 전체 정비 필요 목록.
+
+    Returns:
+        [{source, type, revision, parent, parent_revision, status, note}, …]
+        status: review_needed(모규정이 더 최근) / ok / unknown
+    """
+    return ks.compliance_radar(source=source)
 
 
 @mcp.tool()

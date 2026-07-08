@@ -35,3 +35,7 @@ venv/
 
 # ALIO 동기화 캐시 (HWP/원시 md)
 data/_cache/
+
+# iCloud/Dropbox 등 동기화 폴더에서 생기는 충돌 사본 (' 2.md', ' 3.py' 등) 커밋 방지
+* [0-9].md
+* [0-9].py
