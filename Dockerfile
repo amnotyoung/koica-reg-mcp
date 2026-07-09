@@ -13,6 +13,11 @@ COPY koica_search.py koica_mcp_server.py server_http.py ./
 # 데이터: 검색 인덱스 + 규정 본문. _cache(원본 HWP)/시험범위 PDF는 .dockerignore로 제외
 COPY data/ ./data/
 
+# index.json(검색 인덱스)은 빌드 산출물이라 git·저장소에 없다. 따라서 이미지
+# 빌드 시 extracted → index.json 을 직접 생성한다. 이렇게 해야 로컬 `fly deploy`든
+# GitHub Actions 자동배포(저장소 checkout)든 항상 데이터가 포함된다.
+RUN python3 koica_search.py build
+
 ENV PORT=8080
 EXPOSE 8080
 

@@ -23,6 +23,9 @@ data/_cache/
 # 시험문제 데이터 (출처 불명 → 공개 원격 서버에서 제외)
 data/questions.json
 
+# 인덱스는 이미지 빌드 단계(RUN … build)에서 생성하므로 로컬 산출물은 제외 (항상 재생성)
+data/index.json
+
 # 로컬 전용 스크립트/문서 (원격 이미지에 불필요; sync 도구도 원격판엔 없음)
 alio_sync.py
 README.md
