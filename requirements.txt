@@ -1,1 +1,2 @@
-mcp>=1.0
+# streamable-http(원격 HTTP) 전송을 위해 1.8+ 필요. FastMCP가 starlette/uvicorn을 함께 끌어온다.
+mcp>=1.8
