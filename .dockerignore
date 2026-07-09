@@ -1,0 +1,40 @@
+# 이미지에 넣지 않을 것 (슬림화 + 민감/불필요 파일 차단)
+
+# VCS / 에디터 / 세션
+.git/
+.github/
+.claude/
+.vscode/
+.idea/
+
+# 파이썬 캐시/가상환경
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# 원본 HWP 캐시 (수십 MB, 런타임 불필요) 및 원본 시험범위 PDF
+data/_cache/
+붙임2. 시험범위(40)/
+
+# 시험문제 데이터 (출처 불명 → 공개 원격 서버에서 제외)
+data/questions.json
+
+# 로컬 전용 스크립트/문서 (원격 이미지에 불필요; sync 도구도 원격판엔 없음)
+alio_sync.py
+README.md
+LICENSE
+
+# 백업 / 환경변수 / macOS
+*.bak.json
+*.backup
+.env
+.env.local
+.DS_Store
+
+# iCloud/Dropbox 동기화 충돌 사본
+* [0-9].md
+* [0-9].py
