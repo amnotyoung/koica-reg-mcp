@@ -31,6 +31,8 @@ alio_sync.py
 README.md
 LICENSE
 NOTICE
+AGENTS.md
+CLAUDE.md
 
 # 백업 / 환경변수 / macOS
 *.bak.json

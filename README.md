@@ -1,13 +1,31 @@
 # koica-reg-mcp
 
-**KOICA 현행 규정 149개를 11개 MCP 도구로.** 한국국제협력단 내부 규정을 조문 단위 검색 + 본문 직접 조회 + 인용 검증(제목 환각까지) + 상호참조 그래프 + **규정 정비 레이더**로, Claude Desktop·Cursor·Windsurf 등 MCP 호환 클라이언트에서 바로 사용. 규정 원본은 [ALIO(공공기관 경영정보 공개시스템)](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)에서 **자동 동기화**됩니다.
+**KOICA 현행 규정 149개를 MCP로 검색·조회.** 한국국제협력단 내부 규정을 조문 단위 검색 + 본문 직접 조회 + 인용 검증(제목 환각까지) + 상호참조 그래프 + **규정 정비 레이더**로, MCP 호환 클라이언트(Claude Desktop·claude.ai·Claude Code·Codex·Cursor 등)에서 사용. 규정 원본은 [ALIO(공공기관 경영정보 공개시스템)](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)에서 **자동 동기화**됩니다.
 
-[![MCP](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io)
+[![MCP](https://img.shields.io/badge/MCP-streamable--http-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> KOICA 직원이 일하다 "이거 인사규정 몇 조에 있더라?" 싶을 때, AI 어시스턴트에게 자연어로 물어보면 정확한 조문과 본문이 즉시 나옵니다.
+## 🚀 바로 쓰기 — 설치 불필요
 
-> ⚡ **설치 없이 바로 쓰기** — Claude 커넥터의 "원격 MCP 서버 URL"에 `https://koica-reg-mcp.fly.dev/mcp` 를 붙여넣기만 하면 됩니다. 자세히는 아래 [빠른 시작](#빠른-시작).
+**이건 이미 배포된 원격 MCP 서버입니다.** `clone`·`pip`·`build` 없이, 쓰는 클라이언트에 아래 URL 하나만 등록하면 끝입니다:
+
+```
+https://koica-reg-mcp.fly.dev/mcp
+```
+
+| 클라이언트 | 등록 방법 |
+|---|---|
+| **Claude Desktop / claude.ai (웹)** | 설정 → 커넥터 → *커스텀 커넥터 추가* → "원격 MCP 서버 URL"에 위 주소 입력 |
+| **Claude Code** | `claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp` |
+| **Codex** | `codex mcp add koica-reg --url https://koica-reg-mcp.fly.dev/mcp` |
+
+등록·재시작 후 규정을 자연어로 물으면 됩니다 — 예: *"KOICA 승진 가점 규정 찾아줘"*, *"인사규정 제11조 보여줘"*. 공개 서버라 인증·토큰이 필요 없습니다.
+
+> 🛠️ **소스를 직접 수정할 게 아니라면 `git clone`은 필요 없습니다.** 저장소를 clone·build하는 건 개발·기여 목적일 때뿐입니다(→ 아래 [빠른 시작](#빠른-시작)의 로컬 설치, 그리고 [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md)).
+
+---
+
+> KOICA 직원이 일하다 "이거 인사규정 몇 조에 있더라?" 싶을 때, AI 어시스턴트에게 자연어로 물어보면 정확한 조문과 본문이 즉시 나옵니다.
 
 ---
 
