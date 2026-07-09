@@ -30,6 +30,7 @@ data/index.json
 alio_sync.py
 README.md
 LICENSE
+NOTICE
 
 # 백업 / 환경변수 / macOS
 *.bak.json

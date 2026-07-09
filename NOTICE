@@ -1,0 +1,38 @@
+NOTICE — koica-reg-mcp 라이선스 및 데이터 출처
+================================================
+
+이 저장소는 성격이 다른 두 산출물을 포함하며, 각각 다른 조건이 적용됩니다.
+
+
+1. 소프트웨어 (코드)
+--------------------
+koica_search.py, koica_mcp_server.py, server_http.py, alio_sync.py,
+Dockerfile 등 모든 소스코드는 MIT License(→ LICENSE 파일)를 따릅니다.
+Copyright (c) 2026 amnotyoung.
+
+
+2. 규정 데이터
+--------------
+data/extracted/*.md, data/sources.json 등에 담긴 KOICA(한국국제협력단)
+규정 본문 및 메타데이터는 MIT License 적용 대상이 아닙니다.
+
+- 원저작권 : 한국국제협력단(KOICA)
+- 출처     : ALIO 공공기관 경영정보 공개시스템
+             https://www.alio.go.kr  (apbaId=C0146, reportFormRootNo=21110)
+- 이용 근거: 「저작권법」제24조의2(공공저작물의 자유이용) 및 공공데이터 이용.
+             KOICA가 ALIO를 통해 공표한 자료를 조문 단위로 추출·정규화한 것입니다.
+
+
+3. 면책 (Disclaimer)
+--------------------
+- 본 데이터는 참조·연구·업무 보조용입니다.
+- 추출·정규화 과정에서 오류가 있을 수 있으며, 정확성·완전성을 보증하지 않습니다.
+- 법적 효력이 있는 공식·최신 규정본은 반드시 ALIO 또는 KOICA 공식 채널에서
+  확인하십시오.
+- 소프트웨어는 LICENSE의 "AS IS" 조항에 따라 어떠한 보증도 없이 제공됩니다.
+
+
+4. 제외 데이터
+--------------
+data/questions.json(시험문제 데이터)은 출처가 불명확하여 공개 원격 배포
+이미지에서 제외됩니다(.dockerignore 참조). 로컬 사용에 한합니다.
