@@ -28,6 +28,7 @@ from typing import Optional
 from mcp.server.fastmcp import FastMCP
 
 import koica_search as ks
+import usage_stats as _usage  # 도구 호출 횟수 집계(개인정보 미수집, best-effort)
 
 
 # 서버 소개(instructions) — MCP initialize 시 클라이언트(Claude)에 전달되어,
@@ -93,6 +94,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             article: source/article/article_title/snippet/citation/score
             attachment: source/kind/label/title/snippet/citation/score
         """
+        _usage.record("search_regulation")
         return ks.search(
             query,
             category=category,
@@ -121,6 +123,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             kind: "별표" 또는 "별지"로만 필터
             include_deleted: 본문에 <삭제 …> 메타가 있는 항목 포함 여부 (기본 False)
         """
+        _usage.record("list_attachments")
         return ks.list_attachments(source=source, category=category, kind=kind, include_deleted=include_deleted)
 
     @mcp.tool()
@@ -132,6 +135,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             label: 별표·별지 라벨. "[별표 1]", "별표 1", "1" 등 자유 형식.
                 공백·괄호 무시하고 정규화 매칭됨.
         """
+        _usage.record("get_attachment")
         return ks.get_attachment(source, label)
 
     @mcp.tool()
@@ -145,6 +149,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         Returns:
             매칭 조문 배열. body 필드에 전체 본문 포함. 0건이면 빈 배열.
         """
+        _usage.record("get_article")
         return ks.get_article(source, article)
 
     @mcp.tool()
@@ -158,6 +163,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         Args:
             text: 검증할 한국어 텍스트 (여러 인용이 섞여 있어도 됨)
         """
+        _usage.record("verify_citation")
         return ks.verify_citation(text)
 
     @mcp.tool()
@@ -178,6 +184,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             include_mermaid: True면 반환값에 "mermaid"(flowchart 코드) 포함.
                 claude.ai 등에서 인용망을 바로 시각화할 때 사용.
         """
+        _usage.record("find_references")
         return ks.find_references(source, article, limit=limit, include_mermaid=include_mermaid)
 
     @mcp.tool()
@@ -196,6 +203,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             [{source, type, revision, parent, parent_revision, status, note}, …]
             status: review_needed(모규정이 더 최근) / ok / unknown
         """
+        _usage.record("compliance_radar")
         return ks.compliance_radar(source=source)
 
     @mcp.tool()
@@ -209,6 +217,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             [{"source": "인사규정", "category": "규정", "revision": "2026.06.12 개정",
               "article_count": 73}, …]
         """
+        _usage.record("list_sources")
         arts = ks.load_index()
         by_src: dict[str, dict] = {}
         for a in arts:
@@ -224,6 +233,24 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
                 }
             by_src[key]["article_count"] += 1
         return sorted(by_src.values(), key=lambda x: (x["category"], x["source"]))
+
+    @mcp.tool()
+    def usage_stats() -> dict:
+        """이 서버의 도구별 누적 호출 횟수(사용량 통계).
+
+        개인정보는 담지 않습니다 — 도구명·호출 횟수·최초/최근 호출 시각(UTC)만
+        집계하며, 검색어·클라이언트 IP·신원 정보는 저장하지 않습니다. 이 도구
+        자신의 호출은 통계를 부풀리지 않도록 카운트에서 제외됩니다.
+
+        영속화가 켜져 있으면(서버에 KOICA_STATS_DB 설정) 머신 정지·재배포에도
+        수치가 보존됩니다. 꺼져 있으면 enabled=False로 빈 통계를 반환합니다.
+
+        Returns:
+            {"enabled": bool, "total": int,
+             "tools": [{"tool", "count", "first_seen", "last_seen"}, …]}
+        """
+        # 의도적으로 record() 호출 안 함 — 통계 조회가 통계를 오염시키지 않도록.
+        return _usage.snapshot()
 
     if include_questions:
         @mcp.tool()
@@ -242,6 +269,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             Returns:
                 문항 + 보기 + 정답 + 해설 + 근거 조문(자동 매핑된 본문 발췌).
             """
+            _usage.record("find_questions")
             return ks.find_questions(query=query, question_id=question_id, limit=limit)
 
     if not include_admin:
@@ -262,6 +290,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         바뀐 경우(규정 추가/갱신)는 재시작 없이 즉시 사용 가능합니다. 반환값의
         restart_required와 restart_instruction을 사용자에게 그대로 전달하세요.
         """
+        _usage.record("update")
         return ks.self_update()
 
     @mcp.tool()
@@ -285,6 +314,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         Returns:
             동기화 결과 요약(규정 수·조문 수, 실행 로그 tail).
         """
+        _usage.record("sync_from_alio")
         from pathlib import Path
 
         script = Path(ks.ROOT) / "alio_sync.py"

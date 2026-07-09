@@ -6,6 +6,17 @@
 app = 'koica-reg-mcp'
 primary_region = 'nrt'
 
+# 사용량 통계 DB — 아래 [mounts] 볼륨(/data)에 두어 머신 정지·재배포에도 보존.
+# 이 env는 Fly 배포에만 존재하므로 로컬/도커 기본 실행에서는 집계가 꺼진다(no-op).
+[env]
+  KOICA_STATS_DB = '/data/usage.db'
+
+# 영속 볼륨. 최초 1회 생성 필요:
+#   fly volumes create koica_data --region nrt --size 1 --app koica-reg-mcp
+[mounts]
+  source = 'koica_data'
+  destination = '/data'
+
 [build]
 [http_service]
   internal_port = 8080
