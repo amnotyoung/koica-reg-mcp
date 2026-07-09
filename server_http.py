@@ -21,11 +21,12 @@ import os
 
 from mcp.server.fastmcp import FastMCP
 
-from koica_mcp_server import register_tools
+from koica_mcp_server import register_tools, SERVER_INSTRUCTIONS
 
 # host/port 는 컨테이너/클라우드에서 주입된다. Fly.io 는 PORT 환경변수를 넘긴다.
 mcp = FastMCP(
     "koica-reg",
+    instructions=SERVER_INSTRUCTIONS,
     host="0.0.0.0",
     port=int(os.environ.get("PORT", "8080")),
 )

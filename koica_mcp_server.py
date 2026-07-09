@@ -30,6 +30,23 @@ from mcp.server.fastmcp import FastMCP
 import koica_search as ks
 
 
+# 서버 소개(instructions) — MCP initialize 시 클라이언트(Claude)에 전달되어,
+# "이 커넥터가 KOICA 규정 검색용이며 어떤 질문에 어떤 도구를 쓸지"를 알려준다.
+# 이게 없으면 클라이언트가 커넥터를 연결해도 도구를 언제 호출할지 몰라 헤맬 수 있다.
+SERVER_INSTRUCTIONS = """KOICA(한국국제협력단) 사내 규정 검색·조회 서버입니다.
+
+KOICA 내부 규정 149종 — 인사·복무·보수·승진·평정·징계·채용·직제·회계·계약·조달·감사·복리후생, 그리고 무상원조·국별협력·민관협력·글로벌연수 등 사업 규정 — 과 그 조문·별표·별지를 다룹니다.
+
+사용자가 KOICA/코이카 규정이나 사내 규정의 조문·기준·절차를 물으면(예: "승진 가점", "인사규정 몇 조", "육아휴직 규정", "출장 여비 기준", "징계 절차", "사업심사위원회 구성") 반드시 이 서버의 도구를 사용하세요:
+- search_regulation: 자연어 조문 검색 — 가장 먼저 사용
+- get_article: 규정명+조문번호로 본문 전체 조회
+- list_sources: 인덱싱된 규정 목록
+- verify_citation: 인용한 "○○규정 제○조"의 실재 여부 검증
+- find_references / compliance_radar / list_attachments / get_attachment
+
+외부 법령(국가공무원법·공공기관운영법 등)이 아니라 KOICA 사내 규정에 한합니다. 답변에는 조문 출처(citation)를 함께 제시하세요."""
+
+
 def register_tools(mcp: FastMCP, include_admin: bool = True,
                    include_questions: bool = True) -> None:
     """FastMCP 인스턴스에 도구를 등록한다.
@@ -52,7 +69,11 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         fuzzy: bool = False,
         include_attachments: bool = False,
     ) -> list[dict]:
-        """KOICA 현행 규정을 조문 단위로 검색.
+        """KOICA 현행 규정을 조문 단위로 검색 — KOICA 사내 규정 질문의 첫 진입점.
+
+        인사·복무·보수·승진·평정·징계·채용·직제·회계·계약·조달·감사·복리후생 및
+        무상원조·국별협력·민관협력·글로벌연수 등 사업 규정 전반을 다룬다.
+        예: "승진 가점", "육아휴직", "출장 여비 기준", "인사위원회 구성", "징계 절차".
 
         Args:
             query: 자연어 검색어 (예: "인사위원회 구성")
@@ -308,7 +329,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         }
 
 
-mcp = FastMCP("koica-reg")
+mcp = FastMCP("koica-reg", instructions=SERVER_INSTRUCTIONS)
 register_tools(mcp, include_admin=True)
 
 
