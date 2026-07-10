@@ -234,28 +234,9 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             by_src[key]["article_count"] += 1
         return sorted(by_src.values(), key=lambda x: (x["category"], x["source"]))
 
-    @mcp.tool()
-    def usage_stats() -> dict:
-        """이 서버의 도구별 누적 호출 횟수 + 검색어 언어 분포(사용량 통계).
-
-        개인정보는 담지 않습니다 — 도구명·호출 횟수·시각(UTC)과, 자연어 검색어의
-        '언어 라벨'(ko/en/other)별 카운트만 집계합니다. 검색어 원문·클라이언트 IP·
-        신원 정보는 저장하지 않으며, 이 도구 자신의 호출은 카운트에서 제외됩니다.
-
-        by_language는 "국내만 쓰나 해외도 쓰나"의 거친 지표입니다. en이 잡히면
-        외국어 사용이 있다는 뜻이지만, LLM이 영어 질문을 한국어로 번역해 검색하는
-        경우가 많아 ko뿐이라고 외국인이 없다는 보장은 아닙니다(단방향 신호).
-
-        영속화가 켜져 있으면(서버에 KOICA_STATS_DB 설정) 머신 정지·재배포에도
-        수치가 보존됩니다. 꺼져 있으면 enabled=False로 빈 통계를 반환합니다.
-
-        Returns:
-            {"enabled": bool, "total": int,
-             "tools": [{"tool", "count", "first_seen", "last_seen"}, …],
-             "by_language": [{"lang", "count", "first_seen", "last_seen"}, …]}
-        """
-        # 의도적으로 record() 호출 안 함 — 통계 조회가 통계를 오염시키지 않도록.
-        return _usage.snapshot()
+    # 주의: 사용량 조회 도구(usage_stats)는 공개 MCP 표면에 노출하지 않는다.
+    # 집계(record)는 계속 하되, 조회는 소유자만 가능하도록 Fly 머신 안에서
+    # stats_cli.py 를 fly ssh 로 실행해서만 읽는다(사용법은 stats_cli.py 참고).
 
     if include_questions:
         @mcp.tool()

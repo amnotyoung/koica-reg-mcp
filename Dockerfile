@@ -8,7 +8,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 애플리케이션 코드 (server_http → koica_mcp_server → koica_search / usage_stats 의존)
-COPY koica_search.py koica_mcp_server.py server_http.py usage_stats.py ./
+# stats_cli.py: 소유자 전용 사용량 조회(공개 MCP엔 usage_stats 미노출, fly ssh로만 읽음)
+COPY koica_search.py koica_mcp_server.py server_http.py usage_stats.py stats_cli.py ./
 
 # 데이터: 검색 인덱스 + 규정 본문. _cache(원본 HWP)/시험범위 PDF는 .dockerignore로 제외
 COPY data/ ./data/
