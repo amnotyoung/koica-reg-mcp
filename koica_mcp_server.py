@@ -94,7 +94,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             article: source/article/article_title/snippet/citation/score
             attachment: source/kind/label/title/snippet/citation/score
         """
-        _usage.record("search_regulation")
+        _usage.record("search_regulation", text=query)
         return ks.search(
             query,
             category=category,
@@ -163,7 +163,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         Args:
             text: 검증할 한국어 텍스트 (여러 인용이 섞여 있어도 됨)
         """
-        _usage.record("verify_citation")
+        _usage.record("verify_citation", text=text)
         return ks.verify_citation(text)
 
     @mcp.tool()
@@ -236,18 +236,23 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
 
     @mcp.tool()
     def usage_stats() -> dict:
-        """이 서버의 도구별 누적 호출 횟수(사용량 통계).
+        """이 서버의 도구별 누적 호출 횟수 + 검색어 언어 분포(사용량 통계).
 
-        개인정보는 담지 않습니다 — 도구명·호출 횟수·최초/최근 호출 시각(UTC)만
-        집계하며, 검색어·클라이언트 IP·신원 정보는 저장하지 않습니다. 이 도구
-        자신의 호출은 통계를 부풀리지 않도록 카운트에서 제외됩니다.
+        개인정보는 담지 않습니다 — 도구명·호출 횟수·시각(UTC)과, 자연어 검색어의
+        '언어 라벨'(ko/en/other)별 카운트만 집계합니다. 검색어 원문·클라이언트 IP·
+        신원 정보는 저장하지 않으며, 이 도구 자신의 호출은 카운트에서 제외됩니다.
+
+        by_language는 "국내만 쓰나 해외도 쓰나"의 거친 지표입니다. en이 잡히면
+        외국어 사용이 있다는 뜻이지만, LLM이 영어 질문을 한국어로 번역해 검색하는
+        경우가 많아 ko뿐이라고 외국인이 없다는 보장은 아닙니다(단방향 신호).
 
         영속화가 켜져 있으면(서버에 KOICA_STATS_DB 설정) 머신 정지·재배포에도
         수치가 보존됩니다. 꺼져 있으면 enabled=False로 빈 통계를 반환합니다.
 
         Returns:
             {"enabled": bool, "total": int,
-             "tools": [{"tool", "count", "first_seen", "last_seen"}, …]}
+             "tools": [{"tool", "count", "first_seen", "last_seen"}, …],
+             "by_language": [{"lang", "count", "first_seen", "last_seen"}, …]}
         """
         # 의도적으로 record() 호출 안 함 — 통계 조회가 통계를 오염시키지 않도록.
         return _usage.snapshot()
@@ -269,7 +274,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             Returns:
                 문항 + 보기 + 정답 + 해설 + 근거 조문(자동 매핑된 본문 발췌).
             """
-            _usage.record("find_questions")
+            _usage.record("find_questions", text=query)
             return ks.find_questions(query=query, question_id=question_id, limit=limit)
 
     if not include_admin:
