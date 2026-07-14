@@ -5,6 +5,17 @@
 [![MCP](https://img.shields.io/badge/MCP-streamable--http-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## 💬 텔레그램에서 바로 질문하기
+
+MCP 클라이언트를 설정하지 않아도 텔레그램에서 [`@koica_reg_bot`](https://t.me/koica_reg_bot)에게 KOICA 규정을 자연어로 질문할 수 있습니다. 개인 대화에서는 바로 질문하고, 그룹에서는 봇을 멘션해 질문하세요.
+
+- `인사규정의 채용 결격사유 알려줘`
+- `승진 가점 관련 조문 찾아줘`
+- `국별협력사업 총사업비 관리 기준 알려줘`
+- `이 규정 인용이 실제로 맞는지 확인해줘`
+
+> 이 봇은 공개된 KOICA 규정 자료를 쉽게 검색하기 위한 **비공식 AI 도우미**이며, KOICA가 개발하거나 운영하는 공식 봇이 아닙니다. 답변은 참고용이므로 중요한 의사결정 전에는 KOICA 또는 [ALIO](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)의 공식 최신 원문을 확인하세요. 대화 세션은 매일 오전 4시에 초기화되며 이전 세션의 기록은 자동 삭제됩니다. 민감한 개인정보는 입력하지 마세요.
+
 ## 🚀 바로 쓰기 — 설치 불필요
 
 **이건 이미 배포된 원격 MCP 서버입니다.** `clone`·`pip`·`build` 없이, 쓰는 클라이언트에 아래 URL 하나만 등록하면 끝입니다:
