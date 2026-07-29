@@ -26,8 +26,7 @@ data/questions.json
 # 인덱스는 이미지 빌드 단계(RUN … build)에서 생성하므로 로컬 산출물은 제외 (항상 재생성)
 data/index.json
 
-# 로컬 전용 스크립트/문서 (원격 이미지에 불필요; sync 도구도 원격판엔 없음)
-alio_sync.py
+# 로컬 전용 문서 (alio_sync.py는 Fly 도쿄 동기화 작업에 사용)
 README.md
 LICENSE
 NOTICE

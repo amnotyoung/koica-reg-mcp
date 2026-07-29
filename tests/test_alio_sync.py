@@ -62,6 +62,28 @@ class HttpRetryTests(unittest.TestCase):
 
 
 class SafetyTests(unittest.TestCase):
+    @patch("alio_sync.subprocess.run")
+    @patch("alio_sync.shutil.which")
+    def test_kordoc_uses_preinstalled_binary(self, which, run):
+        which.return_value = "/usr/local/bin/kordoc"
+        run.return_value.returncode = 0
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hwp = root / "hwp"
+            md = root / "md"
+            hwp.mkdir()
+            (hwp / "123.hwp").write_bytes(b"HWP")
+            with (
+                patch.object(alio_sync, "HWP_CACHE", hwp),
+                patch.object(alio_sync, "MD_CACHE", md),
+            ):
+                alio_sync.kordoc_convert([{
+                    "file_no": "123",
+                    "ext": "hwp",
+                }])
+
+        self.assertEqual(run.call_args.args[0][0], "/usr/local/bin/kordoc")
+
     def test_rejects_removed_regulation(self):
         previous = [
             {"name": "규정 A", "revision": "2026.01.01", "origin": "alio"},

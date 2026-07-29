@@ -30,17 +30,24 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Setup Node.js (kordoc 실행용)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
       - name: 동기화 안전장치 테스트
         run: python3 -m unittest discover -s tests -v
 
-      - name: ALIO 동기화 실행
-        run: python3 alio_sync.py --fresh
-        # 전체 인덱스 빌드까지 성공해야 다음 단계로 진행한다.
+      - name: Setup Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Fly 도쿄에서 ALIO 동기화
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          fly ssh console --app koica-reg-mcp --command \
+            "rm -rf /tmp/alio-sync-work && mkdir -p /tmp/alio-sync-work && cp /app/alio_sync.py /tmp/alio-sync-work/ && cp -a /app/data /tmp/alio-sync-work/data && cd /tmp/alio-sync-work && python alio_sync.py --fresh --no-build && tar -czf /tmp/alio-sync-data.tar.gz -C /tmp/alio-sync-work/data extracted sources.json"
+          fly ssh sftp get --app koica-reg-mcp \
+            /tmp/alio-sync-data.tar.gz ./alio-sync-data.tar.gz
+          tar -xzf alio-sync-data.tar.gz -C data
+
+      - name: 전체 검색 인덱스 검증
+        run: python3 koica_search.py build
         # index.json은 gitignore 대상이라 PR에는 규정 원문과 sources.json만 포함된다.
 
       - name: 변경분 PR 생성·자동 병합·배포

@@ -263,9 +263,14 @@ def kordoc_convert(resolved: list[dict], fresh: bool = False) -> None:
     if not todo:
         log("  kordoc: 변환할 파일 없음 (전부 캐시됨)")
         return
-    log(f"  kordoc: {len(todo)}개 변환 시작 (npx kordoc)…")
-    cmd = ["npx", "-y", "-p", f"kordoc@{KORDOC_VERSION}", "-p", "pdfjs-dist",
-           "kordoc", *todo, "-d", str(MD_CACHE), "--silent"]
+    installed_kordoc = shutil.which("kordoc")
+    if installed_kordoc:
+        log(f"  kordoc: {len(todo)}개 변환 시작 (설치된 kordoc)…")
+        cmd = [installed_kordoc, *todo, "-d", str(MD_CACHE), "--silent"]
+    else:
+        log(f"  kordoc: {len(todo)}개 변환 시작 (npx kordoc)…")
+        cmd = ["npx", "-y", "-p", f"kordoc@{KORDOC_VERSION}", "-p", "pdfjs-dist",
+               "kordoc", *todo, "-d", str(MD_CACHE), "--silent"]
     proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
     if proc.returncode != 0:
         raise RuntimeError(
