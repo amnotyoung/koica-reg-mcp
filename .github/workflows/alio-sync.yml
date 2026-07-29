@@ -43,7 +43,7 @@ jobs:
           MACHINE_ID="$(flyctl machine list --app koica-reg-mcp --json | jq -r '.[0].id')"
           MACHINE_STATE="$(flyctl machine list --app koica-reg-mcp --json | jq -r '.[0].state')"
           test -n "$MACHINE_ID" && test "$MACHINE_ID" != "null"
-          if [ "$MACHINE_STATE" != "started" ]; then
+          if [ "$MACHINE_STATE" = "stopped" ]; then
             flyctl machine start "$MACHINE_ID" --app koica-reg-mcp
           fi
           SSH_READY=false
