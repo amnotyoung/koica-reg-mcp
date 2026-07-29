@@ -62,6 +62,40 @@ class HttpRetryTests(unittest.TestCase):
 
 
 class SafetyTests(unittest.TestCase):
+    def test_rejects_removed_regulation(self):
+        previous = [
+            {"name": "규정 A", "revision": "2026.01.01", "origin": "alio"},
+            {"name": "규정 B", "revision": "2026.01.01", "origin": "alio"},
+        ]
+        current = [
+            {"name": "규정 A", "revision": "2026.02.01", "origin": "alio"},
+        ]
+
+        with self.assertRaisesRegex(RuntimeError, "자동 삭제하지 않고"):
+            alio_sync.validate_manifest_update(previous, current)
+
+    def test_rejects_revision_regression(self):
+        previous = [
+            {"name": "규정 A", "revision": "2026.07.01", "origin": "alio"},
+        ]
+        current = [
+            {"name": "규정 A", "revision": "2026.06.01", "origin": "alio"},
+        ]
+
+        with self.assertRaisesRegex(RuntimeError, "개정일이 역행"):
+            alio_sync.validate_manifest_update(previous, current)
+
+    def test_accepts_updates_and_additions(self):
+        previous = [
+            {"name": "규정 A", "revision": "2026.01.01", "origin": "alio"},
+        ]
+        current = [
+            {"name": "규정 A", "revision": "2026.02.01", "origin": "alio"},
+            {"name": "규정 B", "revision": "2026.01.01", "origin": "alio"},
+        ]
+
+        alio_sync.validate_manifest_update(previous, current)
+
     @patch("alio_sync.time.sleep")
     @patch("alio_sync.http_get")
     def test_download_writes_only_response_body(self, http_get, _sleep):

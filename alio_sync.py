@@ -346,6 +346,43 @@ def _minimum_safe_count(previous_count: int) -> int:
     return MIN_SOURCE_COUNT
 
 
+def validate_manifest_update(
+    previous_sources: list[dict],
+    new_sources: list[dict],
+) -> None:
+    """무인 병합에 부적합한 삭제·중복·개정일 역행을 차단한다."""
+    previous_alio = [s for s in previous_sources if s.get("origin") == "alio"]
+    old_by_name = {s.get("name", ""): s for s in previous_alio}
+    new_by_name = {s.get("name", ""): s for s in new_sources}
+
+    if len(new_by_name) != len(new_sources):
+        raise RuntimeError(
+            "안전장치: 새 매니페스트에 중복 규정명이 있습니다. 기존 데이터를 유지합니다."
+        )
+
+    removed = sorted(set(old_by_name) - set(new_by_name))
+    if removed:
+        preview = ", ".join(removed[:5])
+        suffix = f" 외 {len(removed) - 5}개" if len(removed) > 5 else ""
+        raise RuntimeError(
+            f"안전장치: 기존 규정 {len(removed)}개가 사라졌습니다"
+            f"({preview}{suffix}). 자동 삭제하지 않고 기존 데이터를 유지합니다."
+        )
+
+    regressed = []
+    for name in sorted(set(old_by_name) & set(new_by_name)):
+        old_revision = old_by_name[name].get("revision") or ""
+        new_revision = new_by_name[name].get("revision") or ""
+        if old_revision and new_revision and new_revision < old_revision:
+            regressed.append(f"{name}: {old_revision} → {new_revision}")
+    if regressed:
+        raise RuntimeError(
+            "안전장치: 개정일이 역행한 규정이 있습니다("
+            + "; ".join(regressed[:5])
+            + "). 기존 데이터를 유지합니다."
+        )
+
+
 def validate_collection(
     items: list[dict],
     resolved: list[dict],
@@ -406,6 +443,7 @@ def write_extracts_and_sources(
                 f"안전장치: 변환 성공이 {len(sources)}/{len(resolved)}개뿐입니다"
                 f"(최소 {minimum}개 필요). 기존 데이터를 유지합니다."
             )
+        validate_manifest_update(prev, sources)
 
         manifest = json.dumps({
             "apbaId": APBA_ID, "reportFormRootNo": REPORT_ROOT,

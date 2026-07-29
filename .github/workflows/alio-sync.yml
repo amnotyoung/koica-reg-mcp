@@ -1,8 +1,7 @@
 name: ALIO 규정 자동 동기화
 
-# KOICA 현행 규정을 alio.go.kr에서 주기적으로 다시 받아, 변경이 있으면 PR로 올린다.
-# main은 브랜치 보호(PR 필수) 대상이라 봇이 직접 push하지 않고 PR을 생성한다.
-# 사용자가 PR을 검토·머지하면 반영 — 규정 변경은 사람이 한 번 확인하는 게 안전.
+# KOICA 현행 규정을 alio.go.kr에서 주기적으로 다시 받아 자동 검증한다.
+# 검증 통과 시 PR 생성 → squash 병합 → Fly 배포를 사람 개입 없이 수행한다.
 
 on:
   schedule:
@@ -10,6 +9,7 @@ on:
   workflow_dispatch:          # 수동 실행 버튼
 
 permissions:
+  actions: write
   contents: write
   pull-requests: write
 
@@ -39,11 +39,11 @@ jobs:
         run: python3 -m unittest discover -s tests -v
 
       - name: ALIO 동기화 실행
-        run: python3 alio_sync.py --fresh --no-build
-        # --no-build: index.json은 gitignore 대상이라 커밋하지 않는다.
-        #             사용자가 git pull 후 build 하거나 update 도구로 재빌드한다.
+        run: python3 alio_sync.py --fresh
+        # 전체 인덱스 빌드까지 성공해야 다음 단계로 진행한다.
+        # index.json은 gitignore 대상이라 PR에는 규정 원문과 sources.json만 포함된다.
 
-      - name: 변경분 PR 생성/갱신
+      - name: 변경분 PR 생성·자동 병합·배포
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -59,11 +59,17 @@ jobs:
           git add data/extracted data/sources.json
           git commit -m "chore(sync): ALIO 현행 규정 자동 동기화 (${COUNT}개, $(date -u +%Y-%m-%d))"
           git push -f origin "$BRANCH"
-          if [ -z "$(gh pr list --head "$BRANCH" --state open --json number -q '.[].number')" ]; then
-            gh pr create --base main --head "$BRANCH" \
+          PR_NUMBER="$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number')"
+          if [ -z "$PR_NUMBER" ]; then
+            PR_URL="$(gh pr create --base main --head "$BRANCH" \
               --title "chore(sync): ALIO 현행 규정 자동 동기화" \
-              --body "ALIO에서 감지된 KOICA 규정 변경분입니다. 수집 수량과 변환 완전성 검증을 통과했습니다. 검토 후 머지하세요. (자동 생성)"
-            echo "PR 생성 완료"
+              --body "ALIO에서 감지된 KOICA 규정 변경분입니다. 규정 삭제·개정일 역행·수집 수량·변환 완전성·전체 인덱스 빌드 검증을 통과해 자동 병합합니다. (자동 생성)")"
+            PR_NUMBER="${PR_URL##*/}"
+            echo "PR #${PR_NUMBER} 생성 완료"
           else
-            echo "기존 PR 갱신(force-push) 완료"
+            echo "기존 PR #${PR_NUMBER} 갱신 완료"
           fi
+          gh pr merge "$PR_NUMBER" --squash --delete-branch
+          echo "PR #${PR_NUMBER} 자동 병합 완료"
+          gh workflow run fly-deploy.yml --ref main
+          echo "Fly 배포 워크플로 호출 완료"
