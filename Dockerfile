@@ -27,7 +27,8 @@ COPY data/ ./data/
 # index.json(검색 인덱스)은 빌드 산출물이라 git·저장소에 없다. 따라서 이미지
 # 빌드 시 extracted → index.json 을 직접 생성한다. 이렇게 해야 로컬 `fly deploy`든
 # GitHub Actions 자동배포(저장소 checkout)든 항상 데이터가 포함된다.
-RUN python3 koica_search.py build
+RUN python3 -c "from mcp.server.fastmcp import FastMCP" \
+ && python3 koica_search.py build
 
 ENV PORT=8080
 EXPOSE 8080
