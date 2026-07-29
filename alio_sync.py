@@ -30,6 +30,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.parse
 import urllib.request
@@ -52,6 +53,17 @@ UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/
 # kordoc 버전 고정 — 환경 간(로컬/CI) 추출 결과 재현성 확보(버전 드리프트로 인한
 # 불필요한 diff 방지). 새 버전 반영 시 이 값을 올리고 한 번 재동기화한다.
 KORDOC_VERSION = "3.17.0"
+
+# ALIO는 간헐적으로 GitHub-hosted runner 연결을 60초 이상 지연시킨다.
+# POST 조회에도 GET과 같은 재시도/백오프를 적용해 일시 장애를 흡수한다.
+HTTP_TIMEOUT_SEC = 90
+HTTP_RETRIES = 5
+HTTP_BACKOFF_SEC = 3
+
+# 불완전 수집을 "규정 삭제"로 오인하지 않도록 이전 데이터 대비 허용할 최소 비율.
+# 정상적인 규정 폐지는 소수이므로 90% 미만이면 자동 반영하지 않고 사람이 확인한다.
+MIN_SOURCE_COUNT = 100
+MIN_PREVIOUS_RATIO = 0.90
 
 # 규정 유형 — 이름 끝 접미사로 판정 (더 구체적인 것 먼저)
 TYPE_SUFFIXES = ["시행세칙", "세칙", "규정", "지침", "기준", "정관", "규칙", "매뉴얼"]
@@ -82,7 +94,17 @@ def safe_filename(title: str) -> str:
     return s
 
 
-def http_get(url: str, referer: str | None = None, binary: bool = False, retries: int = 4):
+def _retry_delay(attempt: int) -> None:
+    """3, 6, 12, 24초 지수 백오프(마지막 실패 뒤에는 호출하지 않음)."""
+    time.sleep(HTTP_BACKOFF_SEC * (2 ** attempt))
+
+
+def http_get(
+    url: str,
+    referer: str | None = None,
+    binary: bool = False,
+    retries: int = HTTP_RETRIES,
+):
     headers = {"User-Agent": UA}
     if referer:
         headers["Referer"] = referer
@@ -90,16 +112,24 @@ def http_get(url: str, referer: str | None = None, binary: bool = False, retries
     last = None
     for attempt in range(retries):
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT_SEC) as r:
                 data = r.read()
                 return data if binary else data.decode("utf-8", "replace"), r.headers
         except Exception as e:  # noqa: BLE001
             last = e
-            time.sleep(1.5 * (attempt + 1))
+            if attempt + 1 < retries:
+                delay = HTTP_BACKOFF_SEC * (2 ** attempt)
+                log(f"  GET 재시도 {attempt + 2}/{retries} ({delay}초 후): {e}")
+                _retry_delay(attempt)
     raise RuntimeError(f"GET 실패 ({retries}회): {url} — {last}")
 
 
-def http_post_json(path: str, payload: dict, referer: str | None = None) -> dict:
+def http_post_json(
+    path: str,
+    payload: dict,
+    referer: str | None = None,
+    retries: int = HTTP_RETRIES,
+) -> dict:
     body = json.dumps(payload).encode("utf-8")
     headers = {
         "User-Agent": UA,
@@ -109,8 +139,18 @@ def http_post_json(path: str, payload: dict, referer: str | None = None) -> dict
     if referer:
         headers["Referer"] = referer
     req = urllib.request.Request(BASE + path, data=body, headers=headers, method="POST")
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read().decode("utf-8", "replace"))
+    last = None
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT_SEC) as r:
+                return json.loads(r.read().decode("utf-8", "replace"))
+        except Exception as e:  # noqa: BLE001
+            last = e
+            if attempt + 1 < retries:
+                delay = HTTP_BACKOFF_SEC * (2 ** attempt)
+                log(f"  POST 재시도 {attempt + 2}/{retries} ({delay}초 후): {e}")
+                _retry_delay(attempt)
+    raise RuntimeError(f"POST 실패 ({retries}회): {BASE + path} — {last}")
 
 
 # ── 1) 규정 목록 ────────────────────────────────────────────────────────
@@ -199,7 +239,7 @@ def download_files(resolved: list[dict]) -> None:
             continue
         url = f"{BASE}/download/rulefiledown.json?fileNo={r['file_no']}"
         try:
-            data = http_get(url, referer=LIST_REFERER, binary=True)
+            data, _ = http_get(url, referer=LIST_REFERER, binary=True)
             dest.write_bytes(data)
             log(f"  [{i:3}/{len(resolved)}] ↓ {dest.name} ({len(data)}B) {r['title']}")
         except Exception as e:  # noqa: BLE001
@@ -228,7 +268,9 @@ def kordoc_convert(resolved: list[dict], fresh: bool = False) -> None:
            "kordoc", *todo, "-d", str(MD_CACHE), "--silent"]
     proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
     if proc.returncode != 0:
-        log(f"  kordoc 경고 (returncode={proc.returncode}): {proc.stderr[-500:]}")
+        raise RuntimeError(
+            f"kordoc 변환 실패 (returncode={proc.returncode}): {proc.stderr[-1000:]}"
+        )
 
 
 # ── 5) 정규화 (kordoc md → Format A) ───────────────────────────────────
@@ -289,52 +331,136 @@ def _clean_alio_managed(prev_sources: list[dict]) -> None:
             f.unlink()
 
 
-def write_extracts_and_sources(resolved: list[dict]) -> list[dict]:
-    EXTRACT_DIR.mkdir(parents=True, exist_ok=True)
-    prev = []
+def _load_previous_sources() -> list[dict]:
     if SOURCES_PATH.exists():
         try:
-            prev = json.loads(SOURCES_PATH.read_text(encoding="utf-8")).get("sources", [])
+            return json.loads(SOURCES_PATH.read_text(encoding="utf-8")).get("sources", [])
         except Exception:  # noqa: BLE001
-            prev = []
-    _clean_alio_managed([s for s in prev if s.get("origin") == "alio"])
+            pass
+    return []
+
+
+def _minimum_safe_count(previous_count: int) -> int:
+    if previous_count:
+        return max(MIN_SOURCE_COUNT, int(previous_count * MIN_PREVIOUS_RATIO))
+    return MIN_SOURCE_COUNT
+
+
+def validate_manifest_update(
+    previous_sources: list[dict],
+    new_sources: list[dict],
+) -> None:
+    """무인 병합에 부적합한 삭제·중복·개정일 역행을 차단한다."""
+    previous_alio = [s for s in previous_sources if s.get("origin") == "alio"]
+    old_by_name = {s.get("name", ""): s for s in previous_alio}
+    new_by_name = {s.get("name", ""): s for s in new_sources}
+
+    if len(new_by_name) != len(new_sources):
+        raise RuntimeError(
+            "안전장치: 새 매니페스트에 중복 규정명이 있습니다. 기존 데이터를 유지합니다."
+        )
+
+    removed = sorted(set(old_by_name) - set(new_by_name))
+    if removed:
+        preview = ", ".join(removed[:5])
+        suffix = f" 외 {len(removed) - 5}개" if len(removed) > 5 else ""
+        raise RuntimeError(
+            f"안전장치: 기존 규정 {len(removed)}개가 사라졌습니다"
+            f"({preview}{suffix}). 자동 삭제하지 않고 기존 데이터를 유지합니다."
+        )
+
+    regressed = []
+    for name in sorted(set(old_by_name) & set(new_by_name)):
+        old_revision = old_by_name[name].get("revision") or ""
+        new_revision = new_by_name[name].get("revision") or ""
+        if old_revision and new_revision and new_revision < old_revision:
+            regressed.append(f"{name}: {old_revision} → {new_revision}")
+    if regressed:
+        raise RuntimeError(
+            "안전장치: 개정일이 역행한 규정이 있습니다("
+            + "; ".join(regressed[:5])
+            + "). 기존 데이터를 유지합니다."
+        )
+
+
+def validate_collection(
+    items: list[dict],
+    resolved: list[dict],
+    previous_sources: list[dict],
+) -> None:
+    """목록/상세 해석이 불완전하면 기존 데이터를 건드리기 전에 중단한다."""
+    previous_alio = [s for s in previous_sources if s.get("origin") == "alio"]
+    minimum = _minimum_safe_count(len(previous_alio))
+    if len(items) < minimum:
+        raise RuntimeError(
+            f"안전장치: ALIO 목록이 {len(items)}개뿐입니다(최소 {minimum}개 필요). "
+            "일시 장애 가능성이 있어 기존 데이터를 유지합니다."
+        )
+    if len(resolved) < minimum:
+        raise RuntimeError(
+            f"안전장치: 현행본 해석이 {len(resolved)}/{len(items)}개뿐입니다"
+            f"(최소 {minimum}개 필요). 기존 데이터를 유지합니다."
+        )
+
+
+def write_extracts_and_sources(
+    resolved: list[dict],
+    previous_sources: list[dict] | None = None,
+) -> list[dict]:
+    """모든 결과를 임시 디렉터리에 준비·검증한 뒤 기존 데이터와 교체한다."""
+    EXTRACT_DIR.mkdir(parents=True, exist_ok=True)
+    prev = previous_sources if previous_sources is not None else _load_previous_sources()
+    previous_alio = [s for s in prev if s.get("origin") == "alio"]
+    minimum = _minimum_safe_count(len(previous_alio))
 
     sources: list[dict] = []
     used_names: dict[str, int] = {}
-    written = 0
-    for r in resolved:
-        raw = MD_CACHE / f"{r['file_no']}.md"
-        if not raw.exists():
-            log(f"  추출본 없음(스킵): {r['title']}")
-            continue
-        md = raw.read_text(encoding="utf-8")
-        norm = normalize_markdown(md, r["title"], r["revision"])
-        base = f"{r['type']}_{safe_filename(r['title'])}"
-        # 파일명 충돌 방지
-        n = used_names.get(base, 0)
-        used_names[base] = n + 1
-        fname = f"{base}.md" if n == 0 else f"{base} ({n}).md"
-        (EXTRACT_DIR / fname).write_text(norm, encoding="utf-8")
-        written += 1
-        sources.append({
-            "name": r["title"],
-            "type": r["type"],
-            "file": fname,
-            "revision": r["revision"],
-            "file_no": r["file_no"],
-            "origin": "alio",
-        })
+    with tempfile.TemporaryDirectory(prefix="alio-sync-", dir=DATA_DIR) as tmp:
+        stage_dir = Path(tmp)
+        for r in resolved:
+            raw = MD_CACHE / f"{r['file_no']}.md"
+            if not raw.exists() or raw.stat().st_size == 0:
+                log(f"  추출본 없음(스킵): {r['title']}")
+                continue
+            md = raw.read_text(encoding="utf-8")
+            norm = normalize_markdown(md, r["title"], r["revision"])
+            base = f"{r['type']}_{safe_filename(r['title'])}"
+            n = used_names.get(base, 0)
+            used_names[base] = n + 1
+            fname = f"{base}.md" if n == 0 else f"{base} ({n}).md"
+            (stage_dir / fname).write_text(norm, encoding="utf-8")
+            sources.append({
+                "name": r["title"],
+                "type": r["type"],
+                "file": fname,
+                "revision": r["revision"],
+                "file_no": r["file_no"],
+                "origin": "alio",
+            })
 
-    SOURCES_PATH.write_text(
-        json.dumps({
+        if len(sources) < minimum:
+            raise RuntimeError(
+                f"안전장치: 변환 성공이 {len(sources)}/{len(resolved)}개뿐입니다"
+                f"(최소 {minimum}개 필요). 기존 데이터를 유지합니다."
+            )
+        validate_manifest_update(prev, sources)
+
+        manifest = json.dumps({
             "apbaId": APBA_ID, "reportFormRootNo": REPORT_ROOT,
             "list_url": LIST_REFERER,
             "count": len(sources),
             "sources": sources,
-        }, ensure_ascii=False, indent=1),
-        encoding="utf-8",
-    )
-    log(f"  추출본 {written}개 기록 + sources.json ({len(sources)}개 소스)")
+        }, ensure_ascii=False, indent=1)
+        staged_manifest = stage_dir / "sources.json"
+        staged_manifest.write_text(manifest, encoding="utf-8")
+
+        # 이 시점까지 기존 파일은 전혀 건드리지 않는다.
+        _clean_alio_managed(previous_alio)
+        for staged in stage_dir.glob("*.md"):
+            os.replace(staged, EXTRACT_DIR / staged.name)
+        os.replace(staged_manifest, SOURCES_PATH)
+
+    log(f"  추출본 {len(sources)}개 기록 + sources.json ({len(sources)}개 소스)")
     return sources
 
 
@@ -345,6 +471,7 @@ def main() -> None:
     ap.add_argument("--no-build", action="store_true", help="인덱스 재빌드 생략")
     ap.add_argument("--limit", type=int, default=0, help="처음 N개만 (테스트용)")
     args = ap.parse_args()
+    previous_sources = _load_previous_sources()
 
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     reg_cache = CACHE_DIR / "regulations.json"
@@ -371,6 +498,8 @@ def main() -> None:
         res_cache.write_text(json.dumps(resolved, ensure_ascii=False, indent=1), encoding="utf-8")
     if args.limit:
         resolved = resolved[: args.limit]
+    else:
+        validate_collection(items, resolved, previous_sources)
 
     # 3) 다운로드
     log("[3/7] 현행본 HWP 다운로드…")
@@ -380,9 +509,13 @@ def main() -> None:
     log("[4/7] kordoc HWP→Markdown 변환…")
     kordoc_convert(resolved, fresh=args.fresh)
 
+    if args.limit:
+        log("테스트용 --limit 실행: 기존 추출본·sources.json은 변경하지 않습니다.")
+        return
+
     # 5+6) 정규화 + 기록
     log("[5/7] 정규화(Format A) + [6/7] 추출본·sources.json 기록…")
-    write_extracts_and_sources(resolved)
+    write_extracts_and_sources(resolved, previous_sources)
 
     # 7) 빌드
     if args.no_build:
