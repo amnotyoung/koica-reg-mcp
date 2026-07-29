@@ -46,6 +46,17 @@ jobs:
           if [ "$MACHINE_STATE" != "started" ]; then
             flyctl machine start "$MACHINE_ID" --app koica-reg-mcp
           fi
+          SSH_READY=false
+          for attempt in $(seq 1 12); do
+            if flyctl ssh console --app koica-reg-mcp --machine "$MACHINE_ID" \
+              --command "true"; then
+              SSH_READY=true
+              break
+            fi
+            echo "SSH 준비 대기 ${attempt}/12"
+            sleep 5
+          done
+          test "$SSH_READY" = "true"
           flyctl ssh console --app koica-reg-mcp --machine "$MACHINE_ID" --command \
             "rm -rf /tmp/alio-sync-work && mkdir -p /tmp/alio-sync-work && cp /app/alio_sync.py /tmp/alio-sync-work/ && cp -a /app/data /tmp/alio-sync-work/data && cd /tmp/alio-sync-work && python alio_sync.py --fresh --no-build && tar -czf /tmp/alio-sync-data.tar.gz -C /tmp/alio-sync-work/data extracted sources.json"
           flyctl ssh sftp get --app koica-reg-mcp --machine "$MACHINE_ID" \
