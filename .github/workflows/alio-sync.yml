@@ -40,9 +40,15 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl ssh console --app koica-reg-mcp --command \
+          MACHINE_ID="$(flyctl machine list --app koica-reg-mcp --json | jq -r '.[0].id')"
+          MACHINE_STATE="$(flyctl machine list --app koica-reg-mcp --json | jq -r '.[0].state')"
+          test -n "$MACHINE_ID" && test "$MACHINE_ID" != "null"
+          if [ "$MACHINE_STATE" != "started" ]; then
+            flyctl machine start "$MACHINE_ID" --app koica-reg-mcp
+          fi
+          flyctl ssh console --app koica-reg-mcp --machine "$MACHINE_ID" --command \
             "rm -rf /tmp/alio-sync-work && mkdir -p /tmp/alio-sync-work && cp /app/alio_sync.py /tmp/alio-sync-work/ && cp -a /app/data /tmp/alio-sync-work/data && cd /tmp/alio-sync-work && python alio_sync.py --fresh --no-build && tar -czf /tmp/alio-sync-data.tar.gz -C /tmp/alio-sync-work/data extracted sources.json"
-          flyctl ssh sftp get --app koica-reg-mcp \
+          flyctl ssh sftp get --app koica-reg-mcp --machine "$MACHINE_ID" \
             /tmp/alio-sync-data.tar.gz ./alio-sync-data.tar.gz
           tar -xzf alio-sync-data.tar.gz -C data
 
