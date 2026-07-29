@@ -20,6 +20,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,6 +34,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      - name: 동기화 안전장치 테스트
+        run: python3 -m unittest discover -s tests -v
 
       - name: ALIO 동기화 실행
         run: python3 alio_sync.py --fresh --no-build
@@ -58,7 +62,7 @@ jobs:
           if [ -z "$(gh pr list --head "$BRANCH" --state open --json number -q '.[].number')" ]; then
             gh pr create --base main --head "$BRANCH" \
               --title "chore(sync): ALIO 현행 규정 자동 동기화" \
-              --body "ALIO에서 감지된 KOICA 규정 변경분입니다. 검토 후 머지하세요. (자동 생성)"
+              --body "ALIO에서 감지된 KOICA 규정 변경분입니다. 수집 수량과 변환 완전성 검증을 통과했습니다. 검토 후 머지하세요. (자동 생성)"
             echo "PR 생성 완료"
           else
             echo "기존 PR 갱신(force-push) 완료"
