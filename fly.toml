@@ -23,7 +23,8 @@ primary_region = 'nrt'
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
-  min_machines_running = 0
+  # ALIO 주간 동기화가 SSH로 실행되므로 도쿄 머신 1대는 상시 유지한다.
+  min_machines_running = 1
   processes = ['app']
 
 [[vm]]
