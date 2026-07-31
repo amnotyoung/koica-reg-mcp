@@ -801,6 +801,32 @@ _EXTERNAL_CITE_RE = re.compile(
 )
 
 
+def _empty_references(source: str, article: str, status: str, note: str,
+                      include_mermaid: bool = False) -> dict:
+    """조문을 찾지 못했을 때의 정상 응답.
+
+    "없음"은 오류가 아니라 결과이므로, 성공 응답과 같은 키 구성을 유지한 채
+    status로만 구분한다. 소비자(공개 게이트웨이 포함)가 응답 형태를 바꾸지
+    않고 그대로 처리할 수 있게 하기 위함이다.
+    """
+    result = {
+        "target": {
+            "source": source,
+            "article": article,
+            "article_title": None,
+            "citation": f"{source} {article}".strip(),
+        },
+        "outgoing": [],
+        "incoming": [],
+        "counts": {"outgoing": 0, "incoming": 0},
+        "status": status,
+        "note": note,
+    }
+    if include_mermaid:
+        result["mermaid"] = _mermaid_graph(result)
+    return result
+
+
 def find_references(source: str, article: str, limit: int = 20,
                     include_mermaid: bool = False) -> dict:
     """대상 조문의 정방향(outgoing) · 역방향(incoming) 인용 관계.
@@ -815,10 +841,17 @@ def find_references(source: str, article: str, limit: int = 20,
 
     include_mermaid=True 이면 반환 dict에 "mermaid" 키로 flowchart 코드를 함께
     담는다 (claude.ai 등에서 인용망을 바로 시각화).
+
+    status는 ok / not_found / invalid_article 중 하나. 조문을 찾지 못한 경우도
+    오류가 아니라 빈 그래프(outgoing·incoming 0건)로 반환한다.
     """
     parsed = _parse_article_token(article)
     if parsed is None:
-        return {"error": f"invalid article token: {article!r}"}
+        return _empty_references(
+            source, article, "invalid_article",
+            f"조문 번호를 해석할 수 없습니다: {article!r}",
+            include_mermaid=include_mermaid,
+        )
     no, sub = parsed
     articles = load_index()
 
@@ -828,7 +861,12 @@ def find_references(source: str, article: str, limit: int = 20,
         if src_ok(a.source) and a.article_no == no and a.article_sub == sub
     ]
     if not targets:
-        return {"error": f"target not found: {source} 제{no}조" + (f"의{sub}" if sub else "")}
+        cite = f"제{no}조" + (f"의{sub}" if sub else "")
+        return _empty_references(
+            source, cite, "not_found",
+            f"인덱스에 없는 조문입니다: {source} {cite}",
+            include_mermaid=include_mermaid,
+        )
 
     # 본칙(비-부칙) 조문을 target으로 우선 — 부칙 제N조 오선택 방지
     targets.sort(key=lambda a: a.is_supplementary)
@@ -945,6 +983,7 @@ def find_references(source: str, article: str, limit: int = 20,
         "outgoing": outgoing[:limit],
         "incoming": incoming[:limit],
         "counts": {"outgoing": len(outgoing), "incoming": len(incoming)},
+        "status": "ok",
     }
     if include_mermaid:
         result["mermaid"] = _mermaid_graph(result)
