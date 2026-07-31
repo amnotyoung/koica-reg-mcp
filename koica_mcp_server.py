@@ -183,6 +183,10 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             limit: 각 방향 최대 결과 수 (기본 20)
             include_mermaid: True면 반환값에 "mermaid"(flowchart 코드) 포함.
                 claude.ai 등에서 인용망을 바로 시각화할 때 사용.
+
+        Returns:
+            status가 ok / not_found / invalid_article 중 하나. 조문을 찾지 못해도
+            오류가 아니라 빈 그래프(outgoing·incoming 0건)로 반환합니다.
         """
         _usage.record("find_references")
         return ks.find_references(source, article, limit=limit, include_mermaid=include_mermaid)
