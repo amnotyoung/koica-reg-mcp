@@ -34,6 +34,9 @@ claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp
 `find_references`, `compliance_radar`, `list_attachments`, `get_attachment`,
 `list_sources`. 공개 서버라 토큰·헤더가 필요 없습니다.
 
+데이터는 ALIO 주간 자동 동기화로 서버가 최신을 유지합니다 — 커넥터 사용자가
+실행할 동기화·업데이트 명령은 없습니다.
+
 ---
 
 ## 🛠️ 이 저장소를 "개발·수정·기여"하려는 경우에만 clone
@@ -46,8 +49,8 @@ python3 semantic_search.py download-model
 python3 koica_search.py build --strict-semantic
 ```
 
-- `koica_mcp_server.py` — 로컬 stdio 서버 (도구 11개 = 원격 8개 + `update`·`sync_from_alio`·`find_questions`)
-- `server_http.py` — 원격 HTTP(streamable-http) 서버 (읽기 8개)
+- `koica_mcp_server.py` — 로컬 stdio 서버 (도구 11개 = 원격 8개 + 관리·개발용 3개: `update`·`sync_from_alio`·`find_questions`)
+- `server_http.py` — 원격 HTTP(streamable-http) 서버 (위 8개 그대로. 상태를 바꾸는 도구는 노출하지 않음)
 - `Dockerfile` + `fly.toml` — Fly.io 배포. **`main`에 머지되면 GitHub Actions가 자동 재배포**합니다.
 - 검색 엔진은 기존 IDF 키워드 점수와 로컬 `intfloat/multilingual-e5-small` ONNX 의미 유사도를 결합합니다. 외부 임베딩 API나 API 키는 쓰지 않습니다.
 - 의미 모델은 고정 리비전·SHA-256을 검증해 사용자 캐시에 받고, `numpy`·`onnxruntime`·`sentencepiece`로 추론합니다. 배포 경로는 `KOICA_SEMANTIC_MODEL_DIR`로 고정할 수 있습니다.
