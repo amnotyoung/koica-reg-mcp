@@ -88,7 +88,9 @@ def main() -> None:
     for miss in hybrid_misses:
         print(f"MISS: {miss}")
 
-    minimum_hits = 12  # 80% of the fixed 15-query paraphrase set
+    # Every fixed case names a current, directly responsive article.  Requiring all
+    # 15 also catches small ONNX/platform ranking differences seen in remote builds.
+    minimum_hits = total
     minimum_gain = 6
     if hybrid_hits < minimum_hits:
         raise SystemExit(f"hybrid Recall@10 미달: {hybrid_hits} < {minimum_hits}")

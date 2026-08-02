@@ -345,6 +345,14 @@ class SemanticArtifactTests(unittest.TestCase):
         self.assertIn("책임 없는 사유", expanded)
         self.assertIn("계약 의무 지체", expanded)
         self.assertIn("지체상금", expanded)
+        retaliation = semantic_search.expand_query(
+            "신고했다고 인사상 보복해도 되나"
+        )
+        self.assertIn("불이익조치 등의 금지", retaliation)
+        self.assertIn(
+            "공익신고등을 이유로 임직원에게 불이익조치를 해서는 아니 된다",
+            retaliation,
+        )
         self.assertEqual(
             semantic_search.expand_query("인사위원회 구성"),
             "인사위원회 구성",
