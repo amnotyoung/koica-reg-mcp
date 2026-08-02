@@ -13,6 +13,7 @@ claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp
 등록·재시작 후 KOICA 규정을 자연어로 물으면 `koica-reg` 도구(8종)가 자동 호출됩니다.
 예: "KOICA 승진 가점 규정 찾아줘", "인사규정 제11조 보여줘".
 공개 서버라 인증·토큰이 필요 없습니다.
+데이터는 ALIO 주간 자동 동기화로 서버가 최신을 유지합니다 — 커넥터 사용자가 실행할 명령은 없습니다.
 
 다른 클라이언트:
 - **Codex**: `codex mcp add koica-reg --url https://koica-reg-mcp.fly.dev/mcp`
@@ -21,7 +22,8 @@ claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp
 ## 🛠️ 개발·수정하려는 경우에만 clone
 
 상세는 [AGENTS.md](AGENTS.md)와 [README](README.md) 참고.
-- 로컬 stdio: `koica_mcp_server.py`(도구 11개) / 원격 HTTP: `server_http.py`(읽기 8개)
+- 원격 HTTP: `server_http.py` — 규정 검색·조회·검증에 필요한 8개
+- 로컬 stdio: `koica_mcp_server.py` — 도구 11개 = 원격 8개 + 관리·개발용 3개(`update`·`sync_from_alio`·`find_questions`)
 - 배포: `Dockerfile`+`fly.toml`(Fly.io). `main` 머지 시 자동 재배포.
 - 검색 엔진은 IDF 키워드 + 로컬 `intfloat/multilingual-e5-small` ONNX 의미 검색을 결합합니다. 외부 임베딩 API는 사용하지 않습니다.
 - 로컬 빌드: `pip install -r requirements.txt` → `python3 semantic_search.py download-model` → `python3 koica_search.py build --strict-semantic`.
