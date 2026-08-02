@@ -7,7 +7,7 @@
     4) kordoc CLI로 HWP → Markdown 일괄 변환
     5) 기존 파서(koica_search)가 먹는 Format A로 정규화
     6) data/extracted/{유형}_{규정명}.md 기록 + sources.json 매니페스트
-    7) 인덱스 재빌드 (data/index.json)
+    7) 키워드·의미 인덱스 재빌드
 
 사용:
     python3 alio_sync.py            # 전체 동기화 (캐시 활용)
@@ -527,6 +527,7 @@ def main() -> None:
         log("[7/7] 인덱스 재빌드 생략 (--no-build)")
     else:
         log("[7/7] 인덱스 재빌드…")
+        os.environ.setdefault("KOICA_SEMANTIC_THREADS", "4")
         import koica_search as ks
         arts, atts = ks.build_index()
         log(f"완료: {len(arts)}개 조문 + {len(atts)}개 별표·별지")

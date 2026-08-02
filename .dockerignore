@@ -23,13 +23,16 @@ data/_cache/
 # 시험문제 데이터 (출처 불명 → 공개 원격 서버에서 제외)
 data/questions.json
 
-# 인덱스는 이미지 빌드 단계(RUN … build)에서 생성하므로 로컬 산출물은 제외 (항상 재생성)
+# 인덱스와 의미 검색 모델은 이미지 빌드 단계에서 생성·복사하므로 로컬 산출물은 제외
+# (항상 현재 코드·규정 데이터 및 고정된 모델 리비전으로 재생성)
 data/index.json
+data/semantic_vectors.npy
+data/semantic_meta.json
+data/.semantic_*.tmp
+data/semantic_model/
 
-# 로컬 전용 문서 (alio_sync.py는 Fly 도쿄 동기화 작업에 사용)
+# 로컬 전용 안내 문서 (LICENSE·NOTICE는 이미지에 포함해 모델 출처를 보존)
 README.md
-LICENSE
-NOTICE
 AGENTS.md
 CLAUDE.md
 

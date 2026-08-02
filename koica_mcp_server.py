@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
-from typing import Optional
+from typing import Literal, Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -69,6 +69,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         limit: int = 10,
         fuzzy: bool = False,
         include_attachments: bool = False,
+        mode: Literal["hybrid", "keyword", "semantic"] = "hybrid",
     ) -> list[dict]:
         """KOICA 현행 규정을 조문 단위로 검색 — KOICA 사내 규정 질문의 첫 진입점.
 
@@ -88,6 +89,9 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             include_attachments: 별표·별지도 검색 대상에 포함 (기본 False).
                 행정처분 기준표·서식 등을 찾을 때만 켜세요. 일반 조문 검색에서는
                 별표·별지가 결과 품질을 떨어뜨릴 수 있어 기본은 OFF.
+            mode: 검색 방식. "hybrid"(기본)는 키워드 전문검색과 다국어 의미
+                검색을 결합해 표현이 달라도 관련 조문을 찾는다. "keyword"는
+                기존 정확·부분 문자열 검색만, "semantic"은 의미 검색만 사용.
 
         Returns:
             결과 배열. 항목의 type 필드로 "article"/"attachment" 구분.
@@ -102,6 +106,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
             limit=limit,
             fuzzy=fuzzy,
             include_attachments=include_attachments,
+            mode=mode,
         )
 
     @mcp.tool()
@@ -284,7 +289,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         return ks.self_update()
 
     @mcp.tool()
-    def sync_from_alio(timeout_sec: int = 1200) -> dict:
+    def sync_from_alio(timeout_sec: int = 3600) -> dict:
         """ALIO(alio.go.kr)에서 KOICA 현행 규정을 직접 받아 최신으로 동기화.
 
         공공기관 경영정보 공개시스템의 KOICA 규정 목록(apbaId=C0146,
@@ -299,7 +304,7 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
           - 데이터만 갱신되므로 클라이언트 재시작 없이 즉시 반영됩니다.
 
         Args:
-            timeout_sec: 최대 대기 시간(초, 기본 1200). 초과 시 오류 반환.
+            timeout_sec: 최대 대기 시간(초, 기본 3600). 초과 시 오류 반환.
 
         Returns:
             동기화 결과 요약(규정 수·조문 수, 실행 로그 tail).
@@ -337,6 +342,13 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         # 데이터만 바뀌었으므로 인메모리 인덱스 캐시만 무효화 → 재시작 불필요
         ks._INDEX_CACHE = None
         ks._ATTACHMENT_CACHE = None
+        try:
+            import semantic_search
+
+            semantic_search.reset_caches()
+        except Exception:
+            # 키워드 전용 설치에서도 동기화 자체는 계속 성공해야 한다.
+            pass
         arts = ks.load_index()
         return {
             "status": "ok",

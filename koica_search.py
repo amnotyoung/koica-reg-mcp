@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import platform
 import re
 import subprocess
@@ -23,6 +24,8 @@ from typing import Optional
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data" / "extracted"
 INDEX_PATH = ROOT / "data" / "index.json"
+SEMANTIC_VECTORS_PATH = ROOT / "data" / "semantic_vectors.npy"
+SEMANTIC_META_PATH = ROOT / "data" / "semantic_meta.json"
 
 CATEGORY_AGGREGATE_FILES = {
     "law.md", "hr.md", "project.md", "volunteer.md",
@@ -362,7 +365,10 @@ def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]
     return articles, attachments
 
 
-def build_index() -> tuple[list[Article], list[Attachment]]:
+def build_index(
+    build_semantic: bool = True,
+    strict_semantic: bool = False,
+) -> tuple[list[Article], list[Attachment]]:
     if not DATA_DIR.exists():
         raise FileNotFoundError(f"data 폴더 없음: {DATA_DIR}")
     articles: list[Article] = []
@@ -392,6 +398,41 @@ def build_index() -> tuple[list[Article], list[Attachment]]:
         f"빌드: {len(articles)}개 조문 + {len(attachments)}개 별표·별지 / 합본 스킵 {len(skipped)}개 → {INDEX_PATH}",
         file=sys.stderr,
     )
+
+    global _INDEX_CACHE, _ATTACHMENT_CACHE
+    _INDEX_CACHE = None
+    _ATTACHMENT_CACHE = None
+
+    if build_semantic:
+        try:
+            import semantic_search
+
+            metadata = semantic_search.build_semantic_index(
+                articles,
+                attachments,
+                index_path=INDEX_PATH,
+                vectors_path=SEMANTIC_VECTORS_PATH,
+                meta_path=SEMANTIC_META_PATH,
+            )
+            print(
+                f"의미 인덱스: {metadata['vector_count']}개 청크 → {SEMANTIC_VECTORS_PATH}",
+                file=sys.stderr,
+            )
+        except Exception as exc:
+            # 개발 환경에서 선택 의존성/모델이 없더라도 기존 키워드 검색은 유지한다.
+            # 배포 이미지는 --strict-semantic으로 빌드하므로 이 경로를 허용하지 않는다.
+            try:
+                import semantic_search
+
+                semantic_search.reset_caches()
+            except Exception:
+                pass
+            if strict_semantic:
+                raise RuntimeError(f"의미 인덱스 빌드 실패: {exc}") from exc
+            print(
+                f"경고: 의미 인덱스를 만들지 못해 키워드 검색만 사용합니다: {exc}",
+                file=sys.stderr,
+            )
     return articles, attachments
 
 
@@ -537,6 +578,159 @@ def make_snippet(body: str, pos: int, span: int = 80) -> str:
     return s
 
 
+HYBRID_CANDIDATE_LIMIT = 50
+RRF_K = 60
+# 두 채널을 같은 비중으로 결합해야 의미 후보와 정확 키워드 후보가 모두 상위권에
+# 남는다. 한쪽 가중치를 과도하게 높이면 다른 채널의 단독 후보가 사실상 사라진다.
+SEMANTIC_RRF_WEIGHT = 1.0
+SEARCH_MODES = {"hybrid", "keyword", "semantic"}
+_SEMANTIC_WARNING_EMITTED = False
+
+
+def _attachment_score(
+    attachment: Attachment,
+    tokens: list[str],
+    idf: dict[str, float],
+) -> tuple[float, int]:
+    score = 0.0
+    first_pos = -1
+    for token in tokens:
+        weight = idf.get(token, 1.0)
+        if token in attachment.title:
+            score += 5.0 * weight
+        count = attachment.body.count(token)
+        if count:
+            score += float(count) * weight
+            position = attachment.body.find(token)
+            if first_pos < 0 or position < first_pos:
+                first_pos = position
+    return score, first_pos
+
+
+def _rrf_fuse(
+    keyword_keys: list[tuple[str, int]],
+    semantic_keys: list[tuple[str, int]],
+    *,
+    k: int = RRF_K,
+    semantic_weight: float = SEMANTIC_RRF_WEIGHT,
+) -> list[tuple[tuple[str, int], float]]:
+    """Fuse two ranked lists without comparing their incompatible raw scores."""
+
+    fused: dict[tuple[str, int], float] = {}
+    first_seen: dict[tuple[str, int], tuple[int, int]] = {}
+    for rank, key in enumerate(keyword_keys, 1):
+        fused[key] = fused.get(key, 0.0) + 1.0 / (k + rank)
+        first_seen.setdefault(key, (0, rank))
+    for rank, key in enumerate(semantic_keys, 1):
+        fused[key] = fused.get(key, 0.0) + semantic_weight / (k + rank)
+        first_seen.setdefault(key, (1, rank))
+    return sorted(
+        fused.items(),
+        key=lambda row: (-row[1], first_seen[row[0]], row[0]),
+    )
+
+
+def _preserve_channel_heads(
+    ranked: list[tuple[tuple[str, int], float]],
+    keyword_keys: list[tuple[str, int]],
+    semantic_keys: list[tuple[str, int]],
+    *,
+    limit: int,
+) -> list[tuple[tuple[str, int], float]]:
+    """Keep each channel's first hit when at least two result slots exist.
+
+    RRF correctly rewards candidates found by both channels, but many consensus
+    hits can otherwise push a semantic-only paraphrase (or an exact keyword-only
+    citation) just outside a small result window.  Reserving one slot for each
+    channel head preserves both recall paths without changing their RRF scores.
+    """
+
+    selected = list(ranked[:limit])
+    if limit < 2 or not keyword_keys or not semantic_keys:
+        return selected
+
+    required = list(dict.fromkeys((keyword_keys[0], semantic_keys[0])))
+    if len(required) < 2:
+        return selected
+    score_by_key = dict(ranked)
+    selected_keys = {key for key, _score in selected}
+    for required_key in required:
+        if required_key in selected_keys:
+            continue
+        replace_at = next(
+            (
+                index
+                for index in range(len(selected) - 1, -1, -1)
+                if selected[index][0] not in required
+            ),
+            None,
+        )
+        if replace_at is None:
+            break
+        selected_keys.discard(selected[replace_at][0])
+        selected[replace_at] = (required_key, score_by_key[required_key])
+        selected_keys.add(required_key)
+
+    original_rank = {key: index for index, (key, _score) in enumerate(ranked)}
+    selected.sort(key=lambda row: original_rank[row[0]])
+    return selected
+
+
+def _search_result(
+    *,
+    key: tuple[str, int],
+    item: Article | Attachment,
+    position: int,
+    score: float,
+    search_mode: str,
+    keyword_score: Optional[float],
+    semantic_score: Optional[float],
+) -> dict:
+    score_digits = (
+        2
+        if search_mode.startswith("keyword")
+        else 4
+        if search_mode == "semantic"
+        else 6
+    )
+    common = {
+        "type": key[0],
+        "category": item.category,
+        "source": item.source,
+        "revision": item.revision,
+        "citation": item.citation,
+        "snippet": make_snippet(item.body, position),
+        "score": round(score, score_digits),
+        "search_mode": search_mode,
+        "matched_by": (
+            "hybrid"
+            if keyword_score is not None and semantic_score is not None
+            else "keyword"
+            if keyword_score is not None
+            else "semantic"
+        ),
+        "keyword_score": round(keyword_score, 2) if keyword_score is not None else None,
+        "semantic_score": round(semantic_score, 4) if semantic_score is not None else None,
+    }
+    if key[0] == "article":
+        article = item
+        assert isinstance(article, Article)
+        return {
+            **common,
+            "chapter": article.chapter,
+            "article": article.article,
+            "article_title": article.article_title,
+        }
+    attachment = item
+    assert isinstance(attachment, Attachment)
+    return {
+        **common,
+        "kind": attachment.kind,
+        "label": attachment.label,
+        "title": attachment.title,
+    }
+
+
 def search(
     query: str,
     category: Optional[str] = None,
@@ -544,77 +738,157 @@ def search(
     limit: int = 10,
     fuzzy: bool = False,
     include_attachments: bool = False,
+    mode: str = "hybrid",
 ) -> list[dict]:
-    articles = load_index()
-    tokens = tokenize(query)
-    if not tokens:
+    """Search regulations with keyword, semantic, or fused hybrid retrieval.
+
+    ``hybrid`` is the default.  If the optional model or dense artifacts are not
+    available, it degrades to the exact same keyword ranking and labels the response
+    ``keyword_fallback`` rather than failing the MCP request.
+    """
+
+    global _SEMANTIC_WARNING_EMITTED
+    normalized_mode = mode.lower().strip()
+    if normalized_mode not in SEARCH_MODES:
+        choices = ", ".join(sorted(SEARCH_MODES))
+        raise ValueError(f"mode는 다음 중 하나여야 합니다: {choices}")
+    if not query.strip() or limit <= 0:
         return []
-    idf = compute_idf(tokens, articles)
 
-    scored: list[tuple] = []
-    for a in articles:
-        if category and a.category != category:
-            continue
-        if source and not source_match(source, a.source):
-            continue
-        sc, pos = score_article(a, tokens, idf, fuzzy=fuzzy)
-        if sc <= 0:
-            continue
-        scored.append((sc, pos, "article", a))
+    articles = load_index()
+    attachments = load_attachments()
+    article_allowed = [
+        (not category or article.category == category)
+        and (not source or source_match(source, article.source))
+        for article in articles
+    ]
+    attachment_allowed = [
+        include_attachments
+        and not attachment.deleted
+        and (not category or attachment.category == category)
+        and (not source or source_match(source, attachment.source))
+        for attachment in attachments
+    ]
 
-    if include_attachments:
-        for a in load_attachments():
-            if a.deleted:
-                continue
-            if category and a.category != category:
-                continue
-            if source and not source_match(source, a.source):
-                continue
-            sc = 0.0
-            pos = -1
-            for tok in tokens:
-                w = idf.get(tok, 1.0)
-                if tok in a.title:
-                    sc += 5.0 * w
-                cnt = a.body.count(tok)
-                if cnt:
-                    sc += float(cnt) * w
-                    p = a.body.find(tok)
-                    if pos < 0 or p < pos:
-                        pos = p
-            if sc > 0:
-                scored.append((sc, pos, "attachment", a))
+    candidate_limit = max(limit, HYBRID_CANDIDATE_LIMIT)
 
-    scored.sort(key=lambda r: r[0], reverse=True)
-    out = []
-    for sc, pos, kind, item in scored[:limit]:
-        if kind == "article":
-            out.append({
-                "type": "article",
-                "category": item.category,
-                "source": item.source,
-                "revision": item.revision,
-                "chapter": item.chapter,
-                "article": item.article,
-                "article_title": item.article_title,
-                "citation": item.citation,
-                "snippet": make_snippet(item.body, pos),
-                "score": round(sc, 2),
-            })
-        else:
-            out.append({
-                "type": "attachment",
-                "category": item.category,
-                "source": item.source,
-                "revision": item.revision,
-                "kind": item.kind,
-                "label": item.label,
-                "title": item.title,
-                "citation": item.citation,
-                "snippet": make_snippet(item.body, pos),
-                "score": round(sc, 2),
-            })
-    return out
+    def rank_keyword() -> list[tuple[float, int, tuple[str, int]]]:
+        tokens = tokenize(query)
+        if not tokens:
+            return []
+        idf = compute_idf(tokens, articles)
+        rows: list[tuple[float, int, tuple[str, int]]] = []
+        for item_index, article in enumerate(articles):
+            if not article_allowed[item_index]:
+                continue
+            raw_score, position = score_article(article, tokens, idf, fuzzy=fuzzy)
+            if raw_score > 0:
+                rows.append((raw_score, position, ("article", item_index)))
+
+        for item_index, attachment in enumerate(attachments):
+            if not attachment_allowed[item_index]:
+                continue
+            raw_score, position = _attachment_score(attachment, tokens, idf)
+            if raw_score > 0:
+                rows.append((raw_score, position, ("attachment", item_index)))
+        rows.sort(key=lambda row: row[0], reverse=True)
+        return rows[:candidate_limit]
+
+    # Explicit semantic mode does not tokenize, compute IDF, or scan the corpus unless
+    # dense retrieval actually fails and the documented keyword fallback is needed.
+    keyword_rows = rank_keyword() if normalized_mode in {"hybrid", "keyword"} else []
+
+    semantic_rows: list[dict] = []
+    semantic_failed = False
+    if normalized_mode in {"hybrid", "semantic"}:
+        try:
+            import semantic_search
+
+            semantic_rows = semantic_search.semantic_rank(
+                query,
+                article_allowed=article_allowed,
+                attachment_allowed=attachment_allowed,
+                limit=candidate_limit,
+                index_path=INDEX_PATH,
+                vectors_path=SEMANTIC_VECTORS_PATH,
+                meta_path=SEMANTIC_META_PATH,
+            )
+        except Exception as exc:
+            semantic_failed = True
+            if not _SEMANTIC_WARNING_EMITTED:
+                print(
+                    f"경고: 의미 검색을 사용할 수 없어 키워드 검색으로 대체합니다: {exc}",
+                    file=sys.stderr,
+                )
+                _SEMANTIC_WARNING_EMITTED = True
+
+    if semantic_failed and normalized_mode == "semantic":
+        keyword_rows = rank_keyword()
+
+    keyword_details = {
+        key: {"score": raw_score, "position": position}
+        for raw_score, position, key in keyword_rows
+    }
+
+    semantic_details = {
+        (row["kind"], row["item_index"]): row for row in semantic_rows
+    }
+
+    if normalized_mode == "keyword" or semantic_failed:
+        ranked = [(key, details["score"]) for key, details in keyword_details.items()]
+        effective_mode = "keyword" if normalized_mode == "keyword" else "keyword_fallback"
+    elif normalized_mode == "semantic":
+        ranked = [
+            ((row["kind"], row["item_index"]), row["score"])
+            for row in semantic_rows
+        ]
+        effective_mode = "semantic"
+    else:
+        keyword_keys = list(keyword_details)
+        semantic_keys = [
+            (row["kind"], row["item_index"]) for row in semantic_rows
+        ]
+        ranked = _rrf_fuse(
+            keyword_keys,
+            semantic_keys,
+        )
+        ranked = _preserve_channel_heads(
+            ranked,
+            keyword_keys,
+            semantic_keys,
+            limit=limit,
+        )
+        effective_mode = "hybrid"
+
+    output: list[dict] = []
+    for key, fused_score in ranked[:limit]:
+        kind, item_index = key
+        item: Article | Attachment
+        item = articles[item_index] if kind == "article" else attachments[item_index]
+        keyword_detail = keyword_details.get(key)
+        semantic_detail = semantic_details.get(key)
+        if keyword_detail is not None:
+            position = int(keyword_detail["position"])
+        elif semantic_detail is not None:
+            position = (int(semantic_detail["start"]) + int(semantic_detail["end"])) // 2
+        else:  # Defensive only: every ranked key came from one of the channels.
+            position = -1
+        output.append(
+            _search_result(
+                key=key,
+                item=item,
+                position=position,
+                score=float(fused_score),
+                search_mode=effective_mode,
+                keyword_score=(
+                    float(keyword_detail["score"]) if keyword_detail is not None else None
+                ),
+                semantic_score=(
+                    float(semantic_detail["score"]) if semantic_detail is not None else None
+                ),
+            )
+        )
+    return output
 
 
 ARTICLE_TOKEN_RE = re.compile(r"^\s*(?:제)?(\d+)조?(?:의(\d+))?\s*$")
@@ -1346,6 +1620,35 @@ def self_update() -> dict:
     code_changed = any(f.endswith(".py") for f in changed_files)
     data_changed = any("data/" in f or f.endswith(".md") for f in changed_files)
 
+    # 의미 검색은 선택 의존성을 지연 로드한다. requirements가 갱신된 경우에만
+    # 현재 서버와 같은 Python 환경에 설치해 다음 빌드가 dense artifact도 만들게 한다.
+    if "requirements.txt" in changed_files:
+        try:
+            dependency_result = subprocess.run(
+                [sys.executable, "-m", "pip", "install", "-r", str(ROOT / "requirements.txt")],
+                cwd=str(ROOT),
+                capture_output=True,
+                text=True,
+                timeout=600,
+            )
+        except subprocess.TimeoutExpired:
+            return {
+                **result,
+                "status": "error",
+                "message": "검색 의존성 설치가 10분 안에 끝나지 않았습니다.",
+            }
+        result["steps"].append({
+            "step": "install dependencies",
+            "returncode": dependency_result.returncode,
+            "output": (dependency_result.stdout + "\n" + dependency_result.stderr).strip(),
+        })
+        if dependency_result.returncode != 0:
+            return {
+                **result,
+                "status": "error",
+                "message": "검색 의존성 설치에 실패했습니다.",
+            }
+
     # 2) build
     prev_count = 0
     if INDEX_PATH.exists():
@@ -1355,7 +1658,15 @@ def self_update() -> dict:
             prev_count = len(raw["articles"]) if isinstance(raw, dict) else len(raw)
         except Exception:
             pass
+    previous_threads = os.environ.get("KOICA_SEMANTIC_THREADS")
+    os.environ["KOICA_SEMANTIC_THREADS"] = "4"
     try:
+        try:
+            import semantic_search
+
+            semantic_search.reset_caches()
+        except Exception:
+            pass
         articles, attachments = build_index()
     except Exception as e:
         return {
@@ -1363,6 +1674,17 @@ def self_update() -> dict:
             "status": "error",
             "message": f"인덱스 빌드 실패: {e}",
         }
+    finally:
+        if previous_threads is None:
+            os.environ.pop("KOICA_SEMANTIC_THREADS", None)
+        else:
+            os.environ["KOICA_SEMANTIC_THREADS"] = previous_threads
+        try:
+            import semantic_search
+
+            semantic_search.reset_caches()
+        except Exception:
+            pass
 
     global _INDEX_CACHE, _ATTACHMENT_CACHE
     _INDEX_CACHE = None
@@ -1393,12 +1715,26 @@ def self_update() -> dict:
     }
 
 
-def cmd_build(_args: argparse.Namespace) -> None:
-    build_index()
+def cmd_build(args: argparse.Namespace) -> None:
+    if args.no_semantic and args.strict_semantic:
+        raise ValueError("--no-semantic과 --strict-semantic은 함께 사용할 수 없습니다.")
+    os.environ.setdefault("KOICA_SEMANTIC_THREADS", "4")
+    build_index(
+        build_semantic=not args.no_semantic,
+        strict_semantic=args.strict_semantic,
+    )
 
 
 def cmd_search(args: argparse.Namespace) -> None:
-    results = search(args.query, args.category, args.source, args.limit, fuzzy=args.fuzzy)
+    results = search(
+        args.query,
+        args.category,
+        args.source,
+        args.limit,
+        fuzzy=args.fuzzy,
+        include_attachments=args.include_attachments,
+        mode=args.mode,
+    )
     if args.json:
         print(json.dumps(results, ensure_ascii=False, indent=2))
         return
@@ -1406,8 +1742,10 @@ def cmd_search(args: argparse.Namespace) -> None:
         print("결과 없음")
         return
     for i, r in enumerate(results, 1):
-        print(f"[{i}] {r['citation']}  ({r['article_title']})  score={r['score']}")
-        print(f"    📂 {r['category']} · {r['chapter']}  · 개정 {r['revision']}")
+        title = r["article_title"] if r["type"] == "article" else r["title"]
+        location = r.get("chapter") or r.get("kind", "")
+        print(f"[{i}] {r['citation']}  ({title})  score={r['score']}")
+        print(f"    📂 {r['category']} · {location}  · 개정 {r['revision']}")
         print(f"    {r['snippet']}")
         print()
 
@@ -1417,6 +1755,13 @@ def main() -> None:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     pb = sub.add_parser("build", help="인덱스 빌드 (data/extracted → data/index.json)")
+    build_mode = pb.add_mutually_exclusive_group()
+    build_mode.add_argument("--no-semantic", action="store_true", help="의미 인덱스 빌드 생략")
+    build_mode.add_argument(
+        "--strict-semantic",
+        action="store_true",
+        help="의미 인덱스 빌드 실패 시 전체 빌드 실패 (배포용)",
+    )
     pb.set_defaults(func=cmd_build)
 
     ps = sub.add_parser("search", help="조문 검색")
@@ -1425,6 +1770,13 @@ def main() -> None:
     ps.add_argument("--source", help="규정명 부분일치 (예: 인사규정)")
     ps.add_argument("--limit", type=int, default=10)
     ps.add_argument("--fuzzy", action="store_true", help="음절 bi-gram 부분 매칭")
+    ps.add_argument("--include-attachments", action="store_true", help="별표·별지도 검색")
+    ps.add_argument(
+        "--mode",
+        choices=sorted(SEARCH_MODES),
+        default="hybrid",
+        help="검색 방식 (기본: hybrid)",
+    )
     ps.add_argument("--json", action="store_true")
     ps.set_defaults(func=cmd_search)
 

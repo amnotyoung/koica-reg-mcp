@@ -1,5 +1,9 @@
 # 빌드 산출물
 data/index.json
+data/semantic_vectors.npy
+data/semantic_meta.json
+data/.semantic_*.tmp
+data/semantic_model/
 
 # 시험문제 데이터 (출처 불명, 별도 보관)
 data/questions.json

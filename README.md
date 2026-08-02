@@ -1,6 +1,6 @@
 # koica-reg-mcp
 
-**KOICA 현행 규정 149개를 MCP로 검색·조회.** 한국국제협력단 내부 규정을 조문 단위 검색 + 본문 직접 조회 + 인용 검증(제목 환각까지) + 상호참조 그래프 + **규정 정비 레이더**로, MCP 호환 클라이언트(Claude Desktop·claude.ai·Claude Code·Codex·Cursor 등)에서 사용. 규정 원본은 [ALIO(공공기관 경영정보 공개시스템)](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)에서 **자동 동기화**됩니다.
+**KOICA 현행 규정 149개를 MCP로 검색·조회.** 한국국제협력단 내부 규정을 **키워드 + 의미 기반 하이브리드 검색** + 본문 직접 조회 + 인용 검증(제목 환각까지) + 상호참조 그래프 + **규정 정비 레이더**로, MCP 호환 클라이언트(Claude Desktop·claude.ai·Claude Code·Codex·Cursor 등)에서 사용. 규정 원본은 [ALIO(공공기관 경영정보 공개시스템)](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)에서 **자동 동기화**됩니다.
 
 [![MCP](https://img.shields.io/badge/MCP-streamable--http-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -43,16 +43,22 @@ https://koica-reg-mcp.fly.dev/mcp
 ## 무엇을 해결하나
 
 - **참조 시간 단축** — 149개 규정을 매번 열어 Ctrl+F 하는 대신, 자연어 한 줄로 조문 단위 검색
+- **표현이 달라도 검색** — 정확한 규정 용어를 몰라도 로컬 multilingual-E5 의미 검색이 의역·유사 표현의 후보 조문을 보완
 - **항상 현행본** — ALIO의 KOICA 규정 목록을 주기적으로 자동 수집해 **최신 개정본**만 인덱싱
 - **인용 검증** — 보고서·답변에 들어간 "{규정명} 제N조" 인용이 실제로 존재하는지 자동 교차검증 (LLM 환각 방지)
 - **상호참조 자동 추적** — 어떤 조문이 시행세칙·관련 지침의 어디로 연결되는지 양방향 그래프
 - **시험 준비 보조** — KOICA 채용·승진 시험 응시자가 자기 정답을 근거 조문으로 검증
 
+이 서버 자체가 답변 문장을 생성하는 RAG 애플리케이션은 아닙니다. MCP 서버는 관련
+조문을 검색·조회해 근거를 반환하고, 연결한 Claude·Codex 등의 클라이언트 LLM이 그
+근거로 답변을 작성합니다. 즉 전체 사용 흐름에서는 RAG의 **검색(retrieval) 계층**을
+담당하며, 생성 모델이나 외부 임베딩 API를 서버 안에 두지 않습니다.
+
 ---
 
-## 인덱싱 범위 (현행 규정 149개, 약 6,392개 조문 = 본칙 4,202 + 부칙 2,190)
+## 인덱싱 범위 (현행 규정 149개, 약 6,400개 조문)
 
-ALIO의 KOICA 규정 목록(`apbaId=C0146`)에 게시된 **현행 규정 전체**를 자동 수집합니다. 별도의 "분야" 분류 대신, 규정명으로 곧바로 찾도록 설계했습니다 — 주 사용 축은 **규정명(`source`) + 본문 전문검색**입니다.
+ALIO의 KOICA 규정 목록(`apbaId=C0146`)에 게시된 **현행 규정 전체**를 자동 수집합니다. 별도의 "분야" 분류 대신, 규정명으로 곧바로 찾도록 설계했습니다 — 주 사용 축은 **규정명(`source`) + 키워드·의미 하이브리드 검색**입니다.
 
 | 규정 유형 | 규정 수 | 예시 |
 |---|---|---|
@@ -79,19 +85,23 @@ ALIO의 KOICA 규정 목록(`apbaId=C0146`)에 게시된 **현행 규정 전체*
 
 ### 1. 설치
 
+Python 3.11 이상이 필요합니다.
+
 ```bash
 git clone https://github.com/amnotyoung/koica-reg-mcp.git
 cd koica-reg-mcp
 pip install -r requirements.txt
-python3 koica_search.py build
+python3 semantic_search.py download-model
+python3 koica_search.py build --strict-semantic
 ```
 
-빌드가 끝나면 `data/index.json`에 약 6,392개 조문 + 1,312개 별표·별지가 인덱싱됩니다. (본칙 조문은 부칙과 분리 태깅되어 조회 시 본칙이 우선됩니다.)
+현재 추출본 기준으로 빌드하면 `data/index.json`에 6,396개 조문(본칙 4,200 + 부칙 2,196)과 1,313개 별표·별지가 인덱싱되고, `data/semantic_vectors.npy`와 `data/semantic_meta.json`에 의미 검색 인덱스가 생성됩니다. 최초 한 번 약 124MB의 고정 multilingual-E5 모델을 사용자 캐시(`~/.cache/koica-reg-mcp/multilingual-e5-small`, 운영체제에 따라 다름)에 내려받습니다. 모델 추론은 로컬에서 실행되며 검색어를 외부 API로 보내지 않습니다. (본칙 조문은 부칙과 분리 태깅되어 조회 시 본칙이 우선됩니다.)
 
 ### 2. CLI로 바로 써보기
 
 ```bash
 python3 koica_search.py search "인사위원회 구성" --source 인사규정
+python3 koica_search.py search "아이 때문에 몇 달 회사를 쉬고 싶다" --mode hybrid
 python3 koica_search.py get "인사규정" "제11조"
 python3 koica_search.py verify "인사규정 제11조에 따라 인사위원회를 둔다"
 python3 koica_search.py refs "직제규정" "제9조"
@@ -153,7 +163,7 @@ codex mcp list
 
 | 도구 | 입력 | 반환 |
 |---|---|---|
-| `search_regulation` | `query, category?, source?, limit?, fuzzy?, include_attachments?` | 조문 단위 검색 (`fuzzy`=음절 bi-gram, `include_attachments`=별표·별지 포함) |
+| `search_regulation` | `query, category?, source?, limit?, fuzzy?, include_attachments?, mode?` | 조문 단위 하이브리드 검색 (`mode`=`hybrid`(기본)/`keyword`/`semantic`, `fuzzy`=키워드 음절 bi-gram, `include_attachments`=별표·별지 포함) |
 | `get_article` | `source, article` | 정확한 조문 본문 전체 |
 | `verify_citation` | `text` | 인용 실재성 검증 + **제목 환각 탐지**(존재하는 조문에 엉뚱한 제목 → `content_mismatch`) |
 | `find_references` | `source, article, include_mermaid?` | 정방향·역방향 인용 관계 (`include_mermaid`=flowchart 코드 동봉) |
@@ -166,6 +176,7 @@ codex mcp list
 | `list_sources` | `category?` | 인덱싱된 규정 목록과 조문 수 |
 
 > `category`는 규정 유형(규정/시행세칙/지침/기준/정관) 필터입니다. 대부분은 `source`(규정명)나 본문 검색이 더 정확합니다.
+> 의미 모델이나 의미 인덱스를 열 수 없으면 `hybrid` 검색은 요청을 실패시키지 않고 기존 키워드 검색으로 자동 전환하며, 결과의 `search_mode`가 `keyword_fallback`으로 표시됩니다.
 
 ---
 
@@ -198,11 +209,14 @@ compliance_radar()  →  정비 검토 대상 (예시)
 ALIO가 해외 GitHub-hosted runner의 연결을 제한하므로 원문 수집·HWP 변환은
 도쿄 Fly.io 머신의 임시 작업공간에서 수행합니다. 검증된 결과만 GitHub Actions로
 가져오며 운영 중인 MCP 데이터 파일을 직접 수정하지 않습니다.
+동기화 직전 의미 검색 일시정지 표식을 만들고 머신을 재시작해 ONNX 메모리를
+비웁니다. 변환 중 들어오는 요청은 키워드 검색으로 자동 폴백하며, 완료 시 표식을
+제거합니다. 비정상 종료로 표식이 남아도 2시간 뒤 의미 검색이 자동 복구됩니다.
 
 동기화에는 네트워크 재시도와 데이터 손실 안전장치가 적용됩니다. ALIO 응답이나
 문서 변환 결과가 기존 규정 수의 90% 미만이면 기존 데이터를 교체하지 않고 실행을
 실패시킵니다. 기존 규정 삭제, 중복 규정명, 개정일 역행도 자동 병합하지 않으며,
-전체 검색 인덱스 빌드가 성공해야 반영됩니다.
+키워드·의미 검색 인덱스의 엄격 빌드가 모두 성공해야 반영됩니다.
 
 ### ② 사용자 직접 — `sync_from_alio` 도구 / CLI
 
@@ -220,7 +234,7 @@ python3 alio_sync.py --fresh  # 캐시 무시하고 처음부터
 Claude Desktop 채팅에서 "koica 도구 최신으로 업데이트해줘" → `update` 도구가 `git pull + 재빌드`를 자동 실행합니다. 데이터만 바뀐 경우 재시작 없이 즉시 반영, `.py`가 바뀐 경우 OS별 재시작 안내가 함께 출력됩니다.
 
 **동기화 파이프라인** (`alio_sync.py`):
-`ALIO 목록 조회 → 각 규정의 현행본(최신 개정본) 해석 → HWP 다운로드 → kordoc로 Markdown 추출 → Format A 정규화 → data/extracted/*.md + sources.json → 인덱스 재빌드`
+`ALIO 목록 조회 → 각 규정의 현행본(최신 개정본) 해석 → HWP 다운로드 → kordoc로 Markdown 추출 → Format A 정규화 → data/extracted/*.md + sources.json → 키워드·의미 인덱스 재빌드`
 
 ---
 
@@ -234,12 +248,17 @@ data/
 │   ├── 시행세칙_인사규정 시행세칙.md
 │   └── 정관_한국국제협력단 정관.md
 ├── sources.json                # 규정 매니페스트 (이름·유형·개정일·fileNo·origin)
-├── index.json                  # 빌드 산출물 (gitignored)
+├── index.json                  # 조문·별표 키워드 인덱스 (빌드 산출물, gitignored)
+├── semantic_vectors.npy        # 조문·별표 검색 청크 의미 벡터 (빌드 산출물, gitignored)
+├── semantic_meta.json          # 모델·본문 해시 및 벡터 메타데이터 (gitignored)
 └── _cache/                     # 동기화 캐시: HWP·원시 md (gitignored)
 alio_sync.py                    # ALIO 동기화 파이프라인
 koica_search.py                 # 인덱싱·검색 엔진 + CLI
-koica_mcp_server.py             # MCP 서버 (10개 도구)
+semantic_search.py              # E5 모델 다운로드·검증·ONNX 추론·벡터 인덱싱
+koica_mcp_server.py             # 로컬 stdio MCP 서버 (11개 도구)
 ```
+
+의미 모델은 기본적으로 저장소 밖의 사용자 캐시에 보관됩니다. 위치를 고정해야 하는 배포 환경은 `KOICA_SEMANTIC_MODEL_DIR`로 지정할 수 있으며, Docker 이미지는 `/opt/koica-semantic-model`을 사용합니다. 저메모리 운영 환경에서 배치 작업과 겹치지 않게 하려면 `KOICA_SEMANTIC_PAUSE_FILE`에 일시정지 표식 경로를 지정할 수 있습니다.
 
 ---
 
@@ -260,13 +279,17 @@ KOICA 규정에 자주 등장하는 외부 법령(공공기관운영법, 국제�
 
 ## 기술 메모
 
-- **검색 엔진**: 순수 Python + 표준 라이브러리 (의존성: `mcp` 패키지 하나)
+- **검색 엔진**: 키워드 점수와 multilingual-E5 의미 유사도를 순위 융합하는 하이브리드 검색
+- **로컬 의미 모델**: [`intfloat/multilingual-e5-small`](https://huggingface.co/intfloat/multilingual-e5-small) ONNX 양자화 모델(고정 리비전·SHA-256 검증). 외부 임베딩 API나 API 키 불필요
+- **런타임 의존성**: `mcp` + 고정 버전 `numpy`·`onnxruntime`·`sentencepiece` (PyTorch·Transformers·벡터 DB 없음)
 - **동기화**: `alio_sync.py` — ALIO REST(JSON) 조회 + [`kordoc`](https://www.npmjs.com/package/kordoc)(HWP→Markdown, Node) + Format A 정규화
 - **macOS NFD 자모 분해** 자동 정규화
 - **두 가지 추출 포맷 지원**: 마크다운 정형(`### 제N조`) 및 평문 PDF(`제N조(...) ...`)
-- **검색 알고리즘**: 한국어 stopword 제거 + 토큰 IDF 가중 substring 매칭 + 음절 bi-gram fuzzy
+- **검색 알고리즘**: 한국어 stopword·토큰 IDF substring·음절 bi-gram fuzzy의 키워드 검색 + KOICA 도메인 표현 보강 + 384차원 E5 코사인 유사도 + reciprocal-rank fusion(각 채널 1위 보존)
 - **별표·별지 분리 인덱싱**: 본문 조문 검색에서 서식·기준표 노이즈 제거
-- **인덱스 캐싱**: MCP 서버 시작 시 전 조문을 메모리에 로드, 매 호출 시 재사용
+- **인덱스 안전성**: 모델 리비전·본문 해시·벡터 차원을 검증해 오래되거나 다른 본문의 의미 인덱스를 사용하지 않음
+- **인덱스 캐싱**: 조문은 메모리에, 의미 벡터는 NumPy 메모리맵으로 로드해 매 호출 시 재사용
+- **배포 품질 게이트**: 규정 용어를 그대로 쓰지 않은 한국어 의역 15건의 Recall@10과 키워드 대비 개선폭을 이미지·동기화 빌드마다 검증
 
 ---
 
@@ -280,12 +303,14 @@ KOICA 규정에 자주 등장하는 외부 법령(공공기관운영법, 국제�
 - [x] v2.1 — **규정 정비 레이더**(`compliance_radar`): 시행세칙·지침 vs 모규정 개정 대조. `verify_citation` 제목 환각 탐지(`content_mismatch`). `find_references` mermaid 그래프 출력. 자동 동기화를 PR 방식으로 전환(브랜치 보호 대응) + kordoc 버전 고정.
 - [x] v2.2 — **정확성 대수술**(적대적 검토 반영): 인라인 본문 조문 대량 누락 수정(3,831→6,392 조문, +67%), 부칙(附則) 네임스페이스 분리로 조번호 충돌 해소, source 정확일치 우선(형제 규정 오혼입 차단), verify 제목검증 강화(환각 미탐·정의구 오탐 수정), 정비 레이더 정규화(미탐 12→15) + no_parent 노출, 별표 라벨 경계 매칭.
 - [x] v2.3 — **원격 MCP 서버**(`server_http.py`, FastMCP streamable-http): Fly.io 배포로 설치 없이 커넥터 URL 하나(`https://koica-reg-mcp.fly.dev/mcp`)로 연결. 공개판은 읽기 8개 도구 노출(관리·시험문제 제외), 로컬 stdio는 전체 11개 유지.
+- [x] v2.4 — **하이브리드 검색**: 기존 IDF 키워드 검색과 로컬 multilingual-E5 의미 검색을 순위 융합해, 규정 원문과 워딩이 다른 자연어 질의의 재현율 개선. 모델·벡터 해시 검증과 키워드 자동 폴백 포함.
 
 ---
 
 ## 라이센스
 
 - **코드**: MIT License (→ [LICENSE](LICENSE)). Copyright (c) 2026 amnotyoung.
+- **의미 검색 모델**: [`intfloat/multilingual-e5-small`](https://huggingface.co/intfloat/multilingual-e5-small), MIT License. 저장소에는 모델 파일을 커밋하지 않으며 빌드 시 고정 리비전을 검증해 내려받습니다.
 - **규정 데이터**(`data/extracted/*.md` 등): MIT 적용 대상이 **아닙니다.** 원저작권은 **한국국제협력단(KOICA)**에 있으며, KOICA가 [ALIO 공공기관 경영정보 공개시스템](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)을 통해 공표한 자료를 조문 단위로 추출·정규화한 것입니다. 이용 근거는 「저작권법」 제24조의2(공공저작물의 자유이용) 및 공공데이터 이용입니다.
 
 코드·데이터의 구분, 출처, 면책은 [NOTICE](NOTICE)에 정리돼 있습니다.
