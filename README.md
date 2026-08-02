@@ -32,7 +32,9 @@ https://koica-reg-mcp.fly.dev/mcp
 
 등록·재시작 후 규정을 자연어로 물으면 됩니다 — 예: *"KOICA 승진 가점 규정 찾아줘"*, *"인사규정 제11조 보여줘"*. 공개 서버라 인증·토큰이 필요 없습니다.
 
-> 🛠️ **소스를 직접 수정할 게 아니라면 `git clone`은 필요 없습니다.** 저장소를 clone·build하는 건 개발·기여 목적일 때뿐입니다(→ 아래 [빠른 시작](#빠른-시작)의 로컬 설치, 그리고 [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md)).
+규정 검색·조회·인용 검증에 필요한 도구 8개가 전부 제공되며(→ [도구](#도구)), **데이터 최신화도 서버가 알아서 합니다** — 사용자가 동기화나 업데이트를 실행할 일은 없습니다. 다만 서버가 유휴 시 자동 절전하므로, 한동안 쓰지 않다 접속하면 첫 요청이 수 초 지연될 수 있습니다(재시도 시 즉시 연결).
+
+> 🛠️ **소스를 직접 수정할 게 아니라면 `git clone`은 필요 없습니다.** 저장소를 clone·build하는 건 개발·기여·자체 호스팅 목적일 때뿐입니다(→ 아래 [로컬 개발 설치](#로컬-개발-설치), 그리고 [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md)).
 
 ---
 
@@ -72,16 +74,11 @@ ALIO의 KOICA 규정 목록(`apbaId=C0146`)에 게시된 **현행 규정 전체*
 
 ---
 
-## 빠른 시작
+## 로컬 개발 설치
 
-> ⭐ **가장 쉬운 방법 — 원격 커넥터 (설치 불필요):** Claude 데스크톱·웹(claude.ai)의 *커스텀 커넥터 추가* → **"원격 MCP 서버 URL"** 칸에 `https://koica-reg-mcp.fly.dev/mcp` 를 붙여넣으면 끝입니다. Python·클론·빌드가 필요 없습니다.
->
-> - 제공 도구 8개: `search_regulation` · `get_article` · `verify_citation` · `find_references` · `compliance_radar` · `list_attachments` · `get_attachment` · `list_sources`
-> - 관리 도구(`update`·`sync_from_alio`)와 시험문제(`find_questions`)는 공개 원격판에서 제외됩니다 — 전체 11개 도구가 필요하면 아래 로컬 설치를 쓰세요.
-> - 서버는 유휴 시 자동 절전하므로, 한동안 쓰지 않다 접속하면 첫 요청이 수 초 지연될 수 있습니다(재시도 시 즉시 연결).
-> - 직접 호스팅하려면 `server_http.py`(FastMCP streamable-http) + `Dockerfile`·`fly.toml`(Fly.io)을 참고하세요.
+> ⛔ **규정을 검색하려는 목적이라면 이 섹션은 건너뛰세요.** 위 [🚀 바로 쓰기](#-바로-쓰기--설치-불필요)에서 커넥터 URL 하나를 등록하면 끝이고, 그 편이 설치 없이 항상 최신 데이터를 씁니다. 아래는 **코드를 수정·기여하거나 직접 호스팅할 때만** 필요합니다.
 
-아래는 **로컬 설치**(전체 11개 도구 + 직접 ALIO 동기화) 방법입니다.
+로컬 설치는 원격과 같은 검색 도구 8개에 더해 관리·개발용 3개(`update`·`sync_from_alio`·`find_questions`)를 노출하고, ALIO 동기화를 직접 실행할 수 있습니다(→ [로컬 설치 전용 도구](#로컬-설치-전용-관리개발용)). 직접 호스팅하려면 `server_http.py`(FastMCP streamable-http) + `Dockerfile`·`fly.toml`(Fly.io)을 참고하세요.
 
 ### 1. 설치
 
@@ -107,7 +104,9 @@ python3 koica_search.py verify "인사규정 제11조에 따라 인사위원회�
 python3 koica_search.py refs "직제규정" "제9조"
 ```
 
-### 3. Claude Desktop에 연결
+### 3. Claude Desktop에 로컬 stdio로 연결 (개발용)
+
+> 일반 사용자는 이 JSON 설정이 필요 없습니다 — 위 [🚀 바로 쓰기](#-바로-쓰기--설치-불필요)의 커넥터 등록이 정식 경로입니다. 아래는 로컬에서 수정한 코드를 Claude Desktop에 물릴 때만 씁니다.
 
 **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
@@ -127,7 +126,7 @@ python3 koica_search.py refs "직제규정" "제9조"
 
 Claude Desktop을 **완전 종료(Cmd+Q)** 후 재실행하면 입력창 하단 도구 메뉴에 `koica-reg` 도구가 보입니다.
 
-### 4. Codex에 연결 (선택)
+### 4. Codex에 로컬 stdio로 연결 (선택)
 
 ```bash
 codex mcp add koica-reg -- /opt/anaconda3/bin/python3 /절대/경로/koica-reg-mcp/koica_mcp_server.py
@@ -159,7 +158,9 @@ codex mcp list
 
 ---
 
-## 도구 11개
+## 도구
+
+커넥터 URL을 등록하면 아래 8개가 그대로 제공됩니다. **규정을 찾고·읽고·검증하는 데 필요한 도구는 전부 여기 있습니다.**
 
 | 도구 | 입력 | 반환 |
 |---|---|---|
@@ -170,13 +171,20 @@ codex mcp list
 | `compliance_radar` | `source?` | **규정 정비 레이더** — 시행세칙·지침이 모규정 개정에 뒤처졌는지 대조 |
 | `list_attachments` | `source?, category?, kind?, include_deleted?` | 별표·별지 목록 (행정처분 기준표, 서식 등) |
 | `get_attachment` | `source, label` | 별표·별지 본문 전체 (예: `"별표 1"`, `"[별지 제3호 서식]"`) |
-| `find_questions` | `query?, question_id?` | (선택) 시험문제 데이터 + 근거 조문 자동 매핑 |
-| `sync_from_alio` | `timeout_sec?` | **ALIO에서 현행 규정 재수집 → 다운로드 → 추출 → 재빌드** |
-| `update` | — | `git pull + build`로 저장소 갱신, 변경 요약 + OS별 재시작 안내 반환 |
 | `list_sources` | `category?` | 인덱싱된 규정 목록과 조문 수 |
 
 > `category`는 규정 유형(규정/시행세칙/지침/기준/정관) 필터입니다. 대부분은 `source`(규정명)나 본문 검색이 더 정확합니다.
 > 의미 모델이나 의미 인덱스를 열 수 없으면 `hybrid` 검색은 요청을 실패시키지 않고 기존 키워드 검색으로 자동 전환하며, 결과의 `search_mode`가 `keyword_fallback`으로 표시됩니다.
+
+### 로컬 설치 전용 (관리·개발용)
+
+아래 3개는 저장소를 clone해 stdio 서버(`koica_mcp_server.py`)로 돌릴 때만 노출됩니다. 데이터 재수집·저장소 갱신 같은 **운영자 작업용**이라 규정 검색에는 필요하지 않으며, 그래서 공개 원격 서버에서는 제외했습니다.
+
+| 도구 | 입력 | 반환 |
+|---|---|---|
+| `sync_from_alio` | `timeout_sec?` | **ALIO에서 현행 규정 재수집 → 다운로드 → 추출 → 재빌드** |
+| `update` | — | `git pull + build`로 저장소 갱신, 변경 요약 + OS별 재시작 안내 반환 |
+| `find_questions` | `query?, question_id?` | 시험문제 데이터 + 근거 조문 자동 매핑 |
 
 ---
 
@@ -197,9 +205,11 @@ compliance_radar()  →  정비 검토 대상 (예시)
 
 ## 현행성 유지 — ALIO 자동 동기화
 
+> ✅ **원격 커넥터 사용자는 아무것도 할 필요가 없습니다.** 서버가 아래 ①로 현행본을 유지하고 재배포까지 자동으로 이어집니다. ②③은 저장소를 직접 clone해 운영하는 경우의 방법입니다.
+
 규정은 정기적으로 개정됩니다. 이 저장소는 세 갈래로 최신을 유지합니다.
 
-### ① 자동 (권장) — GitHub Actions 주간 동기화
+### ① 자동 (원격 커넥터에 적용) — GitHub Actions 주간 동기화
 
 `.github/workflows/alio-sync.yml`이 **매주** ALIO를 다시 조회해 현행본을 받아오고,
 변경이 감지되면 `auto/alio-sync` 브랜치와 PR을 생성합니다. 자동 검증을 모두
@@ -218,7 +228,7 @@ ALIO가 해외 GitHub-hosted runner의 연결을 제한하므로 원문 수집·
 실패시킵니다. 기존 규정 삭제, 중복 규정명, 개정일 역행도 자동 병합하지 않으며,
 키워드·의미 검색 인덱스의 엄격 빌드가 모두 성공해야 반영됩니다.
 
-### ② 사용자 직접 — `sync_from_alio` 도구 / CLI
+### ② 로컬 설치 사용자 — `sync_from_alio` 도구 / CLI
 
 지금 당장 최신이 필요하면 Claude에게 "코이카 규정 ALIO에서 최신으로 동기화해줘"라고 요청(`sync_from_alio` 도구)하거나, 터미널에서:
 
@@ -229,9 +239,9 @@ python3 alio_sync.py --fresh  # 캐시 무시하고 처음부터
 
 > 동기화에는 **Node.js**가 필요합니다(문서 추출에 `npx kordoc` 사용). 조회·검색 자체에는 불필요합니다. 전 규정 다운로드·추출로 수 분이 걸립니다.
 
-### ③ 최신 받기 — `update`
+### ③ 로컬 설치 사용자 — `update`로 최신 받기
 
-Claude Desktop 채팅에서 "koica 도구 최신으로 업데이트해줘" → `update` 도구가 `git pull + 재빌드`를 자동 실행합니다. 데이터만 바뀐 경우 재시작 없이 즉시 반영, `.py`가 바뀐 경우 OS별 재시작 안내가 함께 출력됩니다.
+로컬 stdio 서버를 붙인 Claude Desktop 채팅에서 "koica 도구 최신으로 업데이트해줘" → `update` 도구가 `git pull + 재빌드`를 자동 실행합니다. 데이터만 바뀐 경우 재시작 없이 즉시 반영, `.py`가 바뀐 경우 OS별 재시작 안내가 함께 출력됩니다.
 
 **동기화 파이프라인** (`alio_sync.py`):
 `ALIO 목록 조회 → 각 규정의 현행본(최신 개정본) 해석 → HWP 다운로드 → kordoc로 Markdown 추출 → Format A 정규화 → data/extracted/*.md + sources.json → 키워드·의미 인덱스 재빌드`
