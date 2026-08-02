@@ -6,7 +6,7 @@ NOTICE — koica-reg-mcp 라이선스 및 데이터 출처
 
 1. 소프트웨어 (코드)
 --------------------
-koica_search.py, koica_mcp_server.py, server_http.py, alio_sync.py,
+koica_search.py, semantic_search.py, koica_mcp_server.py, server_http.py, alio_sync.py,
 Dockerfile 등 모든 소스코드는 MIT License(→ LICENSE 파일)를 따릅니다.
 Copyright (c) 2026 amnotyoung.
 
@@ -23,7 +23,22 @@ data/extracted/*.md, data/sources.json 등에 담긴 KOICA(한국국제협력단
              KOICA가 ALIO를 통해 공표한 자료를 조문 단위로 추출·정규화한 것입니다.
 
 
-3. 면책 (Disclaimer)
+3. 의미 검색 모델
+-----------------
+하이브리드 검색은 아래의 제3자 사전학습 모델을 로컬 ONNX 추론에 사용합니다.
+모델 파일은 이 Git 저장소에 포함하지 않고 빌드 시 고정 리비전에서 내려받으며,
+SHA-256을 검증합니다.
+
+- 모델     : intfloat/multilingual-e5-small
+- 출처     : https://huggingface.co/intfloat/multilingual-e5-small
+- 리비전   : 614241f622f53c4eeff9890bdc4f31cfecc418b3
+- 라이선스 : MIT License
+
+모델에서 생성한 data/semantic_vectors.npy와 data/semantic_meta.json은 재생성 가능한
+검색 인덱스이며 Git 저장소에 포함하지 않습니다.
+
+
+4. 면책 (Disclaimer)
 --------------------
 - 본 데이터는 참조·연구·업무 보조용입니다.
 - 추출·정규화 과정에서 오류가 있을 수 있으며, 정확성·완전성을 보증하지 않습니다.
@@ -32,7 +47,7 @@ data/extracted/*.md, data/sources.json 등에 담긴 KOICA(한국국제협력단
 - 소프트웨어는 LICENSE의 "AS IS" 조항에 따라 어떠한 보증도 없이 제공됩니다.
 
 
-4. 제외 데이터
+5. 제외 데이터
 --------------
 data/questions.json(시험문제 데이터)은 출처가 불명확하여 공개 원격 배포
 이미지에서 제외됩니다(.dockerignore 참조). 로컬 사용에 한합니다.

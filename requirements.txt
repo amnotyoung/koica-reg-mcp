@@ -1,2 +1,8 @@
 # streamable-http 전송을 위해 1.8+ 필요. 2.x는 FastMCP import 경로가 호환되지 않는다.
 mcp>=1.8,<2
+
+# 로컬 의미 검색: intfloat/multilingual-e5-small ONNX 추론.
+# Python 3.11·3.12 wheel이 모두 제공되는 버전으로 고정해 로컬/Docker 빌드를 재현한다.
+numpy==2.4.6
+onnxruntime==1.28.0
+sentencepiece==0.2.2

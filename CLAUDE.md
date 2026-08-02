@@ -23,4 +23,5 @@ claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp
 상세는 [AGENTS.md](AGENTS.md)와 [README](README.md) 참고.
 - 로컬 stdio: `koica_mcp_server.py`(도구 11개) / 원격 HTTP: `server_http.py`(읽기 8개)
 - 배포: `Dockerfile`+`fly.toml`(Fly.io). `main` 머지 시 자동 재배포.
-- 검색 엔진은 순수 표준 라이브러리(의존성 `mcp`뿐).
+- 검색 엔진은 IDF 키워드 + 로컬 `intfloat/multilingual-e5-small` ONNX 의미 검색을 결합합니다. 외부 임베딩 API는 사용하지 않습니다.
+- 로컬 빌드: `pip install -r requirements.txt` → `python3 semantic_search.py download-model` → `python3 koica_search.py build --strict-semantic`.

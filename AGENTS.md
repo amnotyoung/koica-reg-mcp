@@ -42,14 +42,16 @@ claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp
 git clone https://github.com/amnotyoung/koica-reg-mcp.git
 cd koica-reg-mcp
 pip install -r requirements.txt
-python3 koica_search.py build      # data/extracted → data/index.json
+python3 semantic_search.py download-model
+python3 koica_search.py build --strict-semantic
 ```
 
 - `koica_mcp_server.py` — 로컬 stdio 서버 (도구 11개 = 원격 8개 + `update`·`sync_from_alio`·`find_questions`)
 - `server_http.py` — 원격 HTTP(streamable-http) 서버 (읽기 8개)
 - `Dockerfile` + `fly.toml` — Fly.io 배포. **`main`에 머지되면 GitHub Actions가 자동 재배포**합니다.
-- 검색 엔진(`koica_search.py`)은 순수 표준 라이브러리(런타임 의존성은 `mcp` 하나).
-- 인덱스(`data/index.json`)는 gitignore되며, 이미지 빌드 시 `data/extracted/`에서 생성됩니다.
+- 검색 엔진은 기존 IDF 키워드 점수와 로컬 `intfloat/multilingual-e5-small` ONNX 의미 유사도를 결합합니다. 외부 임베딩 API나 API 키는 쓰지 않습니다.
+- 의미 모델은 고정 리비전·SHA-256을 검증해 사용자 캐시에 받고, `numpy`·`onnxruntime`·`sentencepiece`로 추론합니다. 배포 경로는 `KOICA_SEMANTIC_MODEL_DIR`로 고정할 수 있습니다.
+- `data/index.json`, `data/semantic_vectors.npy`, `data/semantic_meta.json`은 gitignore된 빌드 산출물이며 Docker와 CI에서는 `--strict-semantic`으로 함께 생성·검증합니다.
 
 ---
 

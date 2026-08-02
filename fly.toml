@@ -10,6 +10,8 @@ primary_region = 'nrt'
 # 이 env는 Fly 배포에만 존재하므로 로컬/도커 기본 실행에서는 집계가 꺼진다(no-op).
 [env]
   KOICA_STATS_DB = '/data/usage.db'
+  # 주간 ALIO 변환 중에는 이 표식으로 ONNX 적재를 막고 키워드 검색으로 폴백한다.
+  KOICA_SEMANTIC_PAUSE_FILE = '/data/semantic-search.paused'
 
 # 영속 볼륨. 최초 1회 생성 필요:
 #   fly volumes create koica_data --region nrt --size 1 --app koica-reg-mcp
