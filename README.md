@@ -280,6 +280,31 @@ python3 alio_sync.py --fresh  # 캐시 무시하고 처음부터
 
 ---
 
+## 운영 사용량 — Fly Metrics / Grafana
+
+원격 서버는 개인정보 없이 MCP 도구 호출 횟수만 `/data/usage.db`에 누적합니다.
+`usage_metrics.py`가 이 값을 내부 포트 `9091`의 Prometheus 형식으로 제공하고,
+`fly.toml`의 `[metrics]` 설정을 통해 Fly managed Prometheus가 수집합니다. 이 포트는
+공개 `http_service`에 연결되지 않으므로 외부 사용자는 통계를 직접 조회할 수 없습니다.
+
+Fly Dashboard에서 앱의 **Metrics → Grafana**를 연 뒤 아래 메트릭을 조회할 수 있습니다.
+
+| 메트릭 | 의미 |
+|---|---|
+| `koica_reg_mcp_calls_total` | 전체 MCP 도구 호출 누적 |
+| `koica_reg_mcp_tool_calls_total{tool="…"}` | 도구별 호출 누적 |
+| `koica_reg_mcp_weekly_calls{week_start="YYYY-MM-DD"}` | KST 월요일 기준 주차별 호출 |
+| `koica_reg_mcp_weekly_tool_calls{week_start="…",tool="…"}` | 주차·도구별 호출 |
+
+주차별 막대그래프는 Grafana에서 `koica_reg_mcp_weekly_calls`를 **Instant** 쿼리하고,
+범례를 `{{week_start}}`, 시각화를 Bar chart로 선택하면 됩니다. CLI 원자료 조회는
+`fly ssh console --app koica-reg-mcp --command "python3 /app/stats_cli.py"`를 사용합니다.
+
+> 이 값은 고유 사용자 수가 아니라 성공·실패를 포함한 MCP 도구 진입 횟수입니다.
+> 검색어, 응답, IP, 사용자·세션 식별자는 저장하지 않습니다.
+
+---
+
 ## 데이터 구조
 
 ```
