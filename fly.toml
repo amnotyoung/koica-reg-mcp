@@ -10,6 +10,8 @@ primary_region = 'nrt'
 # 이 env는 Fly 배포에만 존재하므로 로컬/도커 기본 실행에서는 집계가 꺼진다(no-op).
 [env]
   KOICA_STATS_DB = '/data/usage.db'
+  # Fly 내부 Prometheus scraper 전용 포트. 공개 http_service에는 연결하지 않는다.
+  KOICA_METRICS_PORT = '9091'
   # 주간 ALIO 변환 중에는 이 표식으로 ONNX 적재를 막고 키워드 검색으로 폴백한다.
   KOICA_SEMANTIC_PAUSE_FILE = '/data/semantic-search.paused'
 
@@ -28,6 +30,11 @@ primary_region = 'nrt'
   # ALIO 주간 동기화가 SSH로 실행되므로 도쿄 머신 1대는 상시 유지한다.
   min_machines_running = 1
   processes = ['app']
+
+# Fly managed Prometheus가 내부 포트에서 15초마다 사용량 메트릭을 수집한다.
+[metrics]
+  port = 9091
+  path = '/metrics'
 
 [[vm]]
   size = 'shared-cpu-1x'

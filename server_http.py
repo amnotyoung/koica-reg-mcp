@@ -22,6 +22,7 @@ import os
 from mcp.server.fastmcp import FastMCP
 
 from koica_mcp_server import register_tools, SERVER_INSTRUCTIONS
+from usage_metrics import start_metrics_server
 
 # host/port 는 컨테이너/클라우드에서 주입된다. Fly.io 는 PORT 환경변수를 넘긴다.
 mcp = FastMCP(
@@ -36,4 +37,7 @@ register_tools(mcp, include_admin=False, include_questions=False)
 
 
 if __name__ == "__main__":
+    metrics_port = os.environ.get("KOICA_METRICS_PORT")
+    if metrics_port:
+        start_metrics_server(port=int(metrics_port))
     mcp.run(transport="streamable-http")

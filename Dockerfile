@@ -28,7 +28,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # 애플리케이션 코드 (server_http → koica_mcp_server → koica_search / usage_stats 의존)
 # stats_cli.py: 소유자 전용 사용량 조회(공개 MCP엔 usage_stats 미노출, fly ssh로만 읽음)
-COPY koica_search.py semantic_search.py koica_mcp_server.py server_http.py usage_stats.py stats_cli.py alio_sync.py ./
+COPY koica_search.py semantic_search.py koica_mcp_server.py server_http.py usage_stats.py usage_metrics.py stats_cli.py alio_sync.py ./
 COPY tests/evaluate_semantic_quality.py ./tests/
 COPY LICENSE NOTICE /usr/share/doc/koica-reg-mcp/
 
@@ -51,6 +51,6 @@ RUN python3 -c "from mcp.server.fastmcp import FastMCP" \
 # 추론이 하나의 CPU 스레드만 쓰게 한다. 동시 세션 실행은 DenseEncoder 락이 직렬화한다.
 ENV KOICA_SEMANTIC_THREADS=1
 ENV PORT=8080
-EXPOSE 8080
+EXPOSE 8080 9091
 
 CMD ["python", "server_http.py"]
