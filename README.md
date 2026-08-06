@@ -1,6 +1,6 @@
 # koica-reg-mcp
 
-**KOICA 현행 규정 149개를 MCP로 검색·조회.** 한국국제협력단 내부 규정을 **키워드 + 의미 기반 하이브리드 검색** + 본문 직접 조회 + 인용 검증(제목 환각까지) + 상호참조 그래프 + **규정 정비 레이더**로, MCP 호환 클라이언트(Claude Desktop·claude.ai·Claude Code·Codex·Cursor 등)에서 사용. 규정 원본은 [ALIO(공공기관 경영정보 공개시스템)](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)에서 **자동 동기화**됩니다.
+**KOICA 현행 규정 149개를 MCP로 검색·조회.** 한국국제협력단 내부 규정을 **키워드 + 의미 기반 하이브리드 검색** + 본문 직접 조회 + 인용 검증(제목 환각까지) + 상호참조 그래프 + **규정 정비 레이더**로, MCP 호환 클라이언트(Claude Desktop·claude.ai·Claude Code·Codex·Cursor 등)에서 사용합니다. 설치 없는 **원격 MCP**와 사용자 PC에서 직접 실행하는 **로컬 MCP**를 모두 지원합니다. 규정 원본은 [ALIO(공공기관 경영정보 공개시스템)](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)에서 가져오며, 원격 서버는 자동 동기화되고 로컬 설치본은 사용자가 원하는 시점에 갱신할 수 있습니다.
 
 [![MCP](https://img.shields.io/badge/MCP-streamable--http-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -16,7 +16,16 @@ MCP 클라이언트를 설정하지 않아도 텔레그램에서 [`@koica_reg_bo
 
 > 이 봇은 공개된 KOICA 규정 자료를 쉽게 검색하기 위한 **비공식 AI 도우미**이며, KOICA가 개발하거나 운영하는 공식 봇이 아닙니다. 답변은 참고용이므로 중요한 의사결정 전에는 KOICA 또는 [ALIO](https://www.alio.go.kr/item/itemOrganList.do?apbaId=C0146&reportFormRootNo=21110)의 공식 최신 원문을 확인하세요. 대화 세션은 매일 오전 4시에 초기화되며 이전 세션의 기록은 자동 삭제됩니다. 민감한 개인정보는 입력하지 마세요.
 
-## 🚀 바로 쓰기 — 설치 불필요
+## 🚀 사용 방법 선택
+
+| 방식 | 추천 대상 | 서버 비용 | 데이터 갱신 |
+|---|---|---:|---|
+| **원격 MCP** | 설치 없이 바로 쓰고 항상 같은 최신 데이터를 쓰려는 사용자 | 운영자가 부담 | 서버가 주간 자동 동기화 |
+| **로컬 MCP** | 원격 서버 없이 자기 PC에서 검색 엔진을 실행하려는 사용자·기관 | 없음 | 사용자가 `update` 또는 `sync_from_alio` 실행 |
+
+두 방식은 동일한 검색·조회·검증 도구 8개를 제공합니다. 로컬 MCP에는 자기 설치본을 관리하기 위한 `update`·`sync_from_alio`·`find_questions` 3개가 추가됩니다.
+
+### 옵션 A — 원격 MCP: 설치 불필요
 
 **이건 이미 배포된 원격 MCP 서버입니다.** `clone`·`pip`·`build` 없이, 쓰는 클라이언트에 아래 URL 하나만 등록하면 끝입니다:
 
@@ -34,7 +43,23 @@ https://koica-reg-mcp.fly.dev/mcp
 
 규정 검색·조회·인용 검증에 필요한 도구 8개가 전부 제공되며(→ [도구](#도구)), **데이터 최신화도 서버가 알아서 합니다** — 사용자가 동기화나 업데이트를 실행할 일은 없습니다. 다만 서버가 유휴 시 자동 절전하므로, 한동안 쓰지 않다 접속하면 첫 요청이 수 초 지연될 수 있습니다(재시도 시 즉시 연결).
 
-> 🛠️ **소스를 직접 수정할 게 아니라면 `git clone`은 필요 없습니다.** 저장소를 clone·build하는 건 개발·기여·자체 호스팅 목적일 때뿐입니다(→ 아래 [로컬 개발 설치](#로컬-개발-설치), 그리고 [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md)).
+> 원격 방식을 선택했다면 `git clone`은 필요 없습니다. 로컬 MCP를 선택하거나 소스를 수정·기여·자체 호스팅하려면 아래 설치 절차를 따르세요.
+
+### 옵션 B — 로컬 MCP: 사용자 PC에서 직접 실행
+
+공개 원격 서버를 거치지 않고 `koica_mcp_server.py`를 사용자 PC에서 `stdio` 프로세스로 실행합니다. 별도의 VM·도메인·TLS·서버 운영비가 필요 없고, 의미 검색도 외부 임베딩 API 없이 로컬 ONNX 모델로 처리합니다.
+
+- Python 3.11 이상
+- 설치공간 약 400~500MB(운영체제와 Python 환경에 따라 달라짐)
+- 의미 검색 시 CPU 코어 1개를 짧게 사용하며 GPU는 필요 없음
+- 검색 런타임은 512MB 메모리 환경에서도 동작하도록 설계되어 일반적인 8GB RAM 사무용 PC에서 부담이 크지 않음
+- 사용자별 설치·업데이트가 필요하고, 여러 클라이언트가 각각 `stdio` 서버를 실행하면 메모리 사용량이 늘어날 수 있음
+
+자세한 설치와 Claude Desktop·Claude Code·Codex 등록 방법은 [로컬 MCP 설치](#로컬-mcp-설치)를 참고하세요.
+
+> 브라우저에서만 실행되는 클라이언트는 사용자 PC의 로컬 `stdio` 프로세스를 직접 시작할 수 없습니다. claude.ai 같은 웹 전용 환경에서는 원격 MCP를 사용하고, 로컬 MCP는 Claude Desktop·Claude Code·Codex 같은 로컬 실행 클라이언트에 연결하세요.
+
+> 로컬 MCP는 검색과 임베딩 추론을 PC 안에서 수행하지만, 연결한 AI 클라이언트가 질문과 검색 결과를 모델 제공자에게 전송할 수 있습니다. 기관 환경에서는 생성형 AI 이용·자료 반출 정책을 별도로 확인하세요.
 
 ---
 
@@ -46,7 +71,7 @@ https://koica-reg-mcp.fly.dev/mcp
 
 - **참조 시간 단축** — 149개 규정을 매번 열어 Ctrl+F 하는 대신, 자연어 한 줄로 조문 단위 검색
 - **표현이 달라도 검색** — 정확한 규정 용어를 몰라도 로컬 multilingual-E5 의미 검색이 의역·유사 표현의 후보 조문을 보완
-- **항상 현행본** — ALIO의 KOICA 규정 목록을 주기적으로 자동 수집해 **최신 개정본**만 인덱싱
+- **현행본 갱신** — 원격 서버는 ALIO의 KOICA 규정 목록을 주기적으로 자동 수집하고, 로컬 설치본은 사용자가 원하는 시점에 같은 동기화를 실행
 - **인용 검증** — 보고서·답변에 들어간 "{규정명} 제N조" 인용이 실제로 존재하는지 자동 교차검증 (LLM 환각 방지)
 - **상호참조 자동 추적** — 어떤 조문이 시행세칙·관련 지침의 어디로 연결되는지 양방향 그래프
 - **시험 준비 보조** — KOICA 채용·승진 시험 응시자가 자기 정답을 근거 조문으로 검증
@@ -74,11 +99,9 @@ ALIO의 KOICA 규정 목록(`apbaId=C0146`)에 게시된 **현행 규정 전체*
 
 ---
 
-## 로컬 개발 설치
+## 로컬 MCP 설치
 
-> ⛔ **규정을 검색하려는 목적이라면 이 섹션은 건너뛰세요.** 위 [🚀 바로 쓰기](#-바로-쓰기--설치-불필요)에서 커넥터 URL 하나를 등록하면 끝이고, 그 편이 설치 없이 항상 최신 데이터를 씁니다. 아래는 **코드를 수정·기여하거나 직접 호스팅할 때만** 필요합니다.
-
-로컬 설치는 원격과 같은 검색 도구 8개에 더해 관리·개발용 3개(`update`·`sync_from_alio`·`find_questions`)를 노출하고, ALIO 동기화를 직접 실행할 수 있습니다(→ [로컬 설치 전용 도구](#로컬-설치-전용-관리개발용)). 직접 호스팅하려면 `server_http.py`(FastMCP streamable-http) + `Dockerfile`·`fly.toml`(Fly.io)을 참고하세요.
+이 절차는 원격 서버 없이 규정 검색을 사용하거나, 코드를 수정·기여·자체 호스팅하려는 경우에 사용합니다. 로컬 설치는 원격과 같은 검색 도구 8개에 더해 관리용 3개(`update`·`sync_from_alio`·`find_questions`)를 노출하고, ALIO 동기화를 직접 실행할 수 있습니다(→ [로컬 설치 전용 도구](#로컬-설치-전용-관리동기화용)). 직접 호스팅하려면 `server_http.py`(FastMCP streamable-http) + `Dockerfile`·`fly.toml`(Fly.io)을 참고하세요.
 
 ### 1. 설치
 
@@ -87,10 +110,14 @@ Python 3.11 이상이 필요합니다.
 ```bash
 git clone https://github.com/amnotyoung/koica-reg-mcp.git
 cd koica-reg-mcp
-pip install -r requirements.txt
-python3 semantic_search.py download-model
-python3 koica_search.py build --strict-semantic
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python semantic_search.py download-model
+python koica_search.py build --strict-semantic
 ```
+
+Windows PowerShell에서는 가상환경 활성화 명령만 `.venv\Scripts\Activate.ps1`로 바꾸면 됩니다.
 
 현재 추출본 기준으로 빌드하면 `data/index.json`에 6,396개 조문(본칙 4,200 + 부칙 2,196)과 1,313개 별표·별지가 인덱싱되고, `data/semantic_vectors.npy`와 `data/semantic_meta.json`에 의미 검색 인덱스가 생성됩니다. 최초 한 번 약 124MB의 고정 multilingual-E5 모델을 사용자 캐시(`~/.cache/koica-reg-mcp/multilingual-e5-small`, 운영체제에 따라 다름)에 내려받습니다. 모델 추론은 로컬에서 실행되며 검색어를 외부 API로 보내지 않습니다. (본칙 조문은 부칙과 분리 태깅되어 조회 시 본칙이 우선됩니다.)
 
@@ -104,9 +131,7 @@ python3 koica_search.py verify "인사규정 제11조에 따라 인사위원회�
 python3 koica_search.py refs "직제규정" "제9조"
 ```
 
-### 3. Claude Desktop에 로컬 stdio로 연결 (개발용)
-
-> 일반 사용자는 이 JSON 설정이 필요 없습니다 — 위 [🚀 바로 쓰기](#-바로-쓰기--설치-불필요)의 커넥터 등록이 정식 경로입니다. 아래는 로컬에서 수정한 코드를 Claude Desktop에 물릴 때만 씁니다.
+### 3. Claude Desktop에 로컬 stdio로 연결
 
 **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
@@ -115,21 +140,28 @@ python3 koica_search.py refs "직제규정" "제9조"
 {
   "mcpServers": {
     "koica-reg": {
-      "command": "/opt/anaconda3/bin/python3",
+      "command": "/절대/경로/koica-reg-mcp/.venv/bin/python",
       "args": ["/절대/경로/koica-reg-mcp/koica_mcp_server.py"]
     }
   }
 }
 ```
 
-> `command`에는 `mcp` 패키지가 설치된 Python의 절대 경로를 적어주세요 (`which python3`로 확인).
+> `command`에는 위 가상환경의 Python 절대 경로를 적어주세요. Windows에서는 `C:\\절대\\경로\\koica-reg-mcp\\.venv\\Scripts\\python.exe` 형식입니다.
 
 Claude Desktop을 **완전 종료(Cmd+Q)** 후 재실행하면 입력창 하단 도구 메뉴에 `koica-reg` 도구가 보입니다.
 
-### 4. Codex에 로컬 stdio로 연결 (선택)
+### 4. Claude Code에 로컬 stdio로 연결
 
 ```bash
-codex mcp add koica-reg -- /opt/anaconda3/bin/python3 /절대/경로/koica-reg-mcp/koica_mcp_server.py
+claude mcp add --transport stdio koica-reg -- /절대/경로/koica-reg-mcp/.venv/bin/python /절대/경로/koica-reg-mcp/koica_mcp_server.py
+claude mcp list
+```
+
+### 5. Codex에 로컬 stdio로 연결
+
+```bash
+codex mcp add koica-reg -- /절대/경로/koica-reg-mcp/.venv/bin/python /절대/경로/koica-reg-mcp/koica_mcp_server.py
 codex mcp list
 ```
 
@@ -160,7 +192,7 @@ codex mcp list
 
 ## 도구
 
-커넥터 URL을 등록하면 아래 8개가 그대로 제공됩니다. **규정을 찾고·읽고·검증하는 데 필요한 도구는 전부 여기 있습니다.**
+원격 URL을 등록하거나 로컬 MCP를 연결하면 아래 8개가 그대로 제공됩니다. **규정을 찾고·읽고·검증하는 데 필요한 도구는 전부 여기 있습니다.**
 
 | 도구 | 입력 | 반환 |
 |---|---|---|
@@ -176,7 +208,7 @@ codex mcp list
 > `category`는 규정 유형(규정/시행세칙/지침/기준/정관) 필터입니다. 대부분은 `source`(규정명)나 본문 검색이 더 정확합니다.
 > 의미 모델이나 의미 인덱스를 열 수 없으면 `hybrid` 검색은 요청을 실패시키지 않고 기존 키워드 검색으로 자동 전환하며, 결과의 `search_mode`가 `keyword_fallback`으로 표시됩니다.
 
-### 로컬 설치 전용 (관리·개발용)
+### 로컬 설치 전용 (관리·동기화용)
 
 아래 3개는 저장소를 clone해 stdio 서버(`koica_mcp_server.py`)로 돌릴 때만 노출됩니다. 데이터 재수집·저장소 갱신 같은 **운영자 작업용**이라 규정 검색에는 필요하지 않으며, 그래서 공개 원격 서버에서는 제외했습니다.
 
@@ -203,7 +235,7 @@ compliance_radar()  →  정비 검토 대상 (예시)
 
 ---
 
-## 현행성 유지 — ALIO 자동 동기화
+## 현행성 유지 — 원격 자동 동기화·로컬 업데이트
 
 > ✅ **원격 커넥터 사용자는 아무것도 할 필요가 없습니다.** 서버가 아래 ①로 현행본을 유지하고 재배포까지 자동으로 이어집니다. ②③은 저장소를 직접 clone해 운영하는 경우의 방법입니다.
 
