@@ -8,8 +8,16 @@
    "name": "직제규정 시행세칙",
    "type": "시행세칙",
    "file": "시행세칙_직제규정 시행세칙.md",
-   "revision": "2026.07.13",
-   "file_no": "238825",
+   "revision": "2026.07.29",
+   "file_no": "239645",
+   "origin": "alio"
+  },
+  {
+   "name": "복무규정",
+   "type": "규정",
+   "file": "규정_복무규정.md",
+   "revision": "2026.07.28",
+   "file_no": "239644",
    "origin": "alio"
   },
   {
@@ -186,14 +194,6 @@
    "file": "지침_현지입찰 시공사 선정 적격심사지침.md",
    "revision": "2026.03.05",
    "file_no": "232138",
-   "origin": "alio"
-  },
-  {
-   "name": "복무규정",
-   "type": "규정",
-   "file": "규정_복무규정.md",
-   "revision": "2026.03.04",
-   "file_no": "232137",
    "origin": "alio"
   },
   {
