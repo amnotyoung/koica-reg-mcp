@@ -14,7 +14,7 @@ jobs:
     steps:
       # 액션은 태그가 아니라 커밋 SHA로 고정한다(태그는 상류에서 이동 가능).
       # 갱신은 Dependabot이 주간 PR로 제안한다 — .github/dependabot.yml 참고.
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       # 특히 이 스텝이 설치한 flyctl 바이너리가 다음 스텝에서 FLY_API_TOKEN을 들고
       # 실행되므로, 가변 브랜치(@master)를 쓰면 상류가 오염되는 순간 배포 토큰이
       # 그대로 넘어간다.
