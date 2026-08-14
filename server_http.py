@@ -25,11 +25,19 @@ from koica_mcp_server import register_tools, SERVER_INSTRUCTIONS
 from usage_metrics import start_metrics_server
 
 # host/port 는 컨테이너/클라우드에서 주입된다. Fly.io 는 PORT 환경변수를 넘긴다.
+#
+# stateless_http=True: 상태 유지 모드에서는 initialize 요청마다 세션 전송체가
+# 만들어지고, 클라이언트가 DELETE를 보내지 않으면 프로세스가 끝날 때까지 회수되지
+# 않는다(현 SDK의 세션 유휴 타임아웃 기본값은 None이고 FastMCP는 이 값을 노출하지
+# 않는다). 인증이 없는 공개 서버라 initialize 반복만으로 512MB 머신의 메모리를
+# 고갈시킬 수 있다. 노출된 도구 8종은 모두 세션 상태가 없는 단발 조회이므로
+# 요청마다 새 전송체를 쓰고 즉시 버리는 편이 안전하고 동작도 동일하다.
 mcp = FastMCP(
     "koica-reg",
     instructions=SERVER_INSTRUCTIONS,
     host="0.0.0.0",
     port=int(os.environ.get("PORT", "8080")),
+    stateless_http=True,
 )
 
 # 읽기 전용 도구만 등록. 관리 도구(update/sync)와 find_questions(출처 불명 데이터) 제외.

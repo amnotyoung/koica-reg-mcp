@@ -987,6 +987,13 @@ def _article_range_for(source_nfc: str, articles: list[Article]) -> str:
     return f"{first} ~ {last}, 총 {len(nos)}개"
 
 
+# verify_citation은 인증 없는 공개 원격 서버에서 호출되고, 동기 도구는 서버의
+# 이벤트 루프에서 직접 실행된다. 입력 길이와 처리할 인용 수에 상한이 없으면 요청
+# 하나가 CPU와 메모리를 모두 점유해 다른 모든 클라이언트를 멈춰 세운다.
+VERIFY_MAX_TEXT_CHARS = 20_000
+VERIFY_MAX_CITATIONS = 200
+
+
 def verify_citation(text: str) -> list[dict]:
     """텍스트 내 모든 '{규정명} 제N조[의M]' 인용을 인덱스로 교차검증.
 
@@ -998,10 +1005,28 @@ def verify_citation(text: str) -> list[dict]:
 
     content_mismatch는 "인사규정 제11조(육아휴직)"처럼 존재하는 조문번호에
     엉뚱한 제목을 붙인 LLM 환각을 잡는다.
+
+    입력이 VERIFY_MAX_TEXT_CHARS자를 넘거나 인용이 VERIFY_MAX_CITATIONS건을
+    넘으면 앞부분만 검증하고, 마지막에 status="truncated" 알림 항목을 덧붙인다.
     """
-    text_nfc = _nfc(text)
+    truncated_text = len(text) > VERIFY_MAX_TEXT_CHARS
+    text_nfc = _nfc(text[:VERIFY_MAX_TEXT_CHARS])
     articles = load_index()
     known_sources = sorted({a.source for a in articles}, key=len, reverse=True)
+
+    # 인용 1건마다 전체 조문을 훑지 않도록 (규정명, 조번호, 가지번호) 색인을
+    # 한 번만 만든다. 인용이 하나뿐인 일반 호출에서도 기존 선형 탐색보다 빠르다.
+    by_key: dict[tuple[str, int, int], list[Article]] = {}
+    for a in articles:
+        by_key.setdefault((a.source, a.article_no, a.article_sub), []).append(a)
+
+    # not_found 안내에 쓰는 조문 범위도 규정명마다 한 번만 계산한다.
+    range_cache: dict[str, str] = {}
+
+    def article_range(src: str) -> str:
+        if src not in range_cache:
+            range_cache[src] = _article_range_for(src, articles)
+        return range_cache[src]
 
     def nearest_source(prefix: str) -> Optional[str]:
         best, best_pos = None, -1
@@ -1013,7 +1038,12 @@ def verify_citation(text: str) -> list[dict]:
         return best if best_pos >= 0 else None
 
     results = []
+    skipped = 0
     for m in CITATION_RE.finditer(text_nfc):
+        # 각 분기가 정확히 1건씩 append하므로 len(results)가 곧 처리한 인용 수다.
+        if len(results) >= VERIFY_MAX_CITATIONS:
+            skipped += 1
+            continue
         prefix = text_nfc[max(0, m.start() - 80): m.start()]
         matched_src = nearest_source(prefix)
         art = f"제{m.group(1)}조" + (f"의{m.group(2)}" if m.group(2) else "")
@@ -1026,8 +1056,7 @@ def verify_citation(text: str) -> list[dict]:
             })
             continue
         no, sub = int(m.group(1)), int(m.group(2) or 0)
-        cand = [a for a in articles
-                if a.source == matched_src and a.article_no == no and a.article_sub == sub]
+        cand = by_key.get((matched_src, no, sub), [])
         # 인용 직전에 "부칙"이 있으면 부칙 조문 우선, 아니면 본칙 우선
         prefer_suppl = "부칙" in text_nfc[max(0, m.start() - 15): m.start()]
         main = [a for a in cand if not a.is_supplementary]
@@ -1062,8 +1091,23 @@ def verify_citation(text: str) -> list[dict]:
                 "citation": f"{matched_src} {art}",
                 "raw_match": full_cite,
                 "status": "not_found",
-                "message": f"{matched_src}에 {art} 없음 (실재: {_article_range_for(matched_src, articles)})",
+                "message": f"{matched_src}에 {art} 없음 (실재: {article_range(matched_src)})",
             })
+
+    if truncated_text or skipped:
+        notes = []
+        if truncated_text:
+            notes.append(f"입력이 {VERIFY_MAX_TEXT_CHARS}자를 넘어 앞부분만 검증했습니다")
+        if skipped:
+            notes.append(
+                f"인용 {VERIFY_MAX_CITATIONS}건까지만 검증했습니다(미검증 {skipped}건)"
+            )
+        results.append({
+            "status": "truncated",
+            "verified": len(results),
+            "skipped": skipped,
+            "message": ". ".join(notes) + ". 텍스트를 나눠 다시 요청하세요.",
+        })
     return results
 
 

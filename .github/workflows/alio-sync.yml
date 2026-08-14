@@ -22,11 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
+      # 액션은 태그가 아니라 커밋 SHA로 고정한다(태그는 상류에서 이동 가능).
+      # 갱신은 Dependabot이 주간 PR로 제안한다 — .github/dependabot.yml 참고.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
           cache: pip
@@ -35,7 +37,7 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check -r requirements.txt
 
       - name: 의미 검색 모델 캐시
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ${{ runner.temp }}/koica-semantic-model
           key: koica-semantic-e5-small-614241f622f53c4eeff9890bdc4f31cfecc418b3
@@ -49,7 +51,9 @@ jobs:
         run: python3 -m unittest discover -s tests -v
 
       - name: Setup Fly CLI
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        # 바로 다음 스텝이 이 액션이 설치한 flyctl을 FLY_API_TOKEN과 함께 실행하므로
+        # 가변 브랜치(@master)를 쓰지 않는다. (fly-deploy.yml과 동일한 핀)
+        uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # 1.6
 
       - name: Fly 도쿄에서 ALIO 동기화
         env:

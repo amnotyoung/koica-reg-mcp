@@ -165,6 +165,10 @@ def register_tools(mcp: FastMCP, include_admin: bool = True,
         ok / not_found / unknown_source 셋 중 하나로 분류하고,
         not_found인 경우 해당 규정의 실제 조문 범위를 함께 안내.
 
+        한 번에 텍스트 20,000자·인용 200건까지 검증한다. 이를 넘으면 앞부분만
+        검증하고 마지막에 status="truncated" 항목으로 미검증 건수를 알리므로,
+        긴 문서는 나눠서 여러 번 호출한다.
+
         Args:
             text: 검증할 한국어 텍스트 (여러 인용이 섞여 있어도 됨)
         """
