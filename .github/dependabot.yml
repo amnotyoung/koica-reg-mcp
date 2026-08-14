@@ -1,0 +1,29 @@
+# GitHub Actions 갱신 자동화.
+#
+# 워크플로의 액션은 전부 커밋 SHA로 고정되어 있다. 태그(@v4)나 브랜치(@master)는
+# 상류에서 이동할 수 있어, 배포 토큰을 다루는 스텝에는 쓰지 않는다. 대신 고정된
+# 핀이 낡지 않도록 Dependabot이 새 릴리스를 주간 PR로 제안한다 —
+# SHA와 뒤에 붙은 `# vX.Y.Z` 주석을 함께 갱신해 준다.
+#
+# PR은 사람이 검토·병합한다. `main` 병합 시 fly-deploy.yml이 곧바로 재배포하므로
+# 자동 병합은 설정하지 않는다.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    # github-actions 생태계에서 "/"는 .github/workflows 전체를 뜻한다.
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      # ALIO 규정 동기화가 월요일 09:00 KST에 PR·배포를 만드므로, 액션 갱신 PR은
+      # 화요일로 떨어뜨려 둘이 한 아침에 섞이지 않게 한다.
+      day: "tuesday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    # 액션 4개뿐이라 한 PR로 묶어 검토 부담을 줄인다.
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore(ci)"
+    open-pull-requests-limit: 3
