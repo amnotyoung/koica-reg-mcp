@@ -247,6 +247,56 @@ def download_files(resolved: list[dict]) -> None:
         time.sleep(0.2)
 
 
+_ZIP_DATE_RES = (
+    re.compile(r"(\d{4})년도?\s*(\d{1,2})월(?:\s*(\d{1,2})일)?"),
+    re.compile(r"\((\d{2})(\d{2})(\d{2})\)"),
+)
+
+
+def _zip_member_name(info) -> str:
+    if info.flag_bits & 0x800:
+        return info.filename
+    try:
+        return info.filename.encode("cp437").decode("cp949")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return info.filename
+
+
+def _zip_member_date(name: str) -> tuple[int, int, int]:
+    base = name.rsplit("/", 1)[-1]
+    m = _ZIP_DATE_RES[0].search(base)
+    if m:
+        return int(m.group(1)), int(m.group(2)), int(m.group(3) or 0)
+    m = _ZIP_DATE_RES[1].search(base)
+    if m:
+        return 2000 + int(m.group(1)), int(m.group(2)), int(m.group(3))
+    return (0, 0, 0)
+
+
+def unpack_revision_zips(resolved: list[dict]) -> None:
+    """ALIO가 규정 하나를 개정 이력 zip(현행본+과거본 HWP 묶음)으로 주는 경우,
+    파일명의 개정일이 가장 늦은 HWP/HWPX를 현행본으로 꺼내고 r['ext']를 바꾼다."""
+    import zipfile
+
+    for r in resolved:
+        src = HWP_CACHE / f"{r['file_no']}.zip"
+        if r.get("ext") != "zip" or not src.exists() or not zipfile.is_zipfile(src):
+            continue
+        with zipfile.ZipFile(src) as zf:
+            members = [(i, _zip_member_name(i)) for i in zf.infolist()]
+            members = [m for m in members if m[1].lower().endswith((".hwp", ".hwpx"))]
+            if not members:
+                log(f"  zip 안에 HWP 없음: {r['title']}")
+                continue
+            info, name = max(members, key=lambda m: _zip_member_date(m[1]))
+            ext = name.rsplit(".", 1)[-1].lower()
+            dest = HWP_CACHE / f"{r['file_no']}.{ext}"
+            if not dest.exists():
+                dest.write_bytes(zf.read(info))
+                log(f"  zip 현행본 선택: {r['title']} ← {name.rsplit('/', 1)[-1]}")
+        r["ext"] = ext
+
+
 # ── 4) kordoc 변환 ──────────────────────────────────────────────────────
 def kordoc_convert(resolved: list[dict], fresh: bool = False) -> None:
     """캐시된 HWP를 kordoc CLI로 Markdown 변환 (md_raw 캐시)."""
@@ -509,6 +559,7 @@ def main() -> None:
     # 3) 다운로드
     log("[3/7] 현행본 HWP 다운로드…")
     download_files(resolved)
+    unpack_revision_zips(resolved)
 
     # 4) kordoc 변환
     log("[4/7] kordoc HWP→Markdown 변환…")
