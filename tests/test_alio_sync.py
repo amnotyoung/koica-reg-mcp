@@ -188,5 +188,45 @@ class SafetyTests(unittest.TestCase):
             self.assertTrue(sources_path.exists())
 
 
+class RevisionZipTests(unittest.TestCase):
+    """ALIO가 규정 하나를 개정 이력 zip(현행본+과거본 HWP 묶음)으로 주는 경우."""
+
+    def _run(self, members: dict[str, bytes]) -> tuple[dict, Path]:
+        import zipfile
+
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        cache = Path(tmp.name)
+        with zipfile.ZipFile(cache / "777.zip", "w") as zf:
+            for name, body in members.items():
+                zf.writestr(name, body)
+        item = {"title": "테스트규정", "file_no": "777", "ext": "zip"}
+        with patch.object(alio_sync, "HWP_CACHE", cache):
+            alio_sync.unpack_revision_zips([item])
+        return item, cache
+
+    def test_picks_latest_revision_by_filename_date(self):
+        item, cache = self._run({
+            "테스트규정(2026년도 8월 31일 개정).hwp": b"current",
+            "테스트규정(2025년도 12월 10일 개정).hwp": b"old",
+            "테스트규정(2026년도 1월 23일 개정).hwp": b"older",
+        })
+        self.assertEqual(item["ext"], "hwp")
+        self.assertEqual((cache / "777.hwp").read_bytes(), b"current")
+
+    def test_understands_yymmdd_and_nested_folder(self):
+        item, cache = self._run({
+            "묶음/351400테스트규정(230424).hwp": b"old",
+            "묶음/테스트규정(2026년도 9월 개정).hwpx": b"current",
+        })
+        self.assertEqual(item["ext"], "hwpx")
+        self.assertEqual((cache / "777.hwpx").read_bytes(), b"current")
+
+    def test_leaves_item_untouched_without_hwp(self):
+        item, cache = self._run({"안내.txt": b"no hwp"})
+        self.assertEqual(item["ext"], "zip")
+        self.assertFalse((cache / "777.hwp").exists())
+
+
 if __name__ == "__main__":
     unittest.main()
