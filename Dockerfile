@@ -1,5 +1,10 @@
 # KOICA 규정 MCP — 원격 HTTP 서버 이미지
-FROM node:20-slim AS node_runtime
+FROM node:24-slim AS node_runtime
+
+# Lock the complete converter graph; npm is confined to this build stage.
+WORKDIR /opt/koica-tools
+COPY tools/document-converter/package*.json ./
+RUN npm ci && npm audit
 
 # 의미 검색 모델은 규정 데이터와 분리된 레이어에 내려받는다. 규정만 갱신된 배포에서는
 # 약 124 MB 모델·토크나이저 레이어를 재사용하며, 다운로드 도구가 고정 리비전·SHA-256을 검증한다.
@@ -17,19 +22,19 @@ WORKDIR /app
 # ALIO가 GitHub-hosted runner의 접속을 차단하므로 동기화는 Fly(도쿄)에서 실행한다.
 # 런타임 이미지에 Node/kordoc를 포함해 HWP→Markdown 변환을 네트워크 설치 없이 수행.
 COPY --from=node_runtime /usr/local/bin/node /usr/local/bin/node
-COPY --from=node_runtime /usr/local/lib/node_modules /usr/local/lib/node_modules
-RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
- && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx \
- && npm install -g kordoc@3.17.0 pdfjs-dist
+COPY --from=node_runtime /opt/koica-tools /opt/koica-tools
+RUN ln -s /opt/koica-tools/node_modules/kordoc/dist/cli.js /usr/local/bin/kordoc
 
 # 의존성 먼저 설치 (레이어 캐시: 코드/데이터만 바뀌면 재설치 안 함)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements.lock.txt .
+RUN python -m pip install --no-cache-dir --upgrade pip==26.2 \
+ && python -m pip install --no-cache-dir --no-deps -r requirements.lock.txt \
+ && python -m pip check
 
 # 애플리케이션 코드 (server_http → koica_mcp_server → koica_search / usage_stats 의존)
 # stats_cli.py: 소유자 전용 사용량 조회(공개 MCP엔 usage_stats 미노출, fly ssh로만 읽음)
 COPY koica_search.py semantic_search.py koica_mcp_server.py server_http.py usage_stats.py usage_metrics.py stats_cli.py alio_sync.py ./
-COPY tests/evaluate_semantic_quality.py ./tests/
+COPY tests/ ./tests/
 COPY LICENSE NOTICE /usr/share/doc/koica-reg-mcp/
 
 # 공개 서버는 외부 임베딩 API를 호출하지 않는다. 빌드 단계에서 검증한 고정 E5 모델을

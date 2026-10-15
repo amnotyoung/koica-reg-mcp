@@ -6,8 +6,14 @@ on:
     branches:
       - main
   workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
+  security:
+    uses: ./.github/workflows/security.yml
   deploy:
+    needs: security
     name: Deploy app
     runs-on: ubuntu-latest
     concurrency: deploy-group    # optional: ensure only one action runs at a time

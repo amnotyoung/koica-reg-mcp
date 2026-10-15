@@ -1,0 +1,38 @@
+name: Security and regression checks
+
+on:
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 21 * * 2"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Audit locked converter dependencies (including optional and dev)
+        run: npm audit --prefix tools/document-converter --package-lock-only
+      - name: Build the production image and semantic indexes
+        run: docker build --pull -t koica-reg-security .
+      - name: Audit every installed Python package in the final image
+        run: |
+          python -m pip install --upgrade pip==26.2 pip-audit==2.10.1
+          docker run --rm koica-reg-security python -m pip freeze --all > "$RUNNER_TEMP/runtime.txt"
+          pip-audit -r "$RUNNER_TEMP/runtime.txt" --no-deps --disable-pip
+      - name: Test the final image and converter
+        run: |
+          docker run --rm koica-reg-security python -m unittest discover -s tests -v
+          docker run --rm koica-reg-security kordoc --version
+          docker run --rm --entrypoint sh koica-reg-security -c 'test ! -e /usr/local/lib/node_modules/npm && ! command -v npm && ! command -v npx'
