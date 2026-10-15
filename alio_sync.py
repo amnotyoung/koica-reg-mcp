@@ -52,7 +52,8 @@ UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/
 
 # kordoc 버전 고정 — 환경 간(로컬/CI) 추출 결과 재현성 확보(버전 드리프트로 인한
 # 불필요한 diff 방지). 새 버전 반영 시 이 값을 올리고 한 번 재동기화한다.
-KORDOC_VERSION = "3.17.0"
+KORDOC_VERSION = "4.21.33"
+PDFJS_VERSION = "6.4.299"
 
 # ALIO는 간헐적으로 GitHub-hosted runner 연결을 60초 이상 지연시킨다.
 # POST 조회에도 GET과 같은 재시도/백오프를 적용해 일시 장애를 흡수한다.
@@ -269,7 +270,7 @@ def kordoc_convert(resolved: list[dict], fresh: bool = False) -> None:
         cmd = [installed_kordoc, *todo, "-d", str(MD_CACHE), "--silent"]
     else:
         log(f"  kordoc: {len(todo)}개 변환 시작 (npx kordoc)…")
-        cmd = ["npx", "-y", "-p", f"kordoc@{KORDOC_VERSION}", "-p", "pdfjs-dist",
+        cmd = ["npx", "-y", "-p", f"kordoc@{KORDOC_VERSION}", "-p", f"pdfjs-dist@{PDFJS_VERSION}",
                "kordoc", *todo, "-d", str(MD_CACHE), "--silent"]
     proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
     if proc.returncode != 0:

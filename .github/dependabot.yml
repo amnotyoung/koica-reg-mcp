@@ -27,3 +27,15 @@ updates:
     commit-message:
       prefix: "chore(ci)"
     open-pull-requests-limit: 3
+
+  - package-ecosystem: "npm"
+    directory: "/tools/document-converter"
+    schedule:
+      interval: "weekly"
+    groups:
+      document-converter:
+        patterns: ["*"]
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"

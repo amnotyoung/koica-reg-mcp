@@ -46,3 +46,6 @@ CLAUDE.md
 # iCloud/Dropbox 동기화 충돌 사본
 * [0-9].md
 * [0-9].py
+
+# Host dependencies must never enter the image
+**/node_modules/

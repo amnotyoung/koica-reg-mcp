@@ -34,7 +34,7 @@ jobs:
           cache: pip
 
       - name: 검색 런타임 의존성 설치
-        run: python3 -m pip install --disable-pip-version-check -r requirements.txt
+        run: python3 -m pip install --disable-pip-version-check -r requirements.lock.txt
 
       - name: 의미 검색 모델 캐시
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

@@ -112,7 +112,7 @@ git clone https://github.com/amnotyoung/koica-reg-mcp.git
 cd koica-reg-mcp
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.lock.txt
 python semantic_search.py download-model
 python koica_search.py build --strict-semantic
 ```
@@ -270,7 +270,7 @@ python3 alio_sync.py          # ALIO 조회→다운로드→추출→재빌드
 python3 alio_sync.py --fresh  # 캐시 무시하고 처음부터
 ```
 
-> 동기화에는 **Node.js**가 필요합니다(문서 추출에 `npx kordoc` 사용). 조회·검색 자체에는 불필요합니다. 전 규정 다운로드·추출로 수 분이 걸립니다.
+> 동기화에는 **Node.js 24 이상**이 필요합니다(문서 추출에 `npx kordoc` 사용). 조회·검색 자체에는 불필요합니다. 전 규정 다운로드·추출로 수 분이 걸립니다.
 
 ### ③ 로컬 설치 사용자 — `update`로 최신 받기
 
