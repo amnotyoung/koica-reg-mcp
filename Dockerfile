@@ -4,7 +4,8 @@ FROM node:24-slim AS node_runtime
 # Lock the complete converter graph; npm is confined to this build stage.
 WORKDIR /opt/koica-tools
 COPY tools/document-converter/package*.json ./
-RUN npm ci && npm audit
+# CPU bindings are bundled; the Fly service has no GPU and needs no CUDA download.
+RUN ONNXRUNTIME_NODE_INSTALL=skip npm ci && npm audit
 
 # 의미 검색 모델은 규정 데이터와 분리된 레이어에 내려받는다. 규정만 갱신된 배포에서는
 # 약 124 MB 모델·토크나이저 레이어를 재사용하며, 다운로드 도구가 고정 리비전·SHA-256을 검증한다.
