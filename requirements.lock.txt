@@ -47,7 +47,7 @@ numpy==2.4.6
     # via
     #   -r requirements.txt
     #   onnxruntime
-onnxruntime==1.28.0
+onnxruntime==1.31.0
     # via -r requirements.txt
 packaging==26.3
     # via onnxruntime
