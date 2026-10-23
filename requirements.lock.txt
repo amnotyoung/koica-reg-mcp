@@ -81,7 +81,7 @@ sentencepiece==0.2.2
     # via -r requirements.txt
 sse-starlette==3.5.0
     # via mcp
-starlette==1.8.0
+starlette==1.9.0
     # via
     #   mcp
     #   sse-starlette
