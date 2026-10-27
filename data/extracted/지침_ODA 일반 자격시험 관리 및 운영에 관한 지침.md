@@ -631,11 +631,13 @@
 
 **수험번호**
 
-<table>
-<tr><th>지역코드</th><th colspan="4">시험년도</th><th></th><th colspan="2">시험횟수</th><th></th><th colspan="4">접수번호</th></tr>
-<tr><td colspan="5">↓</td><td></td><td colspan="2">↓</td><td></td><td colspan="4">↓</td></tr>
-<tr><td></td><td>X</td><td>X</td><td>X</td><td>X</td><td></td><td>X</td><td>X</td><td></td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-</table>
+| 지역코드 | 시험년도 |  | 시험횟수 |  | 접수번호 |
+| --- | --- | --- | --- | --- | --- |
+
+↓ ↓ ↓
+
+|  | X | X | X | X |  | X | X |  | X | X | X | X |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 
 ## [별표 6] 출제위원 수당지급 기준 <개정 2023.12.22.>
@@ -720,12 +722,12 @@ KOICA(로고) ODA교육원(로고)
 **신분확인증명서**
 
 <table>
-<tr><th colspan="2" rowspan="4">사진(3×4cm)</th><th colspan="2">성명(한글)</th><th colspan="2"></th></tr>
-<tr><td colspan="2">주민등록번호</td><td colspan="2"></td></tr>
-<tr><td colspan="2">소 속</td><td colspan="2"></td></tr>
-<tr><td colspan="2">재학(직)기간 <예정></td><td colspan="2">~</td></tr>
-<tr><td colspan="6">위 사람은 본 교(부대)의 재학생(부대원)으로서 상기 인적사항(사진포함)에 틀림이 없음을 증명함.<br>년 월 일<br>발급기관 : (직인)</td></tr>
-<tr><td rowspan="3">발<br>급<br>담<br>당</td><td colspan="2">부 서</td><td colspan="2"></td><td rowspan="3"></td></tr>
+<tr><th colspan="2" rowspan="4">사진(3×4cm)</th><th colspan="2">성명(한글)</th><th></th></tr>
+<tr><td colspan="2">주민등록번호</td><td></td></tr>
+<tr><td colspan="2">소 속</td><td></td></tr>
+<tr><td colspan="2">재학(직)기간 &lt;예정&gt;</td><td>~</td></tr>
+<tr><td colspan="5">위 사람은 본 교(부대)의 재학생(부대원)으로서 상기 인적사항(사진포함)에 틀림이 없음을 증명함.<br>년 월 일<br>발급기관 : (직인)</td></tr>
+<tr><td rowspan="3">발<br>급<br>담<br>당</td><td colspan="2">부 서</td><td colspan="2"></td></tr>
 <tr><td colspan="2">성 명</td><td colspan="2"></td></tr>
 <tr><td colspan="2">전화번호</td><td colspan="2"></td></tr>
 </table>

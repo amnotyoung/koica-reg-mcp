@@ -753,15 +753,13 @@
 
 **검정업무추진팀의 조직**
 
-<table>
-<tr><th colspan="4">소관부서장</th></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
-<tr><td colspan="4">검정업무 추진팀장</td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
-<tr><td colspan="4">검정업무 담당자(시험책임자)</td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
-<tr><td colspan="4">책임관리위원</td></tr>
-</table>
+소관부서장
+
+검정업무 추진팀장
+
+검정업무 담당자(시험책임자)
+
+책임관리위원
 
 
 ## [별표 2] 검정방법 및 검정과목
@@ -769,47 +767,9 @@
 
 **검정방법 및 검정과목**
 
-등급
-
-검정방법
-
-검정과목(분야 또는 영역)
-
-3급
-
-필기시험(객관식)
-
-ㅇ 개발협력의 이해
-
-- 개발협력과 ODA
-
-- 한국의 개발협력
-
-- 개발협력의 역사
-
-- 최근 개발협력 이슈
-
-ㅇ 개발협력 실천전략
-
-- 개발협력 기구의 정책과 전략
-
-- 분야별 이슈 : 교육
-
-- 분야별 이슈 : 보건
-
-- 개발협력 프로젝트의 이해
-
-- 다문화와 개발협력
-
-ㅇ 개발협력사업의 이해
-
-- KOICA 사업유형과 실행체계
-
-- 프로젝트 관리와 PMC의 역할
-
-- PDM과 사업관리
-
-- 개발협력사업 모니터링과 평가
+| 등급 | 검정방법 | 검정과목(분야 또는 영역) |
+| --- | --- | --- |
+| 3급 | 필기시험(객관식) | ㅇ 개발협력의 이해<br>- 개발협력과 ODA<br>- 한국의 개발협력<br>- 개발협력의 역사<br>- 최근 개발협력 이슈<br>ㅇ 개발협력 실천전략<br>- 개발협력 기구의 정책과 전략<br>- 분야별 이슈 : 교육<br>- 분야별 이슈 : 보건<br>- 개발협력 프로젝트의 이해<br>- 다문화와 개발협력<br>ㅇ 개발협력사업의 이해<br>- KOICA 사업유형과 실행체계<br>- 프로젝트 관리와 PMC의 역할<br>- PDM과 사업관리<br>- 개발협력사업 모니터링과 평가 |
 
 
 ## [별표 3] 과목별 시험문항 수 및 시간
@@ -852,10 +812,13 @@
 
 **수검번호**
 
+| 지역 | 검정년도 |  | 검정횟수 |  | 접수번호 |
+| --- | --- | --- | --- | --- | --- |
+
+↓ ↓ ↓
+
 <table>
-<tr><th>지역</th><th colspan="4">검정년도</th><th></th><th colspan="2">검정횟수</th><th></th><th colspan="4">접수번호</th></tr>
-<tr><td colspan="5">↓</td><td></td><td colspan="2">↓</td><td></td><td colspan="4">↓</td></tr>
-<tr><td>C(서울)</td><td rowspan="2">X</td><td rowspan="2">X</td><td rowspan="2">X</td><td rowspan="2">X</td><td rowspan="2"></td><td rowspan="2">X</td><td rowspan="2">X</td><td rowspan="2"></td><td rowspan="2">X</td><td rowspan="2">X</td><td rowspan="2">X</td><td rowspan="2">X</td></tr>
+<tr><th>C(서울)</th><th rowspan="2">X</th><th rowspan="2">X</th><th rowspan="2">X</th><th rowspan="2">X</th><th rowspan="2"></th><th rowspan="2">X</th><th rowspan="2">X</th><th rowspan="2"></th><th rowspan="2">X</th><th rowspan="2">X</th><th rowspan="2">X</th><th rowspan="2">X</th></tr>
 <tr><td>B(부산)</td></tr>
 </table>
 

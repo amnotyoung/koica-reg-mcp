@@ -680,13 +680,13 @@
 **퇴직자 재취업 심사표**
 
 <table>
-<tr><th colspan="2">성 명</th><th colspan="3"></th></tr>
-<tr><td colspan="2">퇴직일</td><td colspan="3"></td></tr>
-<tr><td colspan="2">퇴직사유</td><td colspan="3"></td></tr>
-<tr><td colspan="2">출자회사명</td><td colspan="3"></td></tr>
-<tr><td rowspan="3">퇴직전<br>5년간<br>업 무</td><td>부서/직위</td><td></td><td></td><td></td></tr>
-<tr><td>담당업무</td><td></td><td></td><td></td></tr>
-<tr><td>업무기간</td><td></td><td></td><td></td></tr>
+<tr><th colspan="2">성 명</th></tr>
+<tr><td colspan="2">퇴직일</td></tr>
+<tr><td colspan="2">퇴직사유</td></tr>
+<tr><td colspan="2">출자회사명</td></tr>
+<tr><td rowspan="3">퇴직전<br>5년간<br>업 무</td><td>부서/직위</td></tr>
+<tr><td>담당업무</td></tr>
+<tr><td>업무기간</td></tr>
 </table>
 
 □ 취업제한사유 해당여부
