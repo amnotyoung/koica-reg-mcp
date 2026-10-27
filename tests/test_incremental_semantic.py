@@ -100,6 +100,13 @@ class IncrementalSemanticTests(unittest.TestCase):
         stats = self.build([replace(a, article_title="바뀐 제목")])
         self.assertEqual(stats["embedded_unique_chunks"], 1)
 
+    def test_batch_size_change_invalidates_the_cache(self):
+        rows = [make_article(), make_article(article_no=2)]
+        self.build(rows, batch_size=2)
+        stats = self.build(rows, batch_size=1)
+        self.assertEqual(stats["reused_chunks"], 0)
+        self.assertEqual(stats["embedded_chunks"], 2)
+
     def test_duplicate_occurrences_keep_their_batch_specific_vectors(self):
         row = make_article()
         # Simulate the batch-dependent rounding of dynamic int8 quantization.

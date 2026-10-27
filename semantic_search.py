@@ -340,7 +340,7 @@ class DenseEncoder:
         return self._embed(texts, "passage")
 
 
-def embedding_signature() -> str:
+def embedding_signature(batch_size: int = DEFAULT_BATCH_SIZE) -> str:
     """Bind cached vectors to the model, tokenizer and actual encoder implementation.
 
     Chunk positions and corpus order are deliberately excluded: only the exact
@@ -353,6 +353,7 @@ def embedding_signature() -> str:
         "model": MODEL_NAME,
         "revision": MODEL_REVISION,
         "dimension": MODEL_DIMENSION,
+        "batch_size": batch_size,
         "files": {name: sha for name, (_url, sha) in MODEL_FILES.items()},
         "encoder": inspect.getsource(DenseEncoder),
         "runtime": {name: version(name) for name in ("numpy", "onnxruntime", "sentencepiece")},
@@ -484,7 +485,10 @@ def _validated_vectors(vectors_file: Path, metadata: dict[str, Any]) -> Any:
 
     if metadata.get("schema_version") != SEMANTIC_SCHEMA_VERSION:
         raise ValueError("지원하지 않는 스키마")
-    if metadata.get("embedding_signature") != embedding_signature():
+    batch_size = metadata.get("batch_size")
+    if not isinstance(batch_size, int) or batch_size <= 0:
+        raise ValueError("임베딩 배치 크기 누락")
+    if metadata.get("embedding_signature") != embedding_signature(batch_size):
         raise ValueError("임베딩 모델·설정 불일치")
     if metadata.get("metadata_sha256") != metadata_digest(metadata):
         raise ValueError("청크 메타데이터 SHA-256 불일치")
@@ -548,6 +552,8 @@ def build_semantic_index(
     if reuse and meta_file.is_file() and vectors_file.is_file():
         try:
             previous = json.loads(meta_file.read_text(encoding="utf-8"))
+            if previous.get("embedding_signature") != embedding_signature(batch_size):
+                raise ValueError("요청한 임베딩 설정과 캐시가 다름")
             cached_vectors = _validated_vectors(vectors_file, previous)
             for index, row in enumerate(previous["chunks"]):
                 cached_rows.setdefault(row["text_sha256"], []).append(index)
@@ -605,7 +611,8 @@ def build_semantic_index(
             "schema_version": SEMANTIC_SCHEMA_VERSION,
             "model": MODEL_NAME,
             "model_revision": MODEL_REVISION,
-            "embedding_signature": embedding_signature(),
+            "embedding_signature": embedding_signature(batch_size),
+            "batch_size": batch_size,
             "dimension": MODEL_DIMENSION,
             "chunk_size": CHUNK_SIZE,
             "chunk_overlap": CHUNK_OVERLAP,
