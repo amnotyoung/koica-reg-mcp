@@ -212,11 +212,11 @@
 (제9조 관련) 일계표
 
 <table>
-<tr><th rowspan="2">결<br>재</th><th>소장</th><th></th><th></th><th></th></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
+<tr><th rowspan="2">결<br>재</th><th>소장</th></tr>
+<tr><td></td></tr>
 </table>
 
-년월일
+년 월 일
 
 <table>
 <tr><th colspan="2">차변</th><th rowspan="2">계정세목명</th><th colspan="2">대변</th></tr>
@@ -249,11 +249,59 @@
 
 소장
 
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
 원인
 행위
 부서
 
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
 감사
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
 
 담당
 
@@ -271,6 +319,10 @@
 
 일자
 
+<table>
+<tr><th></th></tr>
+</table>
+
 소득세
 
 주민세
@@ -279,15 +331,55 @@
 
 증빙번호
 
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
 담당
 
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
 팀장
+
+<table>
+<tr><th></th></tr>
+</table>
 
 지출부서
 
 일부인
 
+<table>
+<tr><th></th></tr>
+</table>
+
 제 목
+
+<table>
+<tr><th></th></tr>
+</table>
 
 금액(원화)
 
@@ -297,11 +389,99 @@
 
 No
 
+<table>
+<tr><th></th></tr>
+</table>
+
 1
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
 
 [별지 제2호 서식] (제9조 관련) 지출결의서
 
 (제9조 관련) 지출결의서
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
+
+<table>
+<tr><th></th></tr>
+</table>
 
 [별지 제3호 서식] (제12조 관련) 지급증
 
@@ -313,7 +493,7 @@ No
 
 상기 금액을 정히 지급함
 
-년월일
+년 월 일
 
 주 소 :
 
@@ -332,19 +512,24 @@ No
 
 | 품 명 | 규 격 | 수 량 | 단 가 | 금 액 | 비 고 |
 | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
+|  |  |  |  |  |  |
+|  |  |  |  |  |  |
+|  |  |  |  |  |  |
+|  |  |  |  |  |  |
 | 합 계 |  |  |  |  |  |
 
 상기 물품을 여히 검수함.
 
-년월일
+년 월 일
 
-검수자: 직위 성명 :
+검수자: 직위 성명 : (인)
 
 상기 물품을 정히 영수함.
 
-년월일
+년 월 일
 
-팀 직위 성명 :
+팀 직위 성명 : (인)
 
 
 **한국국제협력단**
@@ -355,11 +540,12 @@ No
 
 OOO 직원 활동 일지
 
+ㅇ 직원 성명 : (인)
+
+ㅇ 근무부서: KOICA OO지역센터
+
 <table>
-<tr><th colspan="3">ㅇ 직원 성명 : (인)</th></tr>
-<tr><td colspan="3">ㅇ 근무부서: KOICA OO지역센터</td></tr>
-<tr><td colspan="3"></td></tr>
-<tr><td>구분</td><td>일자</td><td>업무 내용</td></tr>
+<tr><th>구분</th><th>일자</th><th>업무 내용</th></tr>
 <tr><td rowspan="5">1주차</td><td></td><td></td></tr>
 <tr><td></td><td></td></tr>
 <tr><td>2015-07-01</td><td></td></tr>
@@ -385,11 +571,11 @@ OOO 직원 활동 일지
 <tr><td>2015-07-29</td><td></td></tr>
 <tr><td>2015-07-30</td><td></td></tr>
 <tr><td>2015-07-31</td><td></td></tr>
-<tr><td colspan="3"></td></tr>
-<tr><td colspan="3">ㅇ상기인은 총00일 중 00일 근무하였음.</td></tr>
-<tr><td colspan="3"></td></tr>
-<tr><td colspan="3">확인자 소속(직위) 및 성명 : OO지역센터 ㅇㅇㅇ 소장 (인)</td></tr>
 </table>
+
+ㅇ상기인은 총00일 중 00일 근무하였음.
+
+확인자 소속(직위) 및 성명 : OO지역센터 ㅇㅇㅇ 소장 (인)
 
 [별지 제6호 서식] (제8조 관련) 월 출근부
 
@@ -397,12 +583,10 @@ OOO 직원 활동 일지
 
 ( ) 월 출근부
 
+KOICA OO지역센터
+
 <table>
-<tr><th colspan="3" rowspan="3">KOICA OO지역센터</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td colspan="3"></td><td colspan="8">( )月</td></tr>
+<tr><th colspan="3"></th><th colspan="8">( )月</th></tr>
 <tr><td>직위</td><td>성명</td><td>출/퇴근</td><td>3(월)</td><td>4(화)</td><td>5(수)</td><td>6(목)</td><td>7(금)</td><td>8(토)</td><td>9(일)</td><td>10(월)</td></tr>
 <tr><td rowspan="2">소장</td><td rowspan="2"></td><td>출근</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>퇴근</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -410,15 +594,16 @@ OOO 직원 활동 일지
 <tr><td>퇴근</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td rowspan="2">직원</td><td rowspan="2"></td><td>출근</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>퇴근</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td colspan="11">※표시방법: 조퇴(조), 결근(결), 월차(월), 연차(연), 출장(출), 유급휴가(유), 무급휴가(무), 교육(교), 공가(공)</td></tr>
 </table>
+
+※표시방법: 조퇴(조), 결근(결), 월차(월), 연차(연), 출장(출), 유급휴가(유), 무급휴가(무), 교육(교), 공가(공)
 
 [별지 제7호 서식] (제9조 관련) 근무내역(급량비)
 
+(제 9조 관련) 근무내역(급량비)
+
 <table>
-<tr><th colspan="6">(제 9조 관련) 근무내역(급량비)</th></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>장소</td><td>날짜</td><td>지출금액</td><td>사유</td><td>근무종료시간</td><td>명단</td></tr>
+<tr><th>장소</th><th>날짜</th><th>지출금액</th><th>사유</th><th>근무종료시간</th><th>명단</th></tr>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -452,32 +637,34 @@ OOO 직원 활동 일지
 
 [별지 제8호 서식] (제9조 관련) ㅇ/ㅇ분기 운영비 금전출납부
 
+(제9조 관련) ㅇ/ㅇ분기 운영비 금전출납부
+
+KOICA OO지역센터 (단위:원)
+
 <table>
-<tr><th colspan="12">(제9조 관련) ㅇ/ㅇ분기 운영비 금전출납부</th></tr>
-<tr><td></td><td></td><td></td><td colspan="2"></td><td></td><td colspan="2"></td><td colspan="2"></td><td colspan="2"></td></tr>
-<tr><td colspan="6">KOICA OO지역센터</td><td colspan="2"></td><td colspan="2"></td><td colspan="2">(단위:원)</td></tr>
-<tr><td>날짜</td><td>연번</td><td>적요</td><td>입금</td><td colspan="3">출금</td><td colspan="2">잔액</td><td colspan="2">영수증</td><td>비 고</td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
-<tr><td colspan="3">합 계</td><td></td><td colspan="3"></td><td colspan="2"></td><td colspan="2"></td><td></td></tr>
+<tr><th>날짜</th><th>연번</th><th>적요</th><th>입금</th><th>출금</th><th>잔액</th><th>영수증</th><th>비 고</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td colspan="3">합 계</td><td></td><td></td><td></td><td></td><td></td></tr>
 </table>
 
 [별지 제9호 서식] (제17조 관련) 차량관리일지
 
 | 담당 | 소장 |
 | --- | --- |
+|  |  |
 
 (제17조 관련) 차량관리일지( 월)
 
@@ -519,15 +706,16 @@ OOO 직원 활동 일지
 
 | 담당 | 소장 |
 | --- | --- |
+|  |  |
 
 
 **(제17조 관련) 차량운행일보**
 
 20 년 월 요일
 
-| 차량번호 |  | 운전자 |  | 휴대전화 |  |
-| --- | --- | --- | --- | --- | --- |
-| 사용자 |  | 연락처 |  | 휴대전화 |  |
+| 차량번호 |  | 운전자 |  | 휴대전화 |
+| --- | --- | --- | --- | --- |
+| 사용자 |  | 연락처 |  | 휴대전화 |
 
 <table>
 <tr><th>주행구간</th><th colspan="2">주행시간</th><th colspan="2">주행거리</th><th rowspan="2">승차인원</th><th rowspan="2">대기<br>시간</th><th rowspan="2">공차<br>운행</th></tr>
