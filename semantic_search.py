@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import inspect
 import json
 import os
 import re
@@ -46,7 +47,7 @@ MODEL_FILES = {
     ),
 }
 
-SEMANTIC_SCHEMA_VERSION = 1
+SEMANTIC_SCHEMA_VERSION = 2
 CHUNK_SIZE = 400
 CHUNK_OVERLAP = 80
 DEFAULT_BATCH_SIZE = 8
@@ -339,6 +340,32 @@ class DenseEncoder:
         return self._embed(texts, "passage")
 
 
+def embedding_signature() -> str:
+    """Bind cached vectors to the model, tokenizer and actual encoder implementation.
+
+    Chunk positions and corpus order are deliberately excluded: only the exact
+    passage text determines the vector. Encoder source captures prefixing,
+    truncation, pooling and normalization changes without relying on a manual bump.
+    """
+    from importlib.metadata import version
+
+    spec = {
+        "model": MODEL_NAME,
+        "revision": MODEL_REVISION,
+        "dimension": MODEL_DIMENSION,
+        "files": {name: sha for name, (_url, sha) in MODEL_FILES.items()},
+        "encoder": inspect.getsource(DenseEncoder),
+        "runtime": {name: version(name) for name in ("numpy", "onnxruntime", "sentencepiece")},
+    }
+    return hashlib.sha256(
+        json.dumps(spec, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    ).hexdigest()
+
+
+def passage_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
 _ENCODER: DenseEncoder | None = None
 _ENCODER_KEY: str | None = None
 _ENCODER_LOCK = threading.Lock()
@@ -397,6 +424,7 @@ class _Chunk:
             "item_index": self.item_index,
             "start": self.start,
             "end": self.end,
+            "text_sha256": passage_hash(self.text),
         }
 
 
@@ -445,6 +473,38 @@ def invalidate_artifacts(
     reset_caches()
 
 
+def metadata_digest(metadata: dict[str, Any]) -> str:
+    payload = {key: value for key, value in metadata.items() if key != "metadata_sha256"}
+    return hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _validated_vectors(vectors_file: Path, metadata: dict[str, Any]) -> Any:
+    """Validate an artifact/cache pair without requiring the old corpus index."""
+    import numpy as np
+
+    if metadata.get("schema_version") != SEMANTIC_SCHEMA_VERSION:
+        raise ValueError("지원하지 않는 스키마")
+    if metadata.get("embedding_signature") != embedding_signature():
+        raise ValueError("임베딩 모델·설정 불일치")
+    if metadata.get("metadata_sha256") != metadata_digest(metadata):
+        raise ValueError("청크 메타데이터 SHA-256 불일치")
+    if metadata.get("vectors_sha256") != sha256_file(vectors_file):
+        raise ValueError("벡터 파일 SHA-256 불일치")
+    chunks = metadata["chunks"]
+    if not chunks or metadata.get("vector_count") != len(chunks):
+        raise ValueError("벡터와 메타데이터 개수 불일치")
+    if any(not re.fullmatch(r"[0-9a-f]{64}", row.get("text_sha256", "")) for row in chunks):
+        raise ValueError("청크 입력 해시 누락")
+    vectors = np.load(vectors_file, mmap_mode="r", allow_pickle=False)
+    if vectors.shape != (len(chunks), MODEL_DIMENSION) or vectors.dtype != np.float32:
+        raise ValueError("벡터 shape/dtype 불일치")
+    if not np.isfinite(vectors).all() or not np.allclose(
+        np.linalg.norm(vectors, axis=1), 1.0, atol=1e-3
+    ):
+        raise ValueError("유한한 정규화 벡터가 아님")
+    return vectors
+
+
 def build_semantic_index(
     articles: Sequence[Any],
     attachments: Sequence[Any],
@@ -455,8 +515,14 @@ def build_semantic_index(
     model_dir: Path | str | None = None,
     batch_size: int = DEFAULT_BATCH_SIZE,
     download: bool = True,
+    reuse: bool = True,
 ) -> dict[str, Any]:
-    """Encode every searchable chunk and atomically replace dense artifacts."""
+    """Reuse verified passage vectors and encode only missing, unique inputs.
+
+    The previous .npy/metadata pair doubles as a bounded cache of the last corpus.
+    Mapping rows are always regenerated; deletions and reordering never retain
+    stale item indices. Invalid/missing caches safely fall back to a full build.
+    """
 
     try:
         import numpy as np
@@ -471,14 +537,26 @@ def build_semantic_index(
     if batch_size <= 0:
         raise ValueError("batch_size는 양수여야 합니다.")
 
-    if download:
-        directory = download_model(model_dir)
-    else:
-        directory = _require_model_dir(model_dir)
-    encoder = get_encoder(directory)
     chunks = make_chunks(articles, attachments)
     if not chunks:
         raise SemanticUnavailable("임베딩할 검색 문서가 없습니다.")
+
+    cached_vectors = None
+    cached_rows: dict[str, int] = {}
+    if reuse and meta_file.is_file() and vectors_file.is_file():
+        try:
+            previous = json.loads(meta_file.read_text(encoding="utf-8"))
+            cached_vectors = _validated_vectors(vectors_file, previous)
+            cached_rows = {
+                row["text_sha256"]: index
+                for index, row in enumerate(previous["chunks"])
+            }
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+            print(f"의미 캐시 재사용 불가, 전체 재생성: {exc}", file=sys.stderr)
+            cached_vectors = None
+    hashes = [passage_hash(chunk.text) for chunk in chunks]
+    missing = list(dict.fromkeys(key for key in hashes if key not in cached_rows))
+    first_row = {key: index for index, key in reversed(list(enumerate(hashes)))}
 
     vectors_file.parent.mkdir(parents=True, exist_ok=True)
     meta_file.parent.mkdir(parents=True, exist_ok=True)
@@ -494,45 +572,66 @@ def build_semantic_index(
             dtype=np.float32,
             shape=(len(chunks), MODEL_DIMENSION),
         )
-        for start in range(0, len(chunks), batch_size):
-            batch = chunks[start : start + batch_size]
-            vectors[start : start + len(batch)] = encoder.embed_passages(
-                [chunk.text for chunk in batch]
-            )
-            completed = start + len(batch)
-            if completed == len(chunks) or completed % 512 < batch_size:
-                print(
-                    f"의미 인덱스 임베딩: {completed}/{len(chunks)} 청크",
-                    file=sys.stderr,
-                    flush=True,
-                )
+        for index, key in enumerate(hashes):
+            if key in cached_rows:
+                vectors[index] = cached_vectors[cached_rows[key]]
+        # An unchanged corpus requires neither model download nor ONNX loading.
+        if missing:
+            directory = download_model(model_dir) if download else _require_model_dir(model_dir)
+            encoder = get_encoder(directory)
+            for start in range(0, len(missing), batch_size):
+                batch = missing[start : start + batch_size]
+                encoded = encoder.embed_passages([chunks[first_row[key]].text for key in batch])
+                for key, vector in zip(batch, encoded, strict=True):
+                    vectors[first_row[key]] = vector
+                completed = start + len(batch)
+                if completed == len(missing) or completed % 512 < batch_size:
+                    print(f"의미 인덱스 임베딩: {completed}/{len(missing)} 청크", file=sys.stderr, flush=True)
+            for index, key in enumerate(hashes):
+                if key not in cached_rows and index != first_row[key]:
+                    vectors[index] = vectors[first_row[key]]
         vectors.flush()
         del vectors
 
+        reused = sum(key in cached_rows for key in hashes)
+        removed = len(cached_rows.keys() - set(hashes))
         metadata: dict[str, Any] = {
             "schema_version": SEMANTIC_SCHEMA_VERSION,
             "model": MODEL_NAME,
             "model_revision": MODEL_REVISION,
+            "embedding_signature": embedding_signature(),
             "dimension": MODEL_DIMENSION,
             "chunk_size": CHUNK_SIZE,
             "chunk_overlap": CHUNK_OVERLAP,
             "index_sha256": sha256_file(index_file),
+            "vectors_sha256": sha256_file(temporary_vectors),
             "vector_count": len(chunks),
             "chunks": [chunk.metadata() for chunk in chunks],
+            "reused_chunks": reused,
+            "embedded_unique_chunks": len(missing),
+            "removed_unique_chunks": removed,
         }
+        metadata["metadata_sha256"] = metadata_digest(metadata)
+        # Reject malformed encoder output before publishing either artifact.
+        checked = _validated_vectors(temporary_vectors, metadata)
+        del checked
         temporary_meta.write_text(
             json.dumps(metadata, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
+        # Release the cache mmap before replacing the files.
+        if cached_vectors is not None:
+            del cached_vectors
         os.replace(temporary_vectors, vectors_file)
         os.replace(temporary_meta, meta_file)
         reset_caches()
+        print(f"의미 캐시: 재사용 {reused}/{len(chunks)}, 신규 임베딩 {len(missing)}, 제거 {removed}", file=sys.stderr)
         return metadata
     except Exception:
         temporary_vectors.unlink(missing_ok=True)
         temporary_meta.unlink(missing_ok=True)
-        # Never leave old dense data looking current after the lexical index changed.
-        meta_file.unlink(missing_ok=True)
+        # Keep a valid previous pair reusable after an interrupted build. Runtime
+        # checks of index/signature/vector hashes prevent serving a stale/mixed pair.
         reset_caches()
         raise
 
@@ -567,7 +666,7 @@ class SemanticIndex:
                 raise ValueError("키워드 인덱스와 의미 인덱스가 서로 다름")
 
             chunks = metadata["chunks"]
-            vectors = np.load(vectors_file, mmap_mode="r")
+            vectors = _validated_vectors(vectors_file, metadata)
             expected_shape = (len(chunks), MODEL_DIMENSION)
             if (
                 vectors.shape != expected_shape

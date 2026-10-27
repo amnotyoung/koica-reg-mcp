@@ -21,10 +21,19 @@ jobs:
       # 액션은 태그가 아니라 커밋 SHA로 고정한다(태그는 상류에서 이동 가능).
       # 갱신은 Dependabot이 주간 PR로 제안한다 — .github/dependabot.yml 참고.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # 같은 workflow run에서 검증한 artifact만 사용한다(PR/다른 실행에서 가져오지 않음).
+      - name: Download validated search indexes
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: search-index-${{ github.sha }}
+          path: docker-index
       # 특히 이 스텝이 설치한 flyctl 바이너리가 다음 스텝에서 FLY_API_TOKEN을 들고
       # 실행되므로, 가변 브랜치(@master)를 쓰면 상류가 오염되는 순간 배포 토큰이
       # 그대로 넘어간다.
       - uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1 # 1.6
-      - run: flyctl deploy --remote-only
+      - run: |
+          flyctl deploy --remote-only \
+            --build-arg KOICA_INDEX_SOURCE=prebuilt \
+            --build-arg KOICA_INDEX_REVISION="$GITHUB_SHA"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

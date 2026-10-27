@@ -75,7 +75,8 @@ Claude Desktop JSON과 Windows 경로 예시는 [README의 로컬 MCP 설치](RE
 - `Dockerfile` + `fly.toml` — Fly.io 배포. **`main`에 머지되면 GitHub Actions가 자동 재배포**합니다.
 - 검색 엔진은 기존 IDF 키워드 점수와 로컬 `intfloat/multilingual-e5-small` ONNX 의미 유사도를 결합합니다. 외부 임베딩 API나 API 키는 쓰지 않습니다.
 - 의미 모델은 고정 리비전·SHA-256을 검증해 사용자 캐시에 받고, `numpy`·`onnxruntime`·`sentencepiece`로 추론합니다. 배포 경로는 `KOICA_SEMANTIC_MODEL_DIR`로 고정할 수 있습니다.
-- `data/index.json`, `data/semantic_vectors.npy`, `data/semantic_meta.json`은 gitignore된 빌드 산출물이며 Docker와 CI에서는 `--strict-semantic`으로 함께 생성·검증합니다.
+- `data/index.json`, `data/semantic_vectors.npy`, `data/semantic_meta.json`은 gitignore된 빌드 산출물입니다. `build --strict-semantic`은 검증된 이전 청크 벡터를 재사용하며 `--force-embed`로 전체 계산을 강제할 수 있습니다.
+- CI에서 인덱스를 생성·검증한 뒤 `index_artifact.py pack`으로 패키징합니다. Docker/Fly의 `KOICA_INDEX_SOURCE=prebuilt`는 같은 실행에서 전달된 `docker-index/` artifact의 원문·코드·커밋·해시를 검증하고 재계산 없이 포함합니다. 로컬 Docker의 기본값 `auto`는 artifact가 없을 때만 직접 생성합니다.
 
 ---
 
