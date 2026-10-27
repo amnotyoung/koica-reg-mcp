@@ -127,7 +127,17 @@ jobs:
           unpause_semantic
           trap - EXIT
 
-      - name: 전체 검색 인덱스 검증
+      - name: 이전 청크 벡터 캐시 복원
+        id: vectors
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            data/semantic_vectors.npy
+            data/semantic_meta.json
+          key: koica-passages-v3-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: koica-passages-v3-${{ runner.os }}-
+
+      - name: 증분 검색 인덱스 생성·검증
         env:
           KOICA_SEMANTIC_MODEL_DIR: ${{ runner.temp }}/koica-semantic-model
           KOICA_SEMANTIC_THREADS: "4"
@@ -135,6 +145,15 @@ jobs:
           python3 koica_search.py build --strict-semantic
           python3 tests/evaluate_semantic_quality.py
         # 키워드·의미 인덱스는 gitignore 대상이라 PR에는 규정 원문과 sources.json만 포함된다.
+
+      # 배포 workflow를 호출하기 전에 저장해 변경된 규정의 벡터도 재사용한다.
+      - name: 검증된 청크 벡터 캐시 저장
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            data/semantic_vectors.npy
+            data/semantic_meta.json
+          key: ${{ steps.vectors.outputs.cache-primary-key }}
 
       - name: 변경분 PR 생성·자동 병합·배포
         env:

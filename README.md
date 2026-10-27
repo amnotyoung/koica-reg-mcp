@@ -328,6 +328,34 @@ koica_mcp_server.py             # 로컬 stdio MCP 서버 (11개 도구)
 
 의미 모델은 기본적으로 저장소 밖의 사용자 캐시에 보관됩니다. 위치를 고정해야 하는 배포 환경은 `KOICA_SEMANTIC_MODEL_DIR`로 지정할 수 있으며, Docker 이미지는 `/opt/koica-semantic-model`을 사용합니다. 저메모리 운영 환경에서 배치 작업과 겹치지 않게 하려면 `KOICA_SEMANTIC_PAUSE_FILE`에 일시정지 표식 경로를 지정할 수 있습니다.
 
+### 증분 임베딩과 CI 인덱스 전달
+
+`build --strict-semantic`은 이전 `semantic_vectors.npy` / `semantic_meta.json`을 청크 캐시로 사용합니다. 실제 입력(규정명·장·조문 제목·본문)의 SHA-256이 같고 모델·토크나이저·인코더 코드·추론 라이브러리 버전이 같으면 벡터를 재사용합니다. 캐시에 없는 입력만 임베딩합니다. 조문 순서와 연결 정보는 항상 다시 만들고 삭제된 청크는 새 인덱스에서 제외합니다. 변경이 없으면 모델 다운로드·적재도 생략합니다.
+
+최초 계산은 기존 청크 순서와 배치 구성을 유지합니다. 동적 int8 양자화 모델은 배치 구성에 따라 작은 수치 차이가 생길 수 있으므로, 중복 입력의 기존 벡터도 발생 순서대로 보존합니다. 증분 결과는 같은 빌드의 재사용에서 동일하게 유지되며, 전체 재계산과의 검색 품질은 CI의 의역 질의 평가로 검증합니다.
+
+캐시가 없거나 파일 해시·형식·임베딩 설정이 맞지 않으면 전체 재생성합니다. 이전 스키마에서 처음 갱신할 때도 한 번은 전체 계산이 필요합니다. 강제로 재계산하려면 다음 명령을 사용합니다.
+
+```bash
+python koica_search.py build --strict-semantic --force-embed
+```
+
+CI와 ALIO 동기화는 마지막으로 검증한 벡터 쌍을 GitHub Actions cache에 보관합니다. 캐시는 삭제·만료될 수 있으며, 그때는 원문으로부터 정상적으로 전체 재생성합니다. ALIO는 배포를 호출하기 전에 캐시를 저장하므로 배포 CI에서도 변경분 벡터를 재사용할 수 있습니다.
+
+배포 CI는 인덱스를 생성하고 검색 품질을 검증한 뒤 `index_artifact.py pack`으로 패키징합니다. 같은 workflow run의 배포 job이 `search-index-<commit>` artifact를 `docker-index/`에 내려받습니다. Docker는 `KOICA_INDEX_SOURCE=prebuilt`에서 커밋, 규정 원문, 생성 코드·의존성, 파일 SHA-256 및 조문 매핑을 확인하고 그대로 설치합니다. 이 경로에서는 임베딩을 실행하지 않으며, 누락되거나 오래된 artifact는 빌드 실패로 처리합니다. Artifact 보관 기간은 14일이며 만료된 실행은 전체 workflow를 다시 실행해야 합니다. 실패한 배포 job만 재실행하는 경우에는 같은 실행의 기존 artifact를 재사용합니다.
+
+로컬에서도 검증된 인덱스를 Docker에 전달할 수 있습니다.
+
+```bash
+python koica_search.py build --strict-semantic
+python tests/evaluate_semantic_quality.py
+python index_artifact.py pack --revision "$(git rev-parse HEAD)"
+docker build --build-arg KOICA_INDEX_SOURCE=prebuilt \
+  --build-arg KOICA_INDEX_REVISION="$(git rev-parse HEAD)" -t koica-reg-mcp .
+```
+
+일반 `docker build .`의 기본값은 `auto`입니다. `docker-index/manifest.json`이 있으면 검증 후 재사용하고, 없으면 기존처럼 이미지 안에서 인덱스를 생성·검증합니다. 원문이나 코드가 바뀌었는데 이전 artifact가 남아 있으면 먼저 새로 패키징해야 합니다. `docker-index/`의 산출물은 Git에 커밋하지 않습니다.
+
 ---
 
 ## 새 규정 추가·오류 신고

@@ -23,8 +23,7 @@ data/_cache/
 # 시험문제 데이터 (출처 불명 → 공개 원격 서버에서 제외)
 data/questions.json
 
-# 인덱스와 의미 검색 모델은 이미지 빌드 단계에서 생성·복사하므로 로컬 산출물은 제외
-# (항상 현재 코드·규정 데이터 및 고정된 모델 리비전으로 재생성)
+# 로컬 산출물은 제외. CI에서 검증·패키징한 docker-index/만 별도로 전달한다.
 data/index.json
 data/semantic_vectors.npy
 data/semantic_meta.json

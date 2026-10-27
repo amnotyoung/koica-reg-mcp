@@ -365,9 +365,22 @@ def parse_md(path: Path, category: str) -> tuple[list[Article], list[Attachment]
     return articles, attachments
 
 
+def corpus_fingerprint() -> str:
+    """Hash the exact ordered source files consumed by build_index."""
+    import hashlib
+
+    files = [
+        (path.name, hashlib.sha256(path.read_bytes()).hexdigest())
+        for path in sorted(DATA_DIR.glob("*.md"))
+        if path.name not in CATEGORY_AGGREGATE_FILES
+    ]
+    return hashlib.sha256(json.dumps(files, ensure_ascii=False).encode("utf-8")).hexdigest()
+
+
 def build_index(
     build_semantic: bool = True,
     strict_semantic: bool = False,
+    reuse_semantic: bool = True,
 ) -> tuple[list[Article], list[Attachment]]:
     if not DATA_DIR.exists():
         raise FileNotFoundError(f"data 폴더 없음: {DATA_DIR}")
@@ -387,6 +400,7 @@ def build_index(
         json.dumps(
             {
                 "version": 2,
+                "corpus_sha256": corpus_fingerprint(),
                 "articles": [asdict(a) for a in articles],
                 "attachments": [asdict(a) for a in attachments],
             },
@@ -413,6 +427,7 @@ def build_index(
                 index_path=INDEX_PATH,
                 vectors_path=SEMANTIC_VECTORS_PATH,
                 meta_path=SEMANTIC_META_PATH,
+                reuse=reuse_semantic,
             )
             print(
                 f"의미 인덱스: {metadata['vector_count']}개 청크 → {SEMANTIC_VECTORS_PATH}",
@@ -1766,6 +1781,7 @@ def cmd_build(args: argparse.Namespace) -> None:
     build_index(
         build_semantic=not args.no_semantic,
         strict_semantic=args.strict_semantic,
+        reuse_semantic=not args.force_embed,
     )
 
 
@@ -1807,6 +1823,7 @@ def main() -> None:
         help="의미 인덱스 빌드 실패 시 전체 빌드 실패 (배포용)",
     )
     pb.set_defaults(func=cmd_build)
+    pb.add_argument("--force-embed", action="store_true", help="캐시를 무시하고 모든 입력을 다시 임베딩")
 
     ps = sub.add_parser("search", help="조문 검색")
     ps.add_argument("query")

@@ -24,8 +24,36 @@ jobs:
           python-version: "3.12"
       - name: Audit locked converter dependencies (including optional and dev)
         run: npm audit --prefix tools/document-converter --package-lock-only
-      - name: Build the production image and semantic indexes
-        run: docker build --pull -t koica-reg-security .
+      - name: Install index build dependencies
+        run: python -m pip install -r requirements.lock.txt
+      - name: Restore semantic model
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/koica-semantic-model
+          key: koica-semantic-e5-small-614241f622f53c4eeff9890bdc4f31cfecc418b3
+      - name: Restore previous passage vectors
+        id: vectors
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            data/semantic_vectors.npy
+            data/semantic_meta.json
+          key: koica-passages-v3-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: koica-passages-v3-${{ runner.os }}-
+      - name: Build and validate search indexes once
+        env:
+          KOICA_SEMANTIC_MODEL_DIR: ${{ runner.temp }}/koica-semantic-model
+          KOICA_SEMANTIC_THREADS: "4"
+        run: |
+          python semantic_search.py download-model
+          python koica_search.py build --strict-semantic
+          python tests/evaluate_semantic_quality.py
+          python index_artifact.py pack --revision "$GITHUB_SHA"
+      - name: Build the production image from validated indexes
+        run: |
+          docker build --pull -t koica-reg-security \
+            --build-arg KOICA_INDEX_SOURCE=prebuilt \
+            --build-arg KOICA_INDEX_REVISION="$GITHUB_SHA" .
       - name: Audit every installed Python package in the final image
         run: |
           python -m pip install --upgrade pip==26.2 pip-audit==2.10.1
@@ -36,3 +64,22 @@ jobs:
           docker run --rm koica-reg-security python -m unittest discover -s tests -v
           docker run --rm koica-reg-security kordoc --version
           docker run --rm --entrypoint sh koica-reg-security -c 'test ! -e /usr/local/lib/node_modules/npm && ! command -v npm && ! command -v npx'
+      - name: Save verified passage vectors for subsequent builds
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            data/semantic_vectors.npy
+            data/semantic_meta.json
+          key: ${{ steps.vectors.outputs.cache-primary-key }}
+      - name: Publish validated indexes for deployment
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: search-index-${{ github.sha }}
+          path: |
+            docker-index/index.json
+            docker-index/semantic_vectors.npy
+            docker-index/semantic_meta.json
+            docker-index/manifest.json
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: true
