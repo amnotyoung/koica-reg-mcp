@@ -36,6 +36,18 @@ jobs:
       - name: 검색 런타임 의존성 설치
         run: python3 -m pip install --disable-pip-version-check -r requirements.lock.txt
 
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+
+      - name: HWP 변환기 설치
+        # 전체 테스트는 러너에서도 실제 HWP 변환기를 사용한다.
+        # Docker와 같은 잠금파일 및 CPU 바이너리 설치 설정을 적용한다.
+        env:
+          ONNXRUNTIME_NODE_INSTALL: skip
+        run: npm ci --prefix tools/document-converter
+
       - name: 의미 검색 모델 캐시
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
