@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Locked ALIO document conversion toolchain; installed in the image without a global package manager.",
   "dependencies": {
-    "kordoc": "4.21.33",
+    "kordoc": "4.24.12",
     "pdfjs-dist": "6.4.299"
   },
   "engines": {
