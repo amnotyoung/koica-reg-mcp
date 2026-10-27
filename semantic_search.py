@@ -497,10 +497,12 @@ def _validated_vectors(vectors_file: Path, metadata: dict[str, Any]) -> Any:
         raise ValueError("청크 입력 해시 누락")
     vectors = np.load(vectors_file, mmap_mode="r", allow_pickle=False)
     if vectors.shape != (len(chunks), MODEL_DIMENSION) or vectors.dtype != np.float32:
+        del vectors
         raise ValueError("벡터 shape/dtype 불일치")
     if not np.isfinite(vectors).all() or not np.allclose(
         np.linalg.norm(vectors, axis=1), 1.0, atol=1e-3
     ):
+        del vectors
         raise ValueError("유한한 정규화 벡터가 아님")
     return vectors
 
@@ -565,6 +567,7 @@ def build_semantic_index(
     temporary_vectors.unlink(missing_ok=True)
     temporary_meta.unlink(missing_ok=True)
 
+    vectors = None
     try:
         vectors = np.lib.format.open_memmap(
             temporary_vectors,
@@ -591,7 +594,7 @@ def build_semantic_index(
                 if key not in cached_rows and index != first_row[key]:
                     vectors[index] = vectors[first_row[key]]
         vectors.flush()
-        del vectors
+        vectors = None
 
         reused = sum(key in cached_rows for key in hashes)
         removed = len(cached_rows.keys() - set(hashes))
@@ -628,6 +631,9 @@ def build_semantic_index(
         print(f"의미 캐시: 재사용 {reused}/{len(chunks)}, 신규 임베딩 {len(missing)}, 제거 {removed}", file=sys.stderr)
         return metadata
     except Exception:
+        # Windows cannot unlink an open memmap, including after an encoder error.
+        vectors = None
+        cached_vectors = None
         temporary_vectors.unlink(missing_ok=True)
         temporary_meta.unlink(missing_ok=True)
         # Keep a valid previous pair reusable after an interrupted build. Runtime
