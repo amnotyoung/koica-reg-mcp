@@ -47,7 +47,7 @@ MODEL_FILES = {
     ),
 }
 
-SEMANTIC_SCHEMA_VERSION = 2
+SEMANTIC_SCHEMA_VERSION = 3
 CHUNK_SIZE = 400
 CHUNK_OVERLAP = 80
 DEFAULT_BATCH_SIZE = 8
@@ -519,7 +519,7 @@ def build_semantic_index(
     download: bool = True,
     reuse: bool = True,
 ) -> dict[str, Any]:
-    """Reuse verified passage vectors and encode only missing, unique inputs.
+    """Reuse verified passage vectors and encode only missing inputs.
 
     The previous .npy/metadata pair doubles as a bounded cache of the last corpus.
     Mapping rows are always regenerated; deletions and reordering never retain
@@ -544,21 +544,19 @@ def build_semantic_index(
         raise SemanticUnavailable("임베딩할 검색 문서가 없습니다.")
 
     cached_vectors = None
-    cached_rows: dict[str, int] = {}
+    cached_rows: dict[str, list[int]] = {}
     if reuse and meta_file.is_file() and vectors_file.is_file():
         try:
             previous = json.loads(meta_file.read_text(encoding="utf-8"))
             cached_vectors = _validated_vectors(vectors_file, previous)
-            cached_rows = {
-                row["text_sha256"]: index
-                for index, row in enumerate(previous["chunks"])
-            }
+            for index, row in enumerate(previous["chunks"]):
+                cached_rows.setdefault(row["text_sha256"], []).append(index)
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
             print(f"의미 캐시 재사용 불가, 전체 재생성: {exc}", file=sys.stderr)
             cached_vectors = None
+            cached_rows = {}
     hashes = [passage_hash(chunk.text) for chunk in chunks]
-    missing = list(dict.fromkeys(key for key in hashes if key not in cached_rows))
-    first_row = {key: index for index, key in reversed(list(enumerate(hashes)))}
+    missing = [index for index, key in enumerate(hashes) if key not in cached_rows]
 
     vectors_file.parent.mkdir(parents=True, exist_ok=True)
     meta_file.parent.mkdir(parents=True, exist_ok=True)
@@ -575,24 +573,29 @@ def build_semantic_index(
             dtype=np.float32,
             shape=(len(chunks), MODEL_DIMENSION),
         )
+        occurrences: dict[str, int] = {}
         for index, key in enumerate(hashes):
             if key in cached_rows:
-                vectors[index] = cached_vectors[cached_rows[key]]
+                occurrence = occurrences.get(key, 0)
+                rows = cached_rows[key]
+                vectors[index] = cached_vectors[rows[min(occurrence, len(rows) - 1)]]
+                occurrences[key] = occurrence + 1
         # An unchanged corpus requires neither model download nor ONNX loading.
         if missing:
             directory = download_model(model_dir) if download else _require_model_dir(model_dir)
             encoder = get_encoder(directory)
+            # Keep original row order, including duplicates, on a cold build.
+            # Dynamic int8 quantization can produce slightly different vectors
+            # for the same text in different batches. Preserve each occurrence
+            # on reuse rather than collapsing them and changing search ranking.
             for start in range(0, len(missing), batch_size):
                 batch = missing[start : start + batch_size]
-                encoded = encoder.embed_passages([chunks[first_row[key]].text for key in batch])
-                for key, vector in zip(batch, encoded, strict=True):
-                    vectors[first_row[key]] = vector
+                encoded = encoder.embed_passages([chunks[index].text for index in batch])
+                for index, vector in zip(batch, encoded, strict=True):
+                    vectors[index] = vector
                 completed = start + len(batch)
                 if completed == len(missing) or completed % 512 < batch_size:
                     print(f"의미 인덱스 임베딩: {completed}/{len(missing)} 청크", file=sys.stderr, flush=True)
-            for index, key in enumerate(hashes):
-                if key not in cached_rows and index != first_row[key]:
-                    vectors[index] = vectors[first_row[key]]
         vectors.flush()
         vectors = None
 
@@ -611,7 +614,8 @@ def build_semantic_index(
             "vector_count": len(chunks),
             "chunks": [chunk.metadata() for chunk in chunks],
             "reused_chunks": reused,
-            "embedded_unique_chunks": len(missing),
+            "embedded_chunks": len(missing),
+            "embedded_unique_chunks": len({hashes[index] for index in missing}),
             "removed_unique_chunks": removed,
         }
         metadata["metadata_sha256"] = metadata_digest(metadata)

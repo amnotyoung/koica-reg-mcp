@@ -100,12 +100,21 @@ class IncrementalSemanticTests(unittest.TestCase):
         stats = self.build([replace(a, article_title="바뀐 제목")])
         self.assertEqual(stats["embedded_unique_chunks"], 1)
 
-    def test_duplicate_inputs_are_encoded_once(self):
+    def test_duplicate_occurrences_keep_their_batch_specific_vectors(self):
         row = make_article()
+        # Simulate the batch-dependent rounding of dynamic int8 quantization.
+        encoded = np.eye(2, ss.MODEL_DIMENSION, dtype=np.float32)
+        with patch.object(self.encoder, "embed_passages", return_value=encoded) as embed:
+            stats = self.build([row, row])
+            self.assertEqual(len(embed.call_args.args[0]), 2)
+        self.assertEqual(stats["embedded_chunks"], 2)
+        self.assertEqual(stats["embedded_unique_chunks"], 1)
         stats = self.build([row, row])
-        self.assertEqual(stats["vector_count"], 2)
-        self.assertEqual(len(self.encoder.calls), 1)
-        np.testing.assert_array_equal(np.load(self.vectors)[0], np.load(self.vectors)[1])
+        self.assertEqual(stats["embedded_chunks"], 0)
+        np.testing.assert_array_equal(np.load(self.vectors), encoded)
+        stats = self.build([row, row, row])
+        self.assertEqual(stats["embedded_chunks"], 0)
+        np.testing.assert_array_equal(np.load(self.vectors)[2], encoded[1])
 
     def test_model_tokenizer_and_encoder_changes_invalidate_reuse(self):
         row = make_article()

@@ -38,8 +38,8 @@ jobs:
           path: |
             data/semantic_vectors.npy
             data/semantic_meta.json
-          key: koica-passages-v2-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: koica-passages-v2-${{ runner.os }}-
+          key: koica-passages-v3-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: koica-passages-v3-${{ runner.os }}-
       - name: Build and validate search indexes once
         env:
           KOICA_SEMANTIC_MODEL_DIR: ${{ runner.temp }}/koica-semantic-model
