@@ -329,12 +329,12 @@ def normalize_markdown(md: str, title: str, revision: str) -> str:
 
 
 # ── 6) 추출본·매니페스트 기록 ───────────────────────────────────────────
-def _clean_alio_managed(prev_sources: list[dict]) -> None:
-    """직전 sync가 만든 추출본을 삭제 (ALIO에서 사라진 규정 정리)."""
-    for s in prev_sources:
-        f = EXTRACT_DIR / s.get("file", "")
-        if f.name and f.exists():
-            f.unlink()
+def _replace_if_changed(staged: Path, target: Path) -> bool:
+    """내용이 같으면 기존 파일과 수정 시각을 보존한다."""
+    if target.is_file() and target.read_bytes() == staged.read_bytes():
+        return False
+    os.replace(staged, target)
+    return True
 
 
 def _load_previous_sources() -> list[dict]:
@@ -413,7 +413,7 @@ def write_extracts_and_sources(
     resolved: list[dict],
     previous_sources: list[dict] | None = None,
 ) -> list[dict]:
-    """모든 결과를 임시 디렉터리에 준비·검증한 뒤 기존 데이터와 교체한다."""
+    """모든 결과를 준비·검증한 뒤 신규·변경 파일만 반영한다."""
     EXTRACT_DIR.mkdir(parents=True, exist_ok=True)
     prev = previous_sources if previous_sources is not None else _load_previous_sources()
     previous_alio = [s for s in prev if s.get("origin") == "alio"]
@@ -461,12 +461,27 @@ def write_extracts_and_sources(
         staged_manifest.write_text(manifest, encoding="utf-8")
 
         # 이 시점까지 기존 파일은 전혀 건드리지 않는다.
-        _clean_alio_managed(previous_alio)
+        added = updated = unchanged = 0
         for staged in stage_dir.glob("*.md"):
-            os.replace(staged, EXTRACT_DIR / staged.name)
-        os.replace(staged_manifest, SOURCES_PATH)
+            target = EXTRACT_DIR / staged.name
+            existed = target.exists()
+            if not _replace_if_changed(staged, target):
+                unchanged += 1
+            elif existed:
+                updated += 1
+            else:
+                added += 1
+        _replace_if_changed(staged_manifest, SOURCES_PATH)
 
-    log(f"  추출본 {len(sources)}개 기록 + sources.json ({len(sources)}개 소스)")
+        # 규정 삭제는 위 검증에서 차단한다. 유형 변경 등으로 파일명이 바뀐
+        # 규정만 새 파일 반영 후 이전 이름을 정리하고, 비관리 파일은 유지한다.
+        current_files = {s["file"] for s in sources}
+        for s in previous_alio:
+            old_file = s.get("file")
+            if old_file and old_file not in current_files:
+                (EXTRACT_DIR / old_file).unlink(missing_ok=True)
+
+    log(f"  추출본 {len(sources)}개: 신규 {added}, 변경 {updated}, 유지 {unchanged}")
     return sources
 
 

@@ -279,6 +279,20 @@ python3 alio_sync.py --fresh  # 캐시 무시하고 처음부터
 **동기화 파이프라인** (`alio_sync.py`):
 `ALIO 목록 조회 → 각 규정의 현행본(최신 개정본) 해석 → HWP 다운로드 → kordoc로 Markdown 추출 → Format A 정규화 → data/extracted/*.md + sources.json → 키워드·의미 인덱스 재빌드`
 
+### 최신 규정 Markdown 폴더
+
+프로젝트의 **`data/extracted/`**가 규정별 최신 Markdown을 모아 두는 폴더입니다.
+파일명은 `유형_규정명.md`이며, 다른 검색·임베딩 프로그램에서도 이 폴더를 입력으로
+사용할 수 있습니다. 규정명·개정일·원본 파일 번호는 `data/sources.json`에 기록합니다.
+
+동기화 결과를 모두 검증한 후 신규 규정은 추가하고, 내용이 달라진 파일만 교체합니다.
+내용이 같은 파일과 `sources.json`은 수정 시각을 그대로 유지합니다. 기존 규정이
+수집 목록에서 사라지면 자동 삭제하지 않고 동기화를 중단합니다. 같은 규정의 유형이
+바뀌어 파일명이 변경되는 경우에는 새 파일을 반영한 뒤 이전 파일명을 정리합니다.
+
+주간 자동 동기화는 GitHub 저장소와 원격 서버에 반영됩니다. PC의 프로젝트 폴더는
+`git pull --ff-only` 또는 로컬 MCP의 `update`로 받아야 갱신됩니다.
+
 ---
 
 ## 운영 사용량 — Fly Metrics / Grafana
