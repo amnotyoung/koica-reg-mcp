@@ -1,6 +1,8 @@
 import json
+import os
 import tempfile
 import unittest
+from contextlib import ExitStack
 from pathlib import Path
 from unittest.mock import patch
 from urllib.error import URLError
@@ -186,6 +188,71 @@ class SafetyTests(unittest.TestCase):
 
             self.assertEqual(existing.read_text(encoding="utf-8"), "기존 본문")
             self.assertTrue(sources_path.exists())
+
+
+class IncrementalSyncTests(unittest.TestCase):
+    def setUp(self):
+        stack = self.enterContext(ExitStack())
+        root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
+        self.extracted = root / "extracted"
+        self.raw = root / "md_raw"
+        self.raw.mkdir()
+        self.manifest = root / "sources.json"
+        for name, value in {
+            "DATA_DIR": root,
+            "EXTRACT_DIR": self.extracted,
+            "MD_CACHE": self.raw,
+            "SOURCES_PATH": self.manifest,
+            "MIN_SOURCE_COUNT": 1,
+        }.items():
+            stack.enter_context(patch.object(alio_sync, name, value))
+        self.resolved = [{
+            "title": title, "type": "규정", "file_no": str(i),
+            "revision": "2026.07.29",
+        } for i, title in enumerate(["인사", "보수"], 1)]
+        for r in self.resolved:
+            (self.raw / f"{r['file_no']}.md").write_text("기존 본문", encoding="utf-8")
+        alio_sync.write_extracts_and_sources(self.resolved)
+        # 과거 시각을 고정해 파일시스템의 시각 정밀도와 무관하게 재기록을 감지한다.
+        self.original_mtimes = {}
+        for path in [*self.extracted.glob("*.md"), self.manifest]:
+            os.utime(path, ns=(1_000_000_000, 1_000_000_000))
+            self.original_mtimes[path] = path.stat().st_mtime_ns
+
+    def test_identical_sync_preserves_files_and_manifest(self):
+        alio_sync.write_extracts_and_sources(self.resolved)
+
+        for path, mtime in self.original_mtimes.items():
+            self.assertEqual(path.stat().st_mtime_ns, mtime, path.name)
+
+    def test_content_change_and_addition_preserve_unchanged_and_unmanaged_files(self):
+        (self.raw / "2.md").write_text("변경된 본문", encoding="utf-8")
+        (self.raw / "3.md").write_text("신규 본문", encoding="utf-8")
+        self.resolved.append({
+            "title": "복무", "type": "규정", "file_no": "3",
+            "revision": "2026.07.29",
+        })
+        personal = self.extracted / "개인메모.md"
+        personal.write_text("유지", encoding="utf-8")
+
+        alio_sync.write_extracts_and_sources(self.resolved)
+
+        unchanged = self.extracted / "규정_인사.md"
+        self.assertEqual(unchanged.stat().st_mtime_ns, self.original_mtimes[unchanged])
+        self.assertIn("변경된 본문", (self.extracted / "규정_보수.md").read_text())
+        self.assertIn("신규 본문", (self.extracted / "규정_복무.md").read_text())
+        self.assertEqual(personal.read_text(), "유지")
+        self.assertEqual(json.loads(self.manifest.read_text())["count"], 3)
+
+    def test_type_change_removes_only_superseded_filename(self):
+        self.resolved[0]["type"] = "지침"
+
+        alio_sync.write_extracts_and_sources(self.resolved)
+
+        self.assertFalse((self.extracted / "규정_인사.md").exists())
+        self.assertTrue((self.extracted / "지침_인사.md").exists())
+        unchanged = self.extracted / "규정_보수.md"
+        self.assertEqual(unchanged.stat().st_mtime_ns, self.original_mtimes[unchanged])
 
 
 if __name__ == "__main__":
