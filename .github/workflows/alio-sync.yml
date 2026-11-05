@@ -185,3 +185,7 @@ jobs:
           echo "PR #${PR_NUMBER} 자동 병합 완료"
           gh workflow run fly-deploy.yml --ref main
           echo "Fly 배포 워크플로 호출 완료"
+          # GITHUB_TOKEN으로 병합한 push는 다른 워크플로를 깨우지 않으므로
+          # 규정 지도(GitHub Pages)도 Fly 배포처럼 명시적으로 호출한다.
+          gh workflow run regulation-map-pages.yml --ref main
+          echo "규정 지도 Pages 배포 워크플로 호출 완료"

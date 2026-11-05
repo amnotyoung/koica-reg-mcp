@@ -52,3 +52,5 @@ node_modules/
 
 # Regenerable local regulation map snapshot
 regulation_map/data.js
+regulation_map/dist/
+_site/

@@ -13,6 +13,19 @@ python3 -m http.server 8873 --bind 127.0.0.1 --directory regulation_map
 
 브라우저에서 <http://127.0.0.1:8873>를 엽니다. 빌드 후에는 `index.html`을 파일로 직접 열어도 됩니다. 서버를 시작한 터미널에서 Ctrl+C로 종료합니다.
 
+## 단일 HTML과 GitHub Pages 배포
+
+```bash
+python3 regulation_map/build.py
+python3 regulation_map/bundle.py   # regulation_map/dist/index.html
+```
+
+`bundle.py`는 CSS·데이터·스크립트를 원래 순서대로 한 HTML에 넣습니다(약 13MB, 압축 전송 약 2.6MB). 서버·CDN·API 없이 정적 호스팅이나 파일로 열어도 동작합니다. `dist/`는 빌드 산출물이라 커밋하지 않습니다.
+
+`.github/workflows/regulation-map-pages.yml`이 지도 테스트 → 빌드 → 단일 HTML 생성 → GitHub Pages 배포를 수행합니다. 사람이 `main`에 push한 규정 지도·추출본·`sources.json` 변경은 경로 조건으로 배포되고, ALIO 주간 동기화의 자동 병합은 `GITHUB_TOKEN` push라 다른 워크플로를 깨우지 않으므로 `alio-sync.yml`이 Fly 배포와 함께 이 워크플로를 직접 호출합니다. 규정 원문이 바뀌면 해당 업무 연결은 재검토 전까지 숨겨지고 새 규정·개정 본문은 바로 반영됩니다.
+
+배포된 페이지 상단의 **HTML 내려받기**는 지금 보고 있는 단일 HTML을 `koica-regulation-map-<최근 규정 반영일>.html`로 저장합니다. 인터넷 없이 열리며, 받은 시점의 스냅샷입니다. 여러 파일로 된 개발용 화면과 이미 내려받은 파일에서는 버튼을 표시하지 않습니다. 저장소 설정의 Pages 소스는 **GitHub Actions**여야 합니다. 화면과 데이터 안내에 KOICA 공식 서비스가 아닌 비공식 개인 제작물임을 표시합니다.
+
 ## 탐색
 
 1. 왼쪽 부서 검색창에 입력하면 후보가 바로 나타납니다. Enter로 강조된 후보를 선택하거나 ↑↓로 이동한 뒤 Enter, 또는 후보 클릭으로 선택합니다. 별도 드롭다운을 열 필요가 없습니다. 정확한 부서명을 우선 표시하며 띄어쓰기·영문 대소문자 차이를 무시합니다. Escape는 검색을 취소하고, 결과가 없으면 현재 부서를 유지합니다. **실·팀 모두 선택 즉시 부서 전체 규정 지도**가 열립니다. 병합된 지역부서 공통업무도 포함합니다.

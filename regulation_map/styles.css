@@ -160,3 +160,7 @@ details.reader-notice p{margin:6px 0 0;line-height:1.8}
   .reader-layout.toc-open{grid-template-rows:auto minmax(0,1fr)}
   .reader-layout.toc-open #reader-toc{display:block;max-height:40vh}
 }
+
+/* Clear that this is not an official KOICA service. */
+.unofficial{font-size:10px;color:#8f6d2f;background:#f8f1e1;border:1px solid #ead9b4;border-radius:4px;padding:2px 6px;margin-left:4px;white-space:nowrap}
+@media(max-width:720px){.unofficial{font-size:8px;padding:1px 4px}}

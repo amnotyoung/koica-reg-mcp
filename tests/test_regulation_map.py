@@ -1,11 +1,14 @@
 """Regression coverage for provenance-sensitive regulation map extraction."""
+import tempfile
 import unittest
+from pathlib import Path
 import json
 from copy import deepcopy
 
 import koica_search as ks
 from regulation_map.build import ORG, ROOT, build_relations, official_source, parse_departments
 from regulation_map.reviews import apply_reviews, digest
+from regulation_map.bundle import bundle
 
 
 def article(source, body, number=1, title="목적"):
@@ -82,6 +85,35 @@ class OfficialSourceTests(unittest.TestCase):
         official = official_source(None, "https://www.alio.go.kr/list")
         self.assertEqual((official["page_url"], official["file_url"], official["collected_at"]), ("", "", ""))
         self.assertEqual(official["list_url"], "https://www.alio.go.kr/list")
+
+
+class BundleTests(unittest.TestCase):
+    def make_site(self, root, app="window.APP=1;"):
+        page = (ROOT / "regulation_map" / "index.html").read_text(encoding="utf-8")
+        (root / "index.html").write_text(page, encoding="utf-8")
+        (root / "styles.css").write_text("body{color:red}", encoding="utf-8")
+        for name, body in {"data.js": "window.REGULATION_MAP={};", "map_model.js": "window.M=1;",
+                           "reader.js": "window.R=1;", "app.js": app}.items():
+            (root / name).write_text(body, encoding="utf-8")
+
+    def test_single_file_inlines_every_asset_in_order(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.make_site(Path(tmp))
+            html = bundle(Path(tmp))
+        self.assertNotIn('src="', html)
+        self.assertNotIn('href="styles.css"', html)
+        self.assertIn("body{color:red}", html)
+        order = [html.index(x) for x in ["window.REGULATION_MAP", "window.M=1", "window.R=1", "window.APP=1"]]
+        self.assertEqual(order, sorted(order))
+        self.assertLess(order[-1], html.index("</body>"))
+        self.assertEqual(html.count('name="regulation-map-bundle"'), 1)
+        self.assertLess(html.index('name="regulation-map-bundle"'), html.index("</head>"))
+
+    def test_source_that_would_close_the_inline_script_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.make_site(Path(tmp), app="const s='</script>';")
+            with self.assertRaises(ValueError):
+                bundle(Path(tmp))
 
 
 class ContentReviewTests(unittest.TestCase):

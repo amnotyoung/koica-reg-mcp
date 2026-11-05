@@ -310,7 +310,7 @@
   function resetZoom() {state.zoom=null;state.scrollPending=true;}
   function info() {
     const r=D.meta.reviews;
-    $('data-info').innerHTML=`<p>${D.departments.length}개 부서 · ${D.departments.reduce((n,d)=>n+d.duties.length,0)}개 업무 중 <strong>${r.reviewed_duties}개 업무에 내용 연결</strong>을 작성했습니다. ${r.limited_mapping_duties||0}개 업무에는 특정 행위·관련 원칙·공통 절차의 연결을 제시하며 업무 전체의 직접 근거는 미확정입니다. ${r.evidence_gap_duties||0}개 업무는 연결 판단 미확정, ${r.unreviewed_duties}개 업무는 미검토, ${r.stale_duties}개 업무는 원문 변경으로 재검토가 필요합니다.</p><h4>업무 → 규정: 작성한 내용검토</h4><p>업무분장과 목적·적용범위·관련 조문 전문을 읽고 규정의 역할, 연결 이유, 적용 조건을 작성했습니다. 단어 일치나 유사도 점수로 연결을 생성하지 않습니다. ${esc(r.reviewer)} · ${esc(r.reviewed_at)}. 부분 검토이며 기관의 공식 적용 판정은 아닙니다.</p><h4>규정 → 규정: 두 종류의 근거</h4><p>전체 ${D.relations.length}개 규정명 참조는 본칙에서 자동 추출했습니다. 그중 ${r.reviewed_relations}개 관계에는 조문을 읽고 작성한 관계 설명을 추가했습니다. 자동 추출만 된 관계와 내용검토 관계를 패널에서 구분합니다.</p><h4>무엇부터 확인하나요?</h4><p>먼저 확인: 선택한 업무를 직접 규율하는 기본 규정. 함께 확인: 실행 단계의 절차·기준. 해당할 때: 특정 사업요소나 수행방식의 분기입니다. 이유와 순서를 업무별로 작성했으며, 인용 건수·유사도 점수는 사용하지 않습니다. 조건부 규정도 해당 상황에서는 중요합니다. 규정 중심 화면에서 현재 업무의 판단이 없는 이웃은 순서 미평가입니다.</p><h4>개정 시 재검토</h4><p>업무분장, 근거 규정 파일, 조문 본문의 해시를 검토 당시 값과 비교합니다. 원문이 바뀌면 영향을 받는 연결을 숨기고 재검토 필요로 표시합니다. 빌드는 검토 기록을 자동 갱신하지 않습니다.</p><details><summary>실제로 읽은 조문 범위</summary>${r.reading_scope.map(s=>`<p><strong>${esc(s.source)}</strong> · ${esc(s.revision)}<br>${s.articles.map(esc).join(', ')}</p>`).join('')}</details><h4>범위와 한계</h4><p>${esc(D.meta.limits)}<br>별표 4 업무분장 기반이며 해외사무소 별표 5는 별도 모델링하지 않았습니다. 실시간 조회가 아닌 저장소 스냅샷입니다. 규정마다 ALIO 공식 게시 페이지·원본 파일 링크와 저장소 수집일을 함께 표시하며, 수집일 이후의 개정 여부는 공식 게시 페이지에서 확인할 수 있습니다. 미검토 영역은 업무마다 표시합니다.</p>${D.meta.notices.length?`<h4>업무분장 시행일 예외 — 원문</h4>${D.meta.notices.map(n=>`<p class="notice">${esc(n)}</p>`).join('')}`:''}`;
+    $('data-info').innerHTML=`<p class="notice">KOICA의 공식 서비스가 아닌 비공식 개인 제작 프로토타입입니다. 업무·규정 연결은 AI 내용검토이며 기관 검토를 거치지 않았습니다. 규정 원문과 적용 여부는 ALIO 공식 게시 페이지와 소관 부서에서 확인하세요.</p><p>${D.departments.length}개 부서 · ${D.departments.reduce((n,d)=>n+d.duties.length,0)}개 업무 중 <strong>${r.reviewed_duties}개 업무에 내용 연결</strong>을 작성했습니다. ${r.limited_mapping_duties||0}개 업무에는 특정 행위·관련 원칙·공통 절차의 연결을 제시하며 업무 전체의 직접 근거는 미확정입니다. ${r.evidence_gap_duties||0}개 업무는 연결 판단 미확정, ${r.unreviewed_duties}개 업무는 미검토, ${r.stale_duties}개 업무는 원문 변경으로 재검토가 필요합니다.</p><h4>업무 → 규정: 작성한 내용검토</h4><p>업무분장과 목적·적용범위·관련 조문 전문을 읽고 규정의 역할, 연결 이유, 적용 조건을 작성했습니다. 단어 일치나 유사도 점수로 연결을 생성하지 않습니다. ${esc(r.reviewer)} · ${esc(r.reviewed_at)}. 부분 검토이며 기관의 공식 적용 판정은 아닙니다.</p><h4>규정 → 규정: 두 종류의 근거</h4><p>전체 ${D.relations.length}개 규정명 참조는 본칙에서 자동 추출했습니다. 그중 ${r.reviewed_relations}개 관계에는 조문을 읽고 작성한 관계 설명을 추가했습니다. 자동 추출만 된 관계와 내용검토 관계를 패널에서 구분합니다.</p><h4>무엇부터 확인하나요?</h4><p>먼저 확인: 선택한 업무를 직접 규율하는 기본 규정. 함께 확인: 실행 단계의 절차·기준. 해당할 때: 특정 사업요소나 수행방식의 분기입니다. 이유와 순서를 업무별로 작성했으며, 인용 건수·유사도 점수는 사용하지 않습니다. 조건부 규정도 해당 상황에서는 중요합니다. 규정 중심 화면에서 현재 업무의 판단이 없는 이웃은 순서 미평가입니다.</p><h4>개정 시 재검토</h4><p>업무분장, 근거 규정 파일, 조문 본문의 해시를 검토 당시 값과 비교합니다. 원문이 바뀌면 영향을 받는 연결을 숨기고 재검토 필요로 표시합니다. 빌드는 검토 기록을 자동 갱신하지 않습니다.</p><details><summary>실제로 읽은 조문 범위</summary>${r.reading_scope.map(s=>`<p><strong>${esc(s.source)}</strong> · ${esc(s.revision)}<br>${s.articles.map(esc).join(', ')}</p>`).join('')}</details><h4>데이터 기준</h4><p>최근 규정 반영일 ${esc(latestData||'기록 없음')}. ALIO 주간 동기화로 바뀐 규정이 저장소에 들어오면 이 사이트도 다시 배포됩니다. 내려받은 HTML은 받은 시점의 스냅샷입니다.</p><h4>범위와 한계</h4><p>${esc(D.meta.limits)}<br>별표 4 업무분장 기반이며 해외사무소 별표 5는 별도 모델링하지 않았습니다. 실시간 조회가 아닌 저장소 스냅샷입니다. 규정마다 ALIO 공식 게시 페이지·원본 파일 링크와 저장소 수집일을 함께 표시하며, 수집일 이후의 개정 여부는 공식 게시 페이지에서 확인할 수 있습니다. 미검토 영역은 업무마다 표시합니다.</p>${D.meta.notices.length?`<h4>업무분장 시행일 예외 — 원문</h4>${D.meta.notices.map(n=>`<p class="notice">${esc(n)}</p>`).join('')}`:''}`;
     $('info-dialog').showModal();
   }
   $('department-search').addEventListener('input',e=>openDepartmentSearch(e.target.value));
@@ -383,6 +383,17 @@
   ['pointerup','pointercancel'].forEach(type=>$('map-svg').addEventListener(type,()=>{drag=null;}));
   $('about').addEventListener('click',info);$('close-info').addEventListener('click',()=>$('info-dialog').close());
   $('org-revision').textContent=D.meta.organization_revision;
+  // The newest date any regulation text entered the repository.
+  const latestData=D.regulations.reduce((latest,r)=>(r.official?.collected_at||'')>latest?r.official.collected_at:latest,'');
+  // Only the published single-file build can hand itself over as a download;
+  // the development page loads separate files and would not work on its own.
+  if(document.querySelector('meta[name="regulation-map-bundle"]') && /^https?:$/.test(location.protocol)) {
+    const link=$('download-html');
+    link.href=location.pathname;
+    link.download=`koica-regulation-map-${latestData||'snapshot'}.html`;
+    link.title=`최근 규정 반영 ${latestData||'기록 없음'} 기준 한 파일(약 13MB). 인터넷 없이 열 수 있으며, 이후 개정은 이 사이트에서 다시 받아야 합니다.`;
+    link.hidden=false;
+  }
   $('review-coverage').textContent=`업무 연결 ${D.meta.reviews.reviewed_duties} · 관련·공통 관계 포함`;
   const defaultDepartment=D.departments.find(d=>d.name==='동남아시아1팀')||D.departments[0];
   // The address is the source of truth: opening, pasting or editing a hash in the
