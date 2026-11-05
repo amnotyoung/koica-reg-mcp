@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "reviewed_at": "2026-11-05",
   "reviewer": "AI 내용검토 · 기관 검토 전",
   "organization_source": "직제규정 시행세칙",
@@ -1212,7 +1212,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "동남아시아실 / 동남아시아2팀",
@@ -1235,7 +1292,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "서남아태평양실",
@@ -1258,7 +1372,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "아프리카실 / 아프리카1팀",
@@ -1281,7 +1452,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "아프리카실 / 아프리카2팀",
@@ -1304,7 +1532,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "유라시아중동실 / 유라시아팀",
@@ -1327,7 +1612,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "유라시아중동실 / 중동팀",
@@ -1350,7 +1692,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "중남미실 / 중미·카리브팀",
@@ -1373,7 +1772,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "중남미실 / 남미팀",
@@ -1396,7 +1852,64 @@
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
-      ]
+      ],
+      "priorities": {
+        "program": {
+          "level": "core",
+          "order": 1,
+          "reason": "국별협력사업의 수행주체·추진단계와 기획부터 종료까지의 기본 흐름을 먼저 잡는 규정이다."
+        },
+        "total_budget": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "기획·집행계획의 예산 범위를 정하는 단계에서 기본 규정과 함께 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 5,
+          "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 6,
+          "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
+        },
+        "aftercare": {
+          "level": "supporting",
+          "order": 7,
+          "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 8,
+          "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 9,
+          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+        },
+        "construction": {
+          "level": "conditional",
+          "order": 10,
+          "reason": "사업에 건축·시설 요소가 포함될 때 추가로 읽는 분기다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 11,
+          "reason": "공모형 국별협력사업으로 추진하는 경우에 추가로 읽는다."
+        }
+      }
     },
     {
       "department": "동남아시아실 / 동남아시아1팀",
@@ -1409,7 +1922,19 @@
       "scope": "전략기획 중 국별협력사업 발굴 고려요소와 국별·정책전략 평가의 접점만 검토했습니다.",
       "gaps": [
         "CPS·CP 수립·검토·조정·성과관리의 전체 업무체계는 추가 검토 대상입니다."
-      ]
+      ],
+      "priorities": {
+        "strategy": {
+          "level": "core",
+          "order": 1,
+          "reason": "전략을 사업발굴에 반영하는 직접 접점을 먼저 확인한다."
+        },
+        "strategy_evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "국별·정책전략의 평가와 환류를 수행하는 단계에서 함께 확인한다."
+        }
+      }
     },
     {
       "department": "동남아시아실 / 동남아시아2팀",
@@ -1422,7 +1947,19 @@
       "scope": "전략기획 중 국별협력사업 발굴 고려요소와 국별·정책전략 평가의 접점만 검토했습니다.",
       "gaps": [
         "CPS·CP 수립·검토·조정·성과관리의 전체 업무체계는 추가 검토 대상입니다."
-      ]
+      ],
+      "priorities": {
+        "strategy": {
+          "level": "core",
+          "order": 1,
+          "reason": "전략을 사업발굴에 반영하는 직접 접점을 먼저 확인한다."
+        },
+        "strategy_evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "국별·정책전략의 평가와 환류를 수행하는 단계에서 함께 확인한다."
+        }
+      }
     },
     {
       "department": "서남아태평양실",
@@ -1435,7 +1972,19 @@
       "scope": "전략기획 중 국별협력사업 발굴 고려요소와 국별·정책전략 평가의 접점만 검토했습니다.",
       "gaps": [
         "CPS·CP 수립·검토·조정·성과관리의 전체 업무체계는 추가 검토 대상입니다."
-      ]
+      ],
+      "priorities": {
+        "strategy": {
+          "level": "core",
+          "order": 1,
+          "reason": "전략을 사업발굴에 반영하는 직접 접점을 먼저 확인한다."
+        },
+        "strategy_evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "국별·정책전략의 평가와 환류를 수행하는 단계에서 함께 확인한다."
+        }
+      }
     },
     {
       "department": "사업전략처 / 지역사업총괄실",
@@ -1449,7 +1998,24 @@
       "scope": "사업 추진현황·연차점검·개별사업 성과·사업계획 변경 부분의 연결입니다.",
       "gaps": [
         "기관 경영평가·위험관리 제도 전체는 미검토입니다."
-      ]
+      ],
+      "priorities": {
+        "progress": {
+          "level": "core",
+          "order": 1,
+          "reason": "사업현황·분기보고·연차점검이라는 총괄 업무의 직접 근거를 먼저 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "사업계획 변경을 총괄할 때 변경 유형과 처리 경로를 함께 확인한다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "개별사업 성과관리를 평가 체계와 연결하는 단계에서 확인한다."
+        }
+      }
     },
     {
       "department": "사업전략처 / 지역사업총괄실",
@@ -1463,7 +2029,24 @@
       "scope": "PCP·PD 검토와 국별협력 후보사업 심사 경로를 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "formation": {
+          "level": "core",
+          "order": 1,
+          "reason": "PCP·PD 검토와 후보사업 심사를 직접 규율하므로 먼저 읽는다."
+        },
+        "experts": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "조사단을 직접 계약 전문가로 구성하는 경우 확인한다."
+        },
+        "competition": {
+          "level": "conditional",
+          "order": 3,
+          "reason": "공모로 제안받은 사업의 형성·심사인 경우 추가 확인한다."
+        }
+      }
     },
     {
       "department": "사업전략처 / 지역사업총괄실",
@@ -1476,7 +2059,19 @@
       "scope": "건축·CM과 원조조달 지원 부분을 검토했습니다.",
       "gaps": [
         "UNOPS 협력, 용역비 정산 기준·재정보증보험은 미검토입니다."
-      ]
+      ],
+      "priorities": {
+        "construction": {
+          "level": "core",
+          "order": 1,
+          "reason": "이 업무에 명시된 건축·지역 CM 지원 부분을 직접 다루므로 먼저 읽는다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "시설사업을 수행할 기관을 선정하거나 계약을 지원할 때 함께 읽는다."
+        }
+      }
     },
     {
       "department": "사업전략처 / 지역사업총괄실",
@@ -1488,7 +2083,14 @@
       "scope": "사후관리 총괄부서의 제도·실시계획 안내·확정내역 보고 역할을 확인했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "aftercare": {
+          "level": "core",
+          "order": 1,
+          "reason": "사후관리 총괄부서의 제도·계획 안내·보고 역할을 직접 설명하는 지침이다."
+        }
+      }
     },
     {
       "department": "경영전략처 / 예산실",
@@ -1500,7 +2102,14 @@
       "scope": "국별협력사업의 시행계획 반영 부분만 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "annual_program": {
+          "level": "core",
+          "order": 1,
+          "reason": "검토 범위인 국별협력사업의 시행계획 반영·정부심의 경로를 먼저 확인한다."
+        }
+      }
     },
     {
       "department": "경영전략처 / 예산실",
@@ -1513,7 +2122,19 @@
       "scope": "공통 예산요구·확정과 국별협력사업 연도별 예산 기준을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "budgeting": {
+          "level": "core",
+          "order": 1,
+          "reason": "예산요구와 확정의 공통 경로가 예산편성 업무의 출발점이다."
+        },
+        "total_budget": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "편성 대상이 국별협력사업 예산인 경우 추가 산출기준을 확인한다."
+        }
+      }
     },
     {
       "department": "경영전략처 / 예산실",
@@ -1527,7 +2148,24 @@
       "scope": "예산 전용·이월과 사업계획 변경을 구분하여 연결했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "budget_accounting": {
+          "level": "core",
+          "order": 1,
+          "reason": "예산 전용·이월·집행의 공통 기준을 먼저 확인한다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "예산운용과 함께 사업계획을 변경해야 하는 상황의 처리 절차를 확인한다."
+        },
+        "total_budget": {
+          "level": "conditional",
+          "order": 3,
+          "reason": "국별협력사업 총사업비·환차손익을 다루는 경우 추가 확인한다."
+        }
+      }
     },
     {
       "department": "경영전략처 / 예산실",
@@ -1539,7 +2177,14 @@
       "scope": "결산보고 기본 경로만 검토했습니다.",
       "gaps": [
         "국회 결산심의·성인지 결산의 상세 기준은 미검토입니다."
-      ]
+      ],
+      "priorities": {
+        "closing": {
+          "level": "core",
+          "order": 1,
+          "reason": "결산 수행과 결산보고의 공통 기준을 직접 다루므로 먼저 확인한다."
+        }
+      }
     },
     {
       "department": "안전·경영실 / 재무회계팀",
@@ -1551,7 +2196,14 @@
       "scope": "자금배정·여유자금 운용·출납마감 부분을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "funds": {
+          "level": "core",
+          "order": 1,
+          "reason": "자금배정·여유자금 운용·출납마감을 직접 다루는 규정이다."
+        }
+      }
     },
     {
       "department": "안전·경영실 / 재무회계팀",
@@ -1563,7 +2215,14 @@
       "scope": "회계처리·결의서·지출의 공통 기준을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "account_checks": {
+          "level": "core",
+          "order": 1,
+          "reason": "결의서와 회계처리의 공통 기준이 회계검토의 출발점이다."
+        }
+      }
     },
     {
       "department": "안전·경영실 / 재무회계팀",
@@ -1575,7 +2234,14 @@
       "scope": "연도말·임시결산과 결산보고의 기본 경로를 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "closing": {
+          "level": "core",
+          "order": 1,
+          "reason": "결산 수행과 결산보고의 공통 기준을 직접 다루므로 먼저 확인한다."
+        }
+      }
     },
     {
       "department": "조달실 / 조달1팀",
@@ -1587,7 +2253,14 @@
       "scope": "원조조달의 의뢰·계약방식·협상 경로를 검토했습니다.",
       "gaps": [
         "기술평가 점수·절차, 계약규정 시행세칙과 외부 계약법령은 미검토입니다."
-      ]
+      ],
+      "priorities": {
+        "tender": {
+          "level": "core",
+          "order": 1,
+          "reason": "원조조달의 의뢰·계약방식·협상 절차를 직접 다루는 규정이다."
+        }
+      }
     },
     {
       "department": "조달실 / 조달1팀",
@@ -1600,7 +2273,19 @@
       "scope": "원조조달 상담의 적용범위·기본 계약절차와 부서협조 경로를 연결했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "tender": {
+          "level": "core",
+          "order": 1,
+          "reason": "원조조달 입찰·계약 상담의 적용범위와 절차를 직접 다루는 기준이다."
+        },
+        "delegation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "결재 권한과 관련부서 협조에 관한 상담에는 공통 전결 규정을 함께 확인한다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1612,7 +2297,14 @@
       "scope": "평가부서의 평가체계·계획과 평가위원회 경로를 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_plan": {
+          "level": "core",
+          "order": 1,
+          "reason": "평가계획과 평가위원회에 관한 업무의 직접 근거이므로 먼저 확인한다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1624,7 +2316,14 @@
       "scope": "연간평가계획의 외부 검토·의결 및 환류 계획 경로를 검토했습니다.",
       "gaps": [
         "국무조정실 평가지침 원문 전체는 미검토입니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_governance": {
+          "level": "core",
+          "order": 1,
+          "reason": "평가전문위원회와 연결되는 계획·환류 보고 경로를 직접 다룬다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1638,7 +2337,24 @@
       "scope": "연간·개별 평가계획과 평가기관·직접 위촉 전문가 활용 경로를 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_plan": {
+          "level": "core",
+          "order": 1,
+          "reason": "연간·개별 평가계획과 이행 체계를 먼저 확인한다."
+        },
+        "evaluation_experts": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "평가자를 개별 외부전문가 위촉 방식으로 구성할 때 읽는다."
+        },
+        "evaluation_contract": {
+          "level": "conditional",
+          "order": 3,
+          "reason": "평가기관을 입찰·계약으로 선정하는 방식일 때 읽는다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1650,7 +2366,14 @@
       "scope": "평가 품질관리와 품질검토위원회 부분을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_quality": {
+          "level": "core",
+          "order": 1,
+          "reason": "평가보고서 품질과 품질검토위원회를 직접 다루므로 먼저 확인한다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1662,7 +2385,14 @@
       "scope": "평가환류 과제 수립·책임 배분·이행점검을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_feedback": {
+          "level": "core",
+          "order": 1,
+          "reason": "평가환류 과제의 책임 배분과 이행점검을 직접 다룬다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1674,7 +2404,14 @@
       "scope": "평가결과·교훈의 관리·공유·확산 부분을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_knowledge": {
+          "level": "core",
+          "order": 1,
+          "reason": "평가 지식·교훈의 관리와 확산 업무를 직접 다룬다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1686,7 +2423,14 @@
       "scope": "평가 공개의 주체·절차·예외를 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_disclosure": {
+          "level": "core",
+          "order": 1,
+          "reason": "평가결과 공개의 주체·범위·예외를 직접 다루므로 먼저 확인한다."
+        }
+      }
     },
     {
       "department": "평가실",
@@ -1698,7 +2442,14 @@
       "scope": "공동평가와 기관 간 평가협력 약정 부분을 검토했습니다.",
       "gaps": [
         "관련 세칙·매뉴얼·별표·서식과 외부 법령까지 모두 검토한 적용 판정은 아닙니다."
-      ]
+      ],
+      "priorities": {
+        "evaluation_partner": {
+          "level": "core",
+          "order": 1,
+          "reason": "공동평가와 기관 간 협력 약정이라는 업무의 직접 근거다."
+        }
+      }
     }
   ],
   "relation_reviews": [
@@ -1765,5 +2516,10 @@
     "unique_citations": 65,
     "result": "65 ok",
     "scope": "인용 실재성 확인이며 관계 해석·최신성 승인 아님"
+  },
+  "priority_policy": {
+    "reviewed_at": "2026-11-05",
+    "basis": "업무분장과 검토 조문의 역할·범위에 따른 업무별 탐색 순서",
+    "note": "법적 효력·준수 의무의 우열이나 유사도 점수가 아니다. 조건부 규정은 해당 상황에서 중요할 수 있다."
   }
 }

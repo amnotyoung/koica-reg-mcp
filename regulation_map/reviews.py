@@ -6,13 +6,19 @@ normal build only compares them and cannot refresh or bless a changed source.
 from copy import deepcopy
 import hashlib
 
+PRIORITY_LEVELS = {
+    "core": {"label": "먼저 확인", "rank": 1},
+    "supporting": {"label": "함께 확인", "rank": 2},
+    "conditional": {"label": "해당할 때", "rank": 3},
+}
+
 
 def digest(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def apply_reviews(departments, articles, source_texts, catalog, relations):
-    if catalog.get("schema_version") != 1:
+    if catalog.get("schema_version") != 2:
         raise ValueError("Unsupported content review schema")
     by_article = {}
     for article in articles:
@@ -52,13 +58,31 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
         if key in seen:
             raise ValueError(f"Duplicate duty review: {key}")
         seen.add(key)
+        priorities = review.get("priorities", {})
+        if set(priorities) != set(review["link_ids"]):
+            raise ValueError("Every duty link needs an authored priority")
+        orders = set()
+        for priority in priorities.values():
+            order = priority.get("order")
+            if (priority.get("level") not in PRIORITY_LEVELS or
+                    not isinstance(order, int) or isinstance(order, bool) or order < 1 or
+                    order in orders or not priority.get("reason", "").strip()):
+                raise ValueError("Invalid authored priority")
+            orders.add(order)
         task = tasks.get(key)
         if task is None:
             orphaned += 1
             continue
         fresh_task = (digest(task["text"]) == review["duty_sha256"] and
                       hashes.get(catalog["organization_source"]) == snapshots[catalog["organization_source"]]["sha256"])
-        links = [deepcopy(catalog["links"][k]) for k in review["link_ids"] if fresh_task and valid_links[k]]
+        links = []
+        for link_id in review["link_ids"]:
+            if fresh_task and valid_links[link_id]:
+                link = deepcopy(catalog["links"][link_id])
+                link["priority"] = deepcopy(priorities[link_id])
+                link["priority"]["label"] = PRIORITY_LEVELS[link["priority"]["level"]]["label"]
+                links.append(link)
+        links.sort(key=lambda link: (PRIORITY_LEVELS[link["priority"]["level"]]["rank"], link["priority"]["order"]))
         if len({link["source"] for link in links}) != len(links):
             raise ValueError("Duplicate target regulation in duty review")
         task["links"] = links
@@ -85,5 +109,6 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
             "duty_links": sum(len(t["links"]) for t in tasks.values()),
             "reviewed_relations": annotated, "reviewer": catalog["reviewer"],
             "reviewed_at": catalog["reviewed_at"],
+            "priority_policy": catalog["priority_policy"],
             "reading_scope": [{"source": s, "revision": v["revision"], "articles": v["read_articles"]}
                               for s, v in snapshots.items() if v["read_articles"]]}

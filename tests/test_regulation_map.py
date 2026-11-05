@@ -75,13 +75,14 @@ class ContentReviewTests(unittest.TestCase):
         self.departments = [{"id": "재무회계팀", "duties": [
             {"id": "d1", "title": "자금관리", "text": "자금관리"},
             {"id": "d2", "title": "자금 관련 다른 업무", "text": "자금 출납 관리"}]}]
-        self.catalog = {"schema_version": 1, "reviewer": "AI 내용검토", "reviewed_at": "2026-11-05",
+        self.catalog = {"schema_version": 2, "reviewer": "AI 내용검토", "reviewed_at": "2026-11-05", "priority_policy": {},
             "organization_source": ORG,
             "source_snapshots": {s: {"sha256": digest(t), "revision": "2026", "read_articles": ["제1조"]} for s, t in self.texts.items()},
             "links": {"funds": {"source": "회계규정", "role": "자금·출납", "rationale": "자금 출납 절차", "condition": "자금 출납 업무",
                 "evidence": [{"source": "회계규정", "article": "제1조", "quote": "자금의 출납", "body_sha256": digest(self.articles[0].body)}]}},
             "duty_reviews": [{"department": "재무회계팀", "duty_id": "d1", "duty_sha256": digest("자금관리"),
-                              "link_ids": ["funds"], "scope": "자금 출납 부분", "gaps": ["세부 기준 미검토"]}]}
+                              "link_ids": ["funds"], "priorities": {"funds": {"level": "core", "order": 1, "reason": "자금 출납을 직접 다룸"}},
+                              "scope": "자금 출납 부분", "gaps": ["세부 기준 미검토"]}]}
 
     def apply(self):
         return apply_reviews(self.departments, self.articles, self.texts, self.catalog, [])
@@ -117,6 +118,16 @@ class ContentReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "outside the recorded reading scope"):
             self.apply()
 
+    def test_missing_or_invalid_priority_is_not_inferred(self):
+        review = self.catalog["duty_reviews"][0]
+        priority = review.pop("priorities")
+        with self.assertRaisesRegex(ValueError, "authored priority"):
+            self.apply()
+        review["priorities"] = priority
+        priority["funds"]["level"] = "99_percent"
+        with self.assertRaisesRegex(ValueError, "Invalid authored priority"):
+            self.apply()
+
     def test_real_catalog_has_valid_evidence_and_no_automatic_fallback(self):
         catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
         articles, texts = [], {}
@@ -137,6 +148,13 @@ class ContentReviewTests(unittest.TestCase):
         task = next(t for t in d["duties"] if t["title"] == "국별협력사업 기획 및 관리")
         construction = next(l for l in task["links"] if l["role"] == "시설지원 분기")
         self.assertIn("포함될 때만", construction["condition"])
+        self.assertEqual(construction["priority"]["level"], "conditional")
+        self.assertEqual(task["links"][0]["source"], "국별협력사업 규정")
+        self.assertEqual(task["links"][0]["priority"]["level"], "core")
+        support = next(d for d in departments if d["name"] == "지역사업총괄실")
+        support_task = next(t for t in support["duties"] if t["title"] == "국별협력사업 수행지원")
+        same_regulation = next(l for l in support_task["links"] if l["source"] == construction["source"])
+        self.assertEqual(same_regulation["priority"]["level"], "core")
         self.assertNotIn("recommendations", task)
 
 
