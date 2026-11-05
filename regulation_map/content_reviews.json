@@ -588,6 +588,7 @@
         "제1조",
         "제2조",
         "제3조",
+        "제4조",
         "제6조",
         "제7조",
         "제9조"
@@ -3381,7 +3382,7 @@
           "article": "제3조",
           "title": "지원원칙",
           "revision": "2025.03.20 개정",
-          "quote": "재난구호 및 인도적 지원에 한하여 시행한다.",
+          "quote": "물자지원은 개도국의 공공개발, 보건의료증진, 시설의 복구, 재난구호 및 인도적 지원에 한하여 시행한다.",
           "body_sha256": "bc7dc2a0a82d1b831cb773d84274ad3352124804fd6f3ac5d3aa535ecec27bad"
         },
         {
@@ -6490,6 +6491,47 @@
         }
       ],
       "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "small_grant_supplies": {
+      "source": "물자 및 자금지원 지침",
+      "role": "물자·자금 지원방식",
+      "rationale": "소규모 무상원조를 물자나 자금으로 지원할 때의 지원 원칙·요청 접수·송금 경로를 연결한다. 제3조①의 물자지원 범위에는 공공개발·보건의료증진·시설복구도 들어 있고, 제3조②는 사업 성격상 물자지원이 어려운 경우의 자금지원을 정한다.",
+      "condition": "소규모 무상원조를 물자·자금 형태로 지원하는 경우. 검토한 내부 규정에 소규모 무상원조 전용 규정은 없어 사업 선정·심사·실적관리 기준을 이 지침으로 확정하지 않는다.",
+      "evidence": [
+        {
+          "source": "물자 및 자금지원 지침",
+          "article": "제3조",
+          "title": "지원원칙",
+          "revision": "2025.03.20 개정",
+          "quote": "물자지원은 개도국의 공공개발, 보건의료증진, 시설의 복구, 재난구호 및 인도적 지원에 한하여 시행한다.",
+          "body_sha256": "bc7dc2a0a82d1b831cb773d84274ad3352124804fd6f3ac5d3aa535ecec27bad"
+        },
+        {
+          "source": "물자 및 자금지원 지침",
+          "article": "제3조",
+          "title": "지원원칙",
+          "revision": "2025.03.20 개정",
+          "quote": "자금지원은 재난구호 등 인도적 목적, 국제기구 기금 지원 및 사업성격상 물자지원이 어려운 경우에 실시한다.",
+          "body_sha256": "bc7dc2a0a82d1b831cb773d84274ad3352124804fd6f3ac5d3aa535ecec27bad"
+        },
+        {
+          "source": "물자 및 자금지원 지침",
+          "article": "제4조",
+          "title": "요청서 접수",
+          "revision": "2025.03.20 개정",
+          "quote": "재외공관을 통하여 해당수원국 정부로부터",
+          "body_sha256": "46a50acbe8881f320f1e156eaf5c8cbe681d83398338544f6f0d8d74f26becf3"
+        },
+        {
+          "source": "물자 및 자금지원 지침",
+          "article": "제7조",
+          "title": "자금 지원방법",
+          "revision": "2025.03.20 개정",
+          "quote": "재외공관이 지정하는 계좌로 송금",
+          "body_sha256": "abac428d69e90372367dddc01ca32a5f0e93c8572a421fb3b63b4b1f38b6bad0"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
     }
   },
   "duty_reviews": [
@@ -6510,7 +6552,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -6528,38 +6570,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -6590,7 +6632,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -6608,38 +6650,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -6670,7 +6712,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -6688,38 +6730,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -6750,7 +6792,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -6768,38 +6810,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -6830,7 +6872,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -6848,38 +6890,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -6910,7 +6952,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -6928,38 +6970,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -6990,7 +7032,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -7008,38 +7050,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -7070,7 +7112,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -7088,38 +7130,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -7150,7 +7192,7 @@
         "competition",
         "delegation"
       ],
-      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모·직접 전문가 계약은 조건부 분기입니다.",
+      "scope": "별표 4의 지역부서 공통업무와 국별협력사업 기본체계·관련 업무 경로를 대조했습니다. 건축·공모는 조건부 분기이며, 직접 전문가 계약은 업무분장에 명시되어 함께 확인합니다.",
       "gaps": [
         "국제기구 수행자·공공협력 경로, 기술평가·정산 세칙, 세이프가드·법률분쟁 세부사항은 후속 검토가 필요합니다.",
         "위임전결 별표를 읽어 특정 결재권자를 확정하지 않았습니다."
@@ -7168,38 +7210,38 @@
         },
         "procurement": {
           "level": "supporting",
-          "order": 3,
+          "order": 4,
           "reason": "사업수행자 선정과 계약관리를 준비할 때 기본 사업 절차를 구체화한다."
         },
         "evaluation": {
           "level": "supporting",
-          "order": 4,
+          "order": 5,
           "reason": "PDM과 점검·평가를 설계하고 성과를 관리하는 단계에서 함께 확인한다."
         },
         "change": {
           "level": "supporting",
-          "order": 5,
+          "order": 6,
           "reason": "사업계획과 집행계획 변경을 구분하고 변경 승인 경로를 확인할 때 읽는다."
         },
         "budget_accounting": {
           "level": "supporting",
-          "order": 6,
+          "order": 7,
           "reason": "실제 예산 전용·이월·지출을 처리할 때 사업비 관리 지침과 함께 읽는다."
         },
         "aftercare": {
           "level": "supporting",
-          "order": 7,
+          "order": 8,
           "reason": "종료 이후 점검·추가 지원을 계획할 때 사후관리의 역할과 절차를 확인한다."
         },
         "delegation": {
           "level": "supporting",
-          "order": 8,
+          "order": 9,
           "reason": "각 단계의 결재·보고·부서협조 경로를 확인하는 공통 보완 규정이다."
         },
         "experts": {
-          "level": "conditional",
-          "order": 9,
-          "reason": "조사 등에 직접 계약 전문가를 활용하는 경우에 해당한다. 기관 전문가의 적용 방식은 별도로 확인한다."
+          "level": "supporting",
+          "order": 3,
+          "reason": "업무분장에 전문가 공모·섭외, 계약체결, 인건비 지급이 명시되어 조사 단계부터 함께 읽는다. 기관을 통한 전문가는 제3조제2항에 따라 기관 계약·약정을 먼저 확인한다."
         },
         "construction": {
           "level": "conditional",
@@ -7812,7 +7854,7 @@
         "it_build": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 시스템 구축·운영을 수행하는 경우 함께 확인합니다."
+          "reason": "팀이 관리하는 소관 지침이다. 업무전산화·시스템 구축 조항 등 이 지침의 내용을 개정할 때 함께 확인하며, 제·개정 절차는 내규관리규정을 따른다."
         }
       }
     },
@@ -7835,9 +7877,9 @@
           "reason": "업무분장 중 시스템 구축·운영 부분을 직접 확인하는 출발점입니다."
         },
         "ax_strategy": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 AI 전략·이행을 수행하는 경우 함께 확인합니다."
+          "reason": "부서 단위 디지털전환 과제가 AI 전환 과제에 해당할 때 이행관리 기준을 확인한다. 일반 정보화 과제의 세부 실행계획은 정보화 지침 경로를 따른다."
         }
       }
     },
@@ -8309,7 +8351,7 @@
         "privacy": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개인정보 처리·권한을 수행하는 경우 함께 확인합니다."
+          "reason": "교육 내용 중 개인정보 처리 범위 제한·안전조치 의무를 다룰 때 함께 확인한다. 이 지침에는 교육 조항이 없어 교육 실시의 직접 근거는 정보화 지침 제6조다."
         }
       }
     },
@@ -8403,7 +8445,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8447,7 +8489,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8482,11 +8524,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -8494,10 +8537,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -8547,7 +8590,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8610,7 +8653,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8645,11 +8688,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -8657,10 +8701,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -8710,7 +8754,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8773,7 +8817,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8808,11 +8852,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -8820,10 +8865,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -8873,7 +8918,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8936,7 +8981,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -8971,11 +9016,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -8983,10 +9029,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -9036,7 +9082,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9099,7 +9145,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9134,11 +9180,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -9146,10 +9193,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -9199,7 +9246,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9262,7 +9309,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9297,11 +9344,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -9309,10 +9357,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -9362,7 +9410,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9425,7 +9473,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9460,11 +9508,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -9472,10 +9521,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -9525,7 +9574,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9588,7 +9637,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9623,11 +9672,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -9635,10 +9685,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -9688,7 +9738,7 @@
         "strategy_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 전략·국별 평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 전략·국별 평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9751,7 +9801,7 @@
         "international": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9786,11 +9836,12 @@
       "duty_sha256": "c9f068456b4377220d165804a23e83164dd8f98038597debd5723aec35dd954f",
       "link_ids": [
         "urgent_project",
-        "relief_supplies"
+        "small_grant_supplies"
       ],
       "scope": "담당 지역 업무 중 해당 사업유형·전략 반영·연구 또는 협력약정의 경로를 검토했습니다. 관할 국가 자체가 적용 규정을 결정하지 않습니다.",
       "gaps": [
-        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다."
+        "세부 집행 기준·별표·기관별 약정과 외부 법령은 해당 업무 수행 시 추가 확인해야 합니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
         "urgent_project": {
@@ -9798,10 +9849,10 @@
           "order": 1,
           "reason": "업무분장 중 전략사업 심사 부분을 직접 확인하는 출발점입니다."
         },
-        "relief_supplies": {
+        "small_grant_supplies": {
           "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 물자·자금으로 지원할 때 지원 원칙(제3조)과 요청 접수·송금 절차를 확인한다."
         }
       }
     },
@@ -9826,7 +9877,7 @@
         "management_performance": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 경영목표·실적보고를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9876,7 +9927,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9896,12 +9947,12 @@
         "program": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 사업 기본체계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 사업 기본체계를 수행하는 경우 함께 확인합니다."
         },
         "research": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 연구을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 연구를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9971,12 +10022,12 @@
         "annual_program": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 시행계획·정부심의을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 시행계획·정부심의를 수행하는 경우 함께 확인합니다."
         },
         "international_mandate": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -9996,7 +10047,7 @@
         "research": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 개발협력 연구을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 연구를 수행하는 경우 함께 확인합니다."
         },
         "public_partner": {
           "level": "supporting",
@@ -10058,7 +10109,7 @@
         "asset": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 자산·시설 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10083,7 +10134,7 @@
         "program": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 사업 기본체계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 사업 기본체계를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10168,23 +10219,24 @@
       "duty_id": "d9",
       "duty_sha256": "a0e77cd725afcc8ef93551579450cf3e8dbda122d43fdffa2be36aa86fa67cb3",
       "link_ids": [
-        "relief_supplies",
+        "small_grant_supplies",
         "program"
       ],
-      "scope": "업무분장의 인도적 물자·현금지원, 사업 기본체계 접점에 대한 부분 검토입니다.",
+      "scope": "업무분장의 소규모 무상원조 지원방식과 사업 기본체계 접점에 대한 부분 검토입니다.",
       "gaps": [
-        "세부 사업전략·매뉴얼·외부 협의체 운영기준·별표까지 포괄한 적용 판정은 아닙니다."
+        "세부 사업전략·매뉴얼·외부 협의체 운영기준·별표까지 포괄한 적용 판정은 아닙니다.",
+        "소규모 무상원조 전용 규정·운영 기준은 검토한 내부 규정에서 찾지 못했습니다."
       ],
       "priorities": {
-        "relief_supplies": {
-          "level": "core",
-          "order": 1,
-          "reason": "업무분장 중 인도적 물자·현금지원 부분을 직접 확인하는 출발점입니다."
-        },
         "program": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 사업 기본체계을 수행하는 경우 함께 확인합니다."
+          "reason": "소규모 무상원조를 국별협력사업 체계로 추진·관리하는 경우 사업관리 단계(제7조)를 함께 확인한다."
+        },
+        "small_grant_supplies": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "소규모 무상원조의 물자·자금 지원방식을 확인할 때 함께 읽는다. 추진현황 모니터링·실적관리의 직접 기준은 아니다."
         }
       }
     },
@@ -10253,7 +10305,7 @@
         "competition": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 공모 방식 분기을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 공모 방식 분기를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10297,7 +10349,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10322,7 +10374,7 @@
         "formation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 발굴·심사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 발굴·심사를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10342,12 +10394,12 @@
         "safeguard": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 환경·사회 영향관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 환경·사회 영향관리를 수행하는 경우 함께 확인합니다."
         },
         "international_mandate": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10416,7 +10468,7 @@
         "competition": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 공모 방식 분기을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 공모 방식 분기를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10460,7 +10512,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10485,7 +10537,7 @@
         "international_mandate": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10535,7 +10587,7 @@
         "international_mandate": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10579,7 +10631,7 @@
         "international_mandate": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10662,7 +10714,7 @@
         "program": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 사업 기본체계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 사업 기본체계를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10688,7 +10740,7 @@
         "international": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 국제기구사업 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 국제기구사업 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10829,7 +10881,7 @@
         "international_mandate": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -10887,12 +10939,12 @@
         "international_mandate": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         },
         "relief_supplies": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "KDRT 장비·구호물자 비축(제9조)을 관리하는 경우에 확인한다. KDRT 사무국·대원 운영의 근거는 아니다."
         }
       }
     },
@@ -10912,12 +10964,12 @@
         "international_mandate": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 개발협력 사업범위을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 사업범위를 수행하는 경우 함께 확인합니다."
         },
         "relief_supplies": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 인도적 물자·현금지원을 수행하는 경우 함께 확인합니다."
+          "reason": "파견과 함께 구호물자 운송·현금 지원을 할 때 확인한다. KDRT 인력 편성·파견지휘의 근거는 아니다."
         }
       }
     },
@@ -11036,7 +11088,7 @@
         "delegation": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 결재·부서협조을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 결재·부서협조를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11073,9 +11125,9 @@
       ],
       "priorities": {
         "handover": {
-          "level": "core",
+          "level": "supporting",
           "order": 1,
-          "reason": "업무분장 중 업무 인계인수 부분을 직접 확인하는 출발점입니다."
+          "reason": "업무분장 중 이사장·이사 인수인계 부분에 해당한다. 경영회의·위원회 운영 전반의 근거는 아니다."
         },
         "committee": {
           "level": "supporting",
@@ -11088,26 +11140,19 @@
       "department": "경영전략처 / 기획조정실",
       "duty_id": "d6",
       "duty_sha256": "bcda437b6a87471c1b9c312d03f7ea747ff77e100db45fcb10feadc4c7e8808c",
-      "link_ids": [
-        "management_performance",
-        "data_owner"
-      ],
-      "scope": "분장업무 중 경영목표·실적보고, 소관 데이터 관리에 관한 내부 기준을 대조한 부분 연결입니다.",
+      "link_ids": [],
+      "scope": "재정경제부와의 업무연락 채널 관리에 대한 내부 근거를 찾았습니다. 정관의 경영실적 보고 조항과 공공데이터 관리 지침의 소관 데이터 조항은 이 업무를 규율하지 않아 연결하지 않았습니다.",
       "gaps": [
-        "해당 업무의 세부 지급액·인사결정·권한 및 외부 법령은 별도로 확인해야 합니다."
+        "사무관리업무지침 제32조③·제34조는 단순 업무연락 문서의 시행과 관인 생략을 정할 뿐, 업무연락 채널의 운영 기준은 아닙니다.",
+        "업무연락방의 운영 방식은 외부 기관 기준이나 내부 매뉴얼을 확인해야 합니다."
       ],
-      "priorities": {
-        "management_performance": {
-          "level": "supporting",
-          "order": 1,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
-        },
-        "data_owner": {
-          "level": "supporting",
-          "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
-        }
-      }
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "한국국제협력단 정관",
+        "공공데이터 관리 지침",
+        "사무관리업무지침"
+      ]
     },
     {
       "department": "경영전략처 / 기획조정실",
@@ -11207,12 +11252,12 @@
         "budget_accounting": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 예산·회계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 예산·회계를 수행하는 경우 함께 확인합니다."
         },
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11239,20 +11284,17 @@
       "department": "경영전략처 / 예산실",
       "duty_id": "d8",
       "duty_sha256": "1f1ed3855d2025f303e372211329ca74d1a865fcb3e0e75ff12c4794a95f7b9c",
-      "link_ids": [
-        "management_performance"
-      ],
-      "scope": "분장업무 중 경영목표·실적보고에 관한 내부 기준을 대조한 부분 연결입니다.",
+      "link_ids": [],
+      "scope": "재정사업 성과계획서·보고서 작성과 자율평가 대응의 내부 근거를 찾았습니다. 정관 제6조·제6조의2는 기관 경영목표·경영실적 보고에 관한 조문으로 재정사업 성과관리와 다른 제도라 연결하지 않았습니다.",
       "gaps": [
-        "해당 업무의 세부 지급액·인사결정·권한 및 외부 법령은 별도로 확인해야 합니다."
+        "내부 규정 전체 본문에서 「재정사업」·「자율평가」·「성과계획서」를 검색했으나 이 제도를 정한 조문을 찾지 못했습니다.",
+        "재정사업 성과관리의 기준은 외부 법령과 정부 지침에서 확인해야 합니다."
       ],
-      "priorities": {
-        "management_performance": {
-          "level": "supporting",
-          "order": 1,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
-        }
-      }
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "한국국제협력단 정관"
+      ]
     },
     {
       "department": "경영전략처 / 경영성과팀",
@@ -11294,7 +11336,7 @@
         "executive_performance": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 상임이사 성과관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 상임이사 성과관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11319,7 +11361,7 @@
         "appraisal": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 조직·직원 업적평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 조직·직원 업적평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11344,7 +11386,7 @@
         "executive_performance": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 상임이사 성과관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 상임이사 성과관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11432,7 +11474,7 @@
         "appraisal": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 조직·직원 업적평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 조직·직원 업적평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11457,7 +11499,7 @@
         "hr": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 직원 인사관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 직원 인사관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11545,7 +11587,7 @@
         "management_disclosure": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 경영공시을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 경영공시를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -11692,22 +11734,16 @@
       "duty_id": "d8",
       "duty_sha256": "df46e432c5e9624ba44f1a50ca2f0efbce6bc7b3199c713015d3ccf8ebd4f1e2",
       "link_ids": [
-        "handover",
         "service"
       ],
-      "scope": "분장업무 중 업무 인계인수, 복무·휴가·후생에 관한 내부 기준을 대조한 부분 연결입니다.",
+      "scope": "분장업무 중 복무·후생에 관한 내부 기준을 대조한 부분 연결입니다. 업무인계인수지침은 이·퇴임식 의전 기준이 아니어서 연결하지 않았습니다.",
       "gaps": [
         "해당 업무의 세부 지급액·인사결정·권한 및 외부 법령은 별도로 확인해야 합니다."
       ],
       "priorities": {
-        "handover": {
-          "level": "supporting",
-          "order": 1,
-          "reason": "해당 업무 중 업무 인계인수을 수행하는 경우 함께 확인합니다."
-        },
         "service": {
           "level": "supporting",
-          "order": 2,
+          "order": 1,
           "reason": "해당 업무 중 복무·휴가·후생을 수행하는 경우 함께 확인합니다."
         }
       }
@@ -11752,7 +11788,7 @@
         "management_disclosure": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 경영공시을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 경영공시를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -12023,7 +12059,7 @@
         "asset": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 자산·시설 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -12086,7 +12122,7 @@
         "fx": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 환위험 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 환위험 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -12155,7 +12191,7 @@
         "appraisal": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 조직·직원 업적평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 조직·직원 업적평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -12450,7 +12486,7 @@
         "asset": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 자산·시설 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -12644,7 +12680,7 @@
         "private_capacity": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 파트너 역량·네트워크을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 파트너 역량·네트워크를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -12801,7 +12837,7 @@
         "budget_accounting": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 예산·회계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 예산·회계를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13047,7 +13083,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13219,10 +13255,9 @@
       "duty_id": "d4",
       "duty_sha256": "f991b1c809cb5cf759dc1fa789342735f277d934a65a0062bc890958ac4a5cfc",
       "link_ids": [
-        "volunteers",
-        "strategy"
+        "volunteers"
       ],
-      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 전략→사업발굴 경로를 구분하여 검토했습니다.",
+      "scope": "분장업무에서 KOICA 봉사단 운영 경로를 검토했습니다. 국별협력사업 규정 제8조(사업발굴)는 국별협력사업 발굴 조항이라 봉사단 중기계획에 연결하지 않았습니다.",
       "gaps": [
         "KOICA 담당 부분만 연결했습니다. 타 WFK 시행기관 통합운영과 국가 간 파견협정·기본 로드맵은 별도 외부 근거가 필요합니다."
       ],
@@ -13230,12 +13265,7 @@
         "volunteers": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 KOICA 봉사단 운영을 수행하는 경우 함께 확인합니다."
-        },
-        "strategy": {
-          "level": "supporting",
-          "order": 2,
-          "reason": "해당 업무 중 전략→사업발굴을 수행하는 경우 함께 확인합니다."
+          "reason": "국별 봉사단 계획의 대상인 KOICA 봉사단의 모집·파견·복무 기준을 함께 확인한다."
         }
       }
     },
@@ -13263,10 +13293,9 @@
       "duty_id": "d6",
       "duty_sha256": "80a0b68de6ea93e8a5899dcb76b5813bf4b0a38cda8a32b64bfdf06caa9d0e80",
       "link_ids": [
-        "mou",
-        "research_share"
+        "mou"
       ],
-      "scope": "분장업무에서 대상 인력별 기관 간 협력약정, 연구 지식공유 경로를 구분하여 검토했습니다.",
+      "scope": "분장업무에서 기관 간 협력약정 경로를 검토했습니다. 조사연구사업 규정의 연구 네트워크·성과공유 조항은 연구사업에 한정되어 해외봉사포럼·국제회의 업무에 연결하지 않았습니다.",
       "gaps": [
         "KOICA 담당 부분만 연결했습니다. 타 WFK 시행기관 통합운영과 국가 간 파견협정·기본 로드맵은 별도 외부 근거가 필요합니다."
       ],
@@ -13275,11 +13304,6 @@
           "level": "supporting",
           "order": 1,
           "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
-        },
-        "research_share": {
-          "level": "supporting",
-          "order": 2,
-          "reason": "해당 업무 중 연구 지식공유을 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13304,7 +13328,7 @@
         "talent_development": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 인재 평가·교육·사후을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 인재 평가·교육·사후를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13329,7 +13353,7 @@
         "management_performance": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 경영목표·실적보고를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13448,7 +13472,7 @@
         "volunteer_results": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 봉사활동 성과을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 봉사활동 성과를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13643,7 +13667,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         },
         "privacy": {
           "level": "supporting",
@@ -13729,7 +13753,7 @@
         "budget_accounting": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 예산·회계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 예산·회계를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13754,7 +13778,7 @@
         "evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 성과·평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 성과·평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13854,7 +13878,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13886,12 +13910,12 @@
         "talent_development": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 인재 평가·교육·사후을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 인재 평가·교육·사후를 수행하는 경우 함께 확인합니다."
         },
         "medical_volunteers": {
           "level": "supporting",
           "order": 4,
-          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 글로벌협력의사를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -13948,12 +13972,12 @@
         "talent_service": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 인재 활동·복무을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 인재 활동·복무를 수행하는 경우 함께 확인합니다."
         },
         "medical_volunteers": {
           "level": "supporting",
           "order": 4,
-          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 글로벌협력의사를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -14001,9 +14025,9 @@
           "reason": "업무분장 중 봉사단 교육·출국 부분을 직접 확인하는 출발점입니다."
         },
         "outsourced_volunteers": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 기관위탁 봉사사업을 수행하는 경우 함께 확인합니다."
+          "reason": "위탁 봉사단의 파견 전 교육은 제14조에 따라 사업수행기관이 실시한다. 통합교육에 위탁 봉사단이 참여할 때 교육 분담을 확인한다."
         }
       }
     },
@@ -14047,7 +14071,7 @@
         "talent_development": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 인재 평가·교육·사후을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 인재 평가·교육·사후를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -14145,9 +14169,9 @@
           "reason": "업무분장 중 기관운영 계약 부분을 직접 확인하는 출발점입니다."
         },
         "procurement": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 조달·계약을 수행하는 경우 함께 확인합니다."
+          "reason": "봉사단 등 파견인력 지급물품을 대외무상협력사업 조달로 구매할 때 확인한다. 교육원 자산·공사·시설 유지보수 계약은 회계규정 경로를 따른다."
         }
       }
     },
@@ -14173,7 +14197,7 @@
         "medical_volunteers": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 글로벌협력의사를 수행하는 경우 함께 확인합니다."
         },
         "rules": {
           "level": "supporting",
@@ -14203,7 +14227,7 @@
         "medical_volunteers": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 글로벌협력의사를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -14266,7 +14290,7 @@
         "medical_volunteers": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 글로벌협력의사를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -14373,7 +14397,7 @@
         "management_disclosure": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 경영공시을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 경영공시를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -14569,7 +14593,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         },
         "publications": {
           "level": "supporting",
@@ -14682,7 +14706,7 @@
         "oda_teaching": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 ODA 교재·강사·평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 ODA 교재·강사·평가를 수행하는 경우 함께 확인합니다."
         },
         "mou": {
           "level": "supporting",
@@ -14732,7 +14756,7 @@
         "research": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 개발협력 연구을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 개발협력 연구를 수행하는 경우 함께 확인합니다."
         },
         "mou": {
           "level": "supporting",
@@ -14921,7 +14945,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         },
         "procurement_registry": {
           "level": "supporting",
@@ -15058,7 +15082,7 @@
         "procurement_logistics": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 원조물자 운송·검수을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 원조물자 운송·검수를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15102,7 +15126,7 @@
         "technical_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 제안서 기술평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 제안서 기술평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15171,7 +15195,7 @@
         "technical_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 제안서 기술평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 제안서 기술평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15196,7 +15220,7 @@
         "contract_committee": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 계약·분쟁 심의을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 계약·분쟁 심의를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15240,7 +15264,7 @@
         "technical_evaluation": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 제안서 기술평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 제안서 기술평가를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15248,20 +15272,17 @@
       "department": "조달실 / 동반성장팀",
       "duty_id": "d1",
       "duty_sha256": "0bf783991dd5eeaf04df54572702d6488f818453b707b9fc8a888c00c392415b",
-      "link_ids": [
-        "management_performance"
-      ],
-      "scope": "분장업무 중 경영목표·실적보고 관련 내부 절차를 확인했습니다.",
+      "link_ids": [],
+      "scope": "공공기관 동반성장 평가 대응의 내부 근거를 찾았습니다. 정관 제6조·제6조의2의 경영목표·경영실적 보고는 동반성장 평가 자체를 정하지 않아 연결하지 않았습니다.",
       "gaps": [
-        "당해연도 동반성장 평가·혁신조달·우선구매·녹색제품 관련 외부 정책과 실행계획은 별도 확인해야 합니다. 해당 내부 업무 접점만 연결합니다."
+        "동반성장 평가의 지표·실적 기준은 외부 평가 기준에서 확인해야 하며, 검토한 내부 규정에는 전용 근거가 없습니다.",
+        "평가 결과의 경영평가 반영 여부와 방식은 해당 연도 경영평가 편람에서 확인해야 합니다."
       ],
-      "priorities": {
-        "management_performance": {
-          "level": "supporting",
-          "order": 1,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
-        }
-      }
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "한국국제협력단 정관"
+      ]
     },
     {
       "department": "조달실 / 동반성장팀",
@@ -15348,7 +15369,7 @@
         "management_performance": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 경영목표·실적보고를 수행하는 경우 함께 확인합니다."
         },
         "general_contract": {
           "level": "supporting",
@@ -15373,7 +15394,7 @@
         "labor_rights": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 노동권·노사관계을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 노동권·노사관계를 수행하는 경우 함께 확인합니다."
         },
         "legal": {
           "level": "supporting",
@@ -15442,12 +15463,12 @@
         "human_rights": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 인권경영·구제을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 인권경영·구제를 수행하는 경우 함께 확인합니다."
         },
         "management_performance": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+          "reason": "ESG 이행과제를 중장기 경영목표(제6조)나 경영실적 보고에 반영할 때 확인한다. ESG 기본계획 자체를 정한 조문은 아니다."
         }
       }
     },
@@ -15505,7 +15526,7 @@
         "fair_partnership": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 협력기관 공정거래을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 협력기관 공정거래를 수행하는 경우 함께 확인합니다."
         },
         "mou": {
           "level": "supporting",
@@ -15592,7 +15613,7 @@
         "customer_service": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 민원·고객의소리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 민원·고객의소리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15630,7 +15651,7 @@
         "customer_service": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 민원·고객의소리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 민원·고객의소리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15675,12 +15696,12 @@
         "internal_control": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 내부통제 운영·평가을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 내부통제 운영·평가를 수행하는 경우 함께 확인합니다."
         },
         "human_rights": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 인권경영·구제을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 인권경영·구제를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15826,12 +15847,12 @@
         "press_release": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 언론 보도자료을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 언론 보도자료를 수행하는 경우 함께 확인합니다."
         },
         "security_documents": {
-          "level": "supporting",
+          "level": "conditional",
           "order": 2,
-          "reason": "해당 업무 중 기밀·비상연락을 수행하는 경우 함께 확인합니다."
+          "reason": "언론에 제공하는 자료에 비밀·대외비가 포함될 때 보안책임자 검토 경로를 확인한다. 이 지침에 언론 대응 조항은 없다."
         }
       }
     },
@@ -15850,7 +15871,7 @@
         "data_owner": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15875,7 +15896,7 @@
         "copyright": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 저작권·콘텐츠을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 저작권·콘텐츠를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -15895,7 +15916,7 @@
         "copyright": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 저작권·콘텐츠을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 저작권·콘텐츠를 수행하는 경우 함께 확인합니다."
         },
         "general_contract": {
           "level": "supporting",
@@ -15939,7 +15960,7 @@
         "asset": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 자산·시설 관리를 수행하는 경우 함께 확인합니다."
         },
         "general_contract": {
           "level": "supporting",
@@ -15964,12 +15985,12 @@
         "copyright": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 저작권·콘텐츠을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 저작권·콘텐츠를 수행하는 경우 함께 확인합니다."
         },
         "data_owner": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 소관 데이터 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -16025,7 +16046,7 @@
         "asset": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 자산·시설 관리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -16075,7 +16096,7 @@
         "audit_external": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 외부감사 수감보고을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 외부감사 수감보고를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -16119,7 +16140,7 @@
         "audit": {
           "level": "supporting",
           "order": 1,
-          "reason": "해당 업무 중 내·외부 감사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 내·외부 감사를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -16170,12 +16191,12 @@
         "audit": {
           "level": "supporting",
           "order": 2,
-          "reason": "해당 업무 중 내·외부 감사을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 내·외부 감사를 수행하는 경우 함께 확인합니다."
         },
         "customer_service": {
           "level": "supporting",
           "order": 3,
-          "reason": "해당 업무 중 민원·고객의소리을 수행하는 경우 함께 확인합니다."
+          "reason": "해당 업무 중 민원·고객의소리를 수행하는 경우 함께 확인합니다."
         }
       }
     },
@@ -16499,9 +16520,9 @@
   "citation_verification": {
     "checked_at": "2026-11-05",
     "service": "KOICA regulation MCP verify_citation",
-    "unique_citations": 317,
-    "result": "317 ok",
-    "scope": "기존 313개 및 추가 4개 조문 인용의 실재성 확인. 관계 해석·최신성 승인은 아님"
+    "unique_citations": 318,
+    "result": "318 ok",
+    "scope": "기존 317개 및 추가 1개(물자 및 자금지원 지침 제4조) 조문 인용의 실재성 확인. 관계 해석·최신성 승인은 아님"
   },
   "priority_policy": {
     "reviewed_at": "2026-11-05",

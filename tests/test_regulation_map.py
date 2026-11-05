@@ -3,6 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 import json
+import re
 from copy import deepcopy
 
 import koica_search as ks
@@ -63,6 +64,34 @@ class ExplicitRelationTests(unittest.TestCase):
     def test_missing_article_unknown_longer_title_and_suffix_are_not_edges(self):
         articles = [article("가규정", "나규정 제99조. 다른나규정 제1조. 나규정 시행세칙 제1조."), article("나규정", "본문")]
         self.assertEqual(build_relations(articles, {a.source for a in articles}), [])
+
+    def test_abbreviation_definition_does_not_hide_target_article(self):
+        articles = [article("가규정", "「나규정」(이하 “규정”이라 한다.) 제2조에 따른다."), article("나규정", "본문", 2)]
+        edge = build_relations(articles, {a.source for a in articles})[0]
+        self.assertEqual(edge["evidence"][0]["target_article"], "제2조")
+
+    def test_abbreviation_is_followed_within_the_defining_regulation_only(self):
+        articles = [article("가규정 시행세칙", "「가규정」(이하 “규정”이라 한다) 제1조에 따른다."),
+                    article("가규정 시행세칙", "협력단이 규정 제2조에 따라 처리한다. 이 규정 제3조는 따로 둔다.", 2),
+                    article("다규정", "규정 제2조를 본다."),
+                    article("가규정", "본문", 1), article("가규정", "본문", 2), article("가규정", "본문", 3)]
+        edges = {(e["from"], e["to"]): e for e in build_relations(articles, {a.source for a in articles})}
+        self.assertEqual(set(edges), {("가규정 시행세칙", "가규정")})
+        cited = [x["target_article"] for x in edges[("가규정 시행세칙", "가규정")]["evidence"]]
+        self.assertEqual(sorted(cited), ["제1조", "제2조"])
+
+    def test_abbreviation_given_to_two_titles_is_not_followed(self):
+        articles = [article("가규정", "「나규정」(이하 “규정”이라 한다) 및 「다규정」(이하 “규정”이라 한다)을 본다. 규정 제2조."),
+                    article("나규정", "본문", 2), article("다규정", "본문", 2)]
+        cited = {x["target_article"] for e in build_relations(articles, {a.source for a in articles}) for x in e["evidence"]}
+        self.assertEqual(cited, {""})
+
+    def test_paired_titles_link_both_regulations_without_guessing_article(self):
+        articles = [article("가규정", "국내·국외 여비규정 제3조에 따른다."), article("국내여비규정", "본문", 3),
+                    article("국외여비규정", "본문", 3), article("나규정", "인사·보수 규정에 따른다.")]
+        edges = {(e["from"], e["to"]): e for e in build_relations(articles, {a.source for a in articles})}
+        self.assertEqual(set(edges), {("가규정", "국내여비규정"), ("가규정", "국외여비규정")})
+        self.assertEqual(edges[("가규정", "국내여비규정")]["evidence"][0]["target_article"], "")
 
     def test_document_only_reference_is_not_invented_article(self):
         articles = [article("가규정", "「나 규정」에 따라 처리한다."), article("나규정", "본문")]
@@ -132,6 +161,37 @@ class ContentReviewTests(unittest.TestCase):
         self.assertNotIn("기관 간 약정 체결 및 관리 업무 지침", [catalog["links"][key]["source"] for key in wfk["link_ids"]])
         kodabiz = next(r for r in reassessed if r["department"].endswith("동반성장팀"))
         self.assertNotIn("기업성장응답센터 운영지침", [catalog["links"][key]["source"] for key in kodabiz["link_ids"]])
+
+    def test_scope_limiting_sentence_is_not_quoted_without_its_list(self):
+        # "공공개발, 보건의료증진, ... 인도적 지원에 한하여"의 뒷부분만 떼면 적용 범위가 좁아 보인다.
+        catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
+        bodies = {}
+        for p in ks.DATA_DIR.glob("*.md"):
+            if p.stem.split("_", 1)[-1] in catalog["source_snapshots"]:
+                for a in ks.parse_md(p, p.stem.split("_", 1)[0])[0]:
+                    bodies[(a.source, a.article)] = a.body
+        for link in catalog["links"].values():
+            for e in link["evidence"]:
+                quote = e["quote"].rstrip(".")
+                if not re.search(r"한하여|한한다|에만|한정", quote):
+                    continue
+                body = bodies[(e["source"], e["article"])]
+                start = body.index(quote)
+                sentence_start = max(body.rfind(x, 0, start) for x in ("다. ", "\n", "①", "②", "③"))
+                head = body[sentence_start + 1:start]
+                self.assertLess(len(re.findall(r"[,·]", head)), 2, f"{e['source']} {e['article']}: {e['quote']}")
+
+    def test_reviewed_link_corrections_stay_in_place(self):
+        catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
+        reviews = {(r["department"].split(" / ")[-1], r["duty_id"]): r for r in catalog["duty_reviews"]}
+        for key in [("예산실", "d8"), ("기획조정실", "d6"), ("동반성장팀", "d1")]:
+            self.assertEqual(reviews[key]["outcome"], "no_direct_basis")
+            self.assertFalse(reviews[key]["link_ids"])
+        regional_planning = [r for r in catalog["duty_reviews"] if "experts" in r["link_ids"]
+                             and r["department"].split(" / ")[-1].endswith(("팀", "태평양실"))
+                             and r["priorities"]["experts"]["level"] != "core"]
+        self.assertEqual({r["priorities"]["experts"]["level"] for r in regional_planning}, {"supporting"})
+        self.assertNotIn("relief_supplies", reviews[("중미·카리브팀", "d8")]["link_ids"])
 
     def setUp(self):
         self.articles = [article("회계규정", "자금의 출납을 관리한다.")]

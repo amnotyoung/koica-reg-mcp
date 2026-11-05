@@ -141,6 +141,12 @@ def parse_departments(text):
     return departments
 
 
+ALIAS_DEFINITION = re.compile(r'[\s」』》〉"”]*\(이하\s*[“"\'‘]([^”"\'’]{2,15})[”"\'’]\s*(?:이)?라\s*한다\.?\)')
+# Words that make "규정 제N조" point at the citing text itself or at an unnamed rule.
+NOT_ALIAS_USE = re.compile(r"(?:^|[^가-힣])(?:이|본|동|같은|다른|각|해당|관련|타)\s*$")
+PAIRED_TITLE = re.compile(r"([가-힣]{1,6})\s*[·ㆍ]\s*([가-힣]{1,6})(\s*[가-힣 ]{2,30}?(?:규정|지침|세칙|규칙))")
+
+
 def build_relations(articles, sources):
     """Only exact, whitespace-tolerant full regulation names create edges.
 
@@ -152,8 +158,30 @@ def build_relations(articles, sources):
     lookup = {compact(name): name for name in names}
     article_keys = {(a.source, a.article) for a in articles}
     edges = {}
+
+    def add(a, target, target_article, m):
+        edge = edges.setdefault((a.source, target), {"from": a.source, "to": target, "kind": "explicit", "evidence": []})
+        evidence = {"article": a.article, "title": a.article_title,
+                    "target_article": target_article,
+                    "quote": a.body[max(0, m.start() - 65):m.end() + 110].strip()}
+        if evidence not in edge["evidence"]:
+            edge["evidence"].append(evidence)
+
+    # An abbreviation defined after a full title, e.g. 「감사규정」(이하 "규정"이라 한다), is
+    # followed within the same regulation only. An abbreviation given to two titles is ambiguous.
+    aliases = {}
     for a in articles:
         for m in pattern.finditer(a.body):
+            d = ALIAS_DEFINITION.match(a.body, m.end())
+            if d and lookup[compact(m.group())] != a.source:
+                aliases.setdefault(a.source, {}).setdefault(d[1], set()).add(lookup[compact(m.group())])
+    aliases = {source: {alias: targets.pop() for alias, targets in found.items() if len(targets) == 1}
+               for source, found in aliases.items()}
+
+    for a in articles:
+        titled = []
+        for m in pattern.finditer(a.body):
+            titled.append(m.span())
             # Reject title suffix matches inside a longer Korean title.
             if m.start() and re.match(r"[가-힣A-Za-z]", a.body[m.start() - 1]):
                 continue
@@ -164,19 +192,33 @@ def build_relations(articles, sources):
             # A longer, unknown implementation-rule title is not its parent.
             if re.match(r"\s*(?:시행세칙|시행규칙|시행지침)", tail):
                 continue
-            ref = re.match(r'[\s」』》〉"”]*제\s*(\d+)\s*조(?:\s*의\s*(\d+))?', tail)
+            # Keep the article number across an abbreviation such as (이하 "규정"이라 한다).
+            ref = re.match(r'[\s」』》〉"”]*(?:\(이하[^)]*\)\s*)?제\s*(\d+)\s*조(?:\s*의\s*(\d+))?', tail)
             target_article = ""
             if ref:
                 target_article = f"제{ref[1]}조" + (f"의{ref[2]}" if ref[2] else "")
                 if (target, target_article) not in article_keys:
                     continue
-            key = (a.source, target)
-            edge = edges.setdefault(key, {"from": a.source, "to": target, "kind": "explicit", "evidence": []})
-            evidence = {"article": a.article, "title": a.article_title,
-                        "target_article": target_article,
-                        "quote": a.body[max(0, m.start() - 65):m.end() + 110].strip()}
-            if evidence not in edge["evidence"]:
-                edge["evidence"].append(evidence)
+            add(a, target, target_article, m)
+        for alias, target in aliases.get(a.source, {}).items():
+            for m in re.finditer(r"(?<![가-힣A-Za-z])" + re.escape(alias) + r'[」』"”]?\s*제\s*(\d+)\s*조(?:\s*의\s*(\d+))?', a.body):
+                if NOT_ALIAS_USE.search(a.body[max(0, m.start() - 6):m.start()]):
+                    continue
+                if any(start < m.end() and m.start() < end for start, end in titled):
+                    continue
+                target_article = f"제{m[1]}조" + (f"의{m[2]}" if m[2] else "")
+                if (target, target_article) in article_keys:
+                    add(a, target, target_article, m)
+        # Paired titles such as "국내·국외 여비규정": the last title is matched above, so add
+        # the first only when it is a real title. Any article number is ambiguous, so none is kept.
+        for m in PAIRED_TITLE.finditer(a.body):
+            first = lookup.get(compact(m.group(1) + m.group(3)))
+            last = lookup.get(compact(m.group(2) + m.group(3)))
+            if not first or not last or first == a.source:
+                continue
+            if re.match(r"\s*(?:시행세칙|시행규칙|시행지침)", a.body[m.end():]):
+                continue
+            add(a, first, "", m)
     return list(edges.values())
 
 
@@ -240,7 +282,7 @@ def build():
                      "citation": f"{ORG} [별표 4]", "notices": notices, "reviews": review_stats,
                      "corpus_sha256": fingerprint.hexdigest(),
                      "scope": "저장소 공개 규정 스냅샷 · 본칙의 명시적 규정명 참조 · 별표 4 부서 업무분장",
-                     "limits": "참조 추출은 완전하지 않습니다. 약칭·간접인용·별표 안의 참조는 포함하지 않습니다. 업무 연결은 근거 조문을 읽고 작성한 AI 내용검토이며 기관의 공식 적용 판정이 아닙니다. 미검토 업무를 자동으로 연결하지 않습니다."},
+                     "limits": "참조 추출은 완전하지 않습니다. 다른 규정에서 정의한 약칭·간접인용·별표 안의 참조는 포함하지 않습니다. 업무 연결은 근거 조문을 읽고 작성한 AI 내용검토이며 기관의 공식 적용 판정이 아닙니다. 미검토 업무를 자동으로 연결하지 않습니다."},
             "departments": departments, "regulations": list(sources.values()), "relations": relations}
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
     (OUT / "data.js").write_text("window.REGULATION_MAP = " + payload + ";\n", encoding="utf-8")
