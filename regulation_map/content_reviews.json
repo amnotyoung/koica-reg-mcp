@@ -88,7 +88,10 @@
         "제32조",
         "제35조",
         "제39조",
-        "제40조"
+        "제40조",
+        "제5조",
+        "제7조",
+        "제17조"
       ],
       "scope": "목적·적용범위 및 해당 본칙 조문 전문. 별표·서식과 외부 법령은 미검토."
     },
@@ -770,7 +773,8 @@
         "제10조",
         "제26조",
         "제29조",
-        "제49조"
+        "제49조",
+        "제48조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
     },
@@ -976,7 +980,10 @@
         "제7조",
         "제19조",
         "제20조",
-        "제26조"
+        "제26조",
+        "제13조",
+        "제22조",
+        "제11조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
     },
@@ -1050,6 +1057,119 @@
         "제12조",
         "제14조",
         "제20조",
+        "제24조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "국제조달규정": {
+      "sha256": "ba458689af45dd1fe0b594873dcc5dc2c2c04ed5c9a8c79ceddd2090741a16f8",
+      "revision": "2025.02.25 개정",
+      "read_articles": [
+        "제1조",
+        "제2조의2",
+        "제7조",
+        "제27조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "한국국제협력단 기록관 운영지침": {
+      "sha256": "69961852b19d2f0d6d54a91d2419b4e96ab83513d93683df4ebae77b932f2c61",
+      "revision": "2021.12.21 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제6조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "ODA도서관 운영에 관한 지침": {
+      "sha256": "238c897050bbf9fa0b2b9adfee2d59d8bba6e807a75fe663204db1196e4c4e0a",
+      "revision": "2022.05.04 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제4조",
+        "제5조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "간행물 발간 및 활용에 관한 지침": {
+      "sha256": "76d54bff3e7f961b0549a5e9005bfd6d92cbd95d678d22d07a5c240fd317bf41",
+      "revision": "2024.06.12 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제6조",
+        "제8조",
+        "제9조",
+        "제12조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "ODA 일반 자격시험 관리 및 운영에 관한 지침": {
+      "sha256": "a81ef730044e07278a1cbd367ab04be4bae9972134e8eb638d826b2b741da815",
+      "revision": "2023.12.22 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제4조",
+        "제5조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "계약·분쟁심의위원회 운영지침": {
+      "sha256": "e5600662c21ecb0887feb4bcfb9b447731f0c99360c053a1006b1766cbfa361b",
+      "revision": "2026.03.16 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "국제개발협력센터사업 운영지침": {
+      "sha256": "c6012c6e04abb8685ab48c7afd45945989c355eb6dcad421781af1e12e5e4d8d",
+      "revision": "2026.07.07 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제6조",
+        "제9조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "기술평가지침": {
+      "sha256": "b07938e189b7315ff97fffe18064925257d266812baa01807cb6a4f0055acc25",
+      "revision": "2026.06.30 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제5조",
+        "제6조의2",
+        "제10조",
+        "제18조",
+        "제24조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "기업성장응답센터 운영지침": {
+      "sha256": "e3fb091161b5c04b41f942d19c8eefd4e6ec27e787a66cec2a46560c54392614",
+      "revision": "2025.10.20 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제4조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "기록물관리에 관한 지침": {
+      "sha256": "25f8028a9eb96754e3e090c304ec4372e9a8c42f1529f685bd74f0515ecfde92",
+      "revision": "2020.12.17 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제12조",
+        "제16조",
         "제24조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
@@ -4999,6 +5119,461 @@
           "revision": "2025.02.25 개정",
           "quote": "취업 및 창업과 관련한 교육, 정보",
           "body_sha256": "d22593a729c56f816a480e15517065bd5c040fb56711940363fe72e3a8133997"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "technical_evaluation": {
+      "source": "기술평가지침",
+      "role": "제안서 기술평가",
+      "rationale": "평가위원회·위원풀·평가의뢰와 평가위원 관리를 연결한다.",
+      "condition": "해당 기술평가 절차를 적용하는 경우. 기관운영 계약은 회계규정의 계약 적용경로와 별도 준용 근거를 먼저 확인한다.",
+      "evidence": [
+        {
+          "source": "기술평가지침",
+          "article": "제5조",
+          "title": "위원회의 구성",
+          "revision": "2026.06.30 개정",
+          "quote": "제안서 평가를 위하여 위원회를 구성",
+          "body_sha256": "fc72e0a77a1c9427e3c50da55899663b799f595eea90de478a11cdc99963cf15"
+        },
+        {
+          "source": "기술평가지침",
+          "article": "제6조의2",
+          "title": "기술평가위원풀 구성",
+          "revision": "2026.06.30 개정",
+          "quote": "기술평가위원풀을 구성할 수 있다.",
+          "body_sha256": "7e6e7eed0db17acf813617f3db60c724c561f4a8fccf5e2d543db1d6c5a9a103"
+        },
+        {
+          "source": "기술평가지침",
+          "article": "제10조",
+          "title": "평가기준 및 평가의뢰",
+          "revision": "2026.06.30 개정",
+          "quote": "평가주관부서와의 사전 협의를 통해 평가를 의뢰",
+          "body_sha256": "86375bed395ba91c1ce3fdac9d8e3b81835a3d07f6c8ac0bd6737c6739df31d8"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "international_procurement": {
+      "source": "국제조달규정",
+      "role": "현지·국제 조달",
+      "rationale": "해외사무소·수탁인의 현지입찰과 국제입찰 적용범위 및 기술평가의 경로를 연결한다.",
+      "condition": "수원국 법규·국제관행과 수탁인 개별협약의 우선효력을 함께 확인한다.",
+      "evidence": [
+        {
+          "source": "국제조달규정",
+          "article": "제2조의2",
+          "title": "적용범위",
+          "revision": "2025.02.25 개정",
+          "quote": "국제입찰, 국제조달 및 현지입찰을 하는 경우 적용한다.",
+          "body_sha256": "d7dfb41de55d33556a6ea3d5a1e225833ecd2ff0f3360b741e9a1950a08f4057"
+        },
+        {
+          "source": "국제조달규정",
+          "article": "제7조",
+          "title": "현지입찰의 시행주체와 일반원칙",
+          "revision": "2025.02.25 개정",
+          "quote": "KOICA 해외사무소가 주관한다.",
+          "body_sha256": "4183396c9bf5cbace40edaa2eb8694f682c8f2fdb957641da03d7747dddf0b64"
+        },
+        {
+          "source": "국제조달규정",
+          "article": "제27조",
+          "title": "기술평가",
+          "revision": "2025.02.25 개정",
+          "quote": "입찰공고 또는 입찰서류에 명시된 기준과 절차",
+          "body_sha256": "2935cdaf0fb0622758c18c6946fcf01e884954e426ed501bb07154cc8b270d53"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "procurement_registry": {
+      "source": "대외무상협력사업에 관한 조달 및 계약규정",
+      "role": "업체등록·조달협력",
+      "rationale": "조달협력업체 등록·관리와 국내외 조달유관기관의 정보 교환을 연결한다.",
+      "condition": "원조조달 부분이며 조달청 중앙조달 위탁 전체나 기업의 해외판로 지원절차를 정하는 연결은 아니다.",
+      "evidence": [
+        {
+          "source": "대외무상협력사업에 관한 조달 및 계약규정",
+          "article": "제5조",
+          "title": "조달협력업체의 등록ㆍ운영",
+          "revision": "2026.07.02 개정",
+          "quote": "조달협력업체로 등록하고 관리할 수 있다.",
+          "body_sha256": "672d5942f84930160509ffe1596094bfd7c641ddb28727551cdeadf78ade4596"
+        },
+        {
+          "source": "대외무상협력사업에 관한 조달 및 계약규정",
+          "article": "제5조",
+          "title": "조달협력업체의 등록ㆍ운영",
+          "revision": "2026.07.02 개정",
+          "quote": "국내외 조달유관기관과 조달 및 계약관련 정보를 교환하거나 공유",
+          "body_sha256": "672d5942f84930160509ffe1596094bfd7c641ddb28727551cdeadf78ade4596"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "procurement_logistics": {
+      "source": "대외무상협력사업에 관한 조달 및 계약규정",
+      "role": "원조물자 운송·검수",
+      "rationale": "물류전담업체의 운송·보관·통관과 계약이행 검사·검수 경로를 연결한다.",
+      "condition": "원조물자 조달 기준이다. 전략물자 판정·수출허가 요건은 별도 대외무역 법령·전문기관 확인이 필요하다.",
+      "evidence": [
+        {
+          "source": "대외무상협력사업에 관한 조달 및 계약규정",
+          "article": "제7조",
+          "title": "물류전담업체의 지정",
+          "revision": "2026.07.02 개정",
+          "quote": "운송, 포장, 보관, 하역, 통관 및 보험",
+          "body_sha256": "943b824a84348d1153cfc0c7358be2c51e356bdcca006ae523ec4f4f128fc803"
+        },
+        {
+          "source": "대외무상협력사업에 관한 조달 및 계약규정",
+          "article": "제35조",
+          "title": "감독ㆍ검사 및 검수",
+          "revision": "2026.07.02 개정",
+          "quote": "납품물자에 대해서는 계약서와 일치하는지 여부",
+          "body_sha256": "8d1ecdf2e87245bc07dbcd38bb92afce4dea2926c0dde7433d0d973701a3f95e"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "contract_committee": {
+      "source": "계약·분쟁심의위원회 운영지침",
+      "role": "계약·분쟁 심의",
+      "rationale": "계약관리 일반 심의와 계약상대자의 이의·분쟁 심의를 구분하여 연결한다.",
+      "condition": "안건별 금액·변경비율·예외는 제3조 전체와 근거 계약규정을 확인한다. 모든 계약의 일률적 심의 의무를 뜻하지 않는다.",
+      "evidence": [
+        {
+          "source": "계약·분쟁심의위원회 운영지침",
+          "article": "제2조",
+          "title": "위원회의 종류",
+          "revision": "2026.03.16 개정",
+          "quote": "계약심의위원회와 분쟁심의위원회를 둔다.",
+          "body_sha256": "f205b454238dbaf32de64b61faa66b9c2e734060e8127684e576e2ae73e9a071"
+        },
+        {
+          "source": "계약·분쟁심의위원회 운영지침",
+          "article": "제3조",
+          "title": "심의대상",
+          "revision": "2026.03.16 개정",
+          "quote": "입찰 및 계약관리에 관하여 분쟁이 발생한 경우",
+          "body_sha256": "d09d8dc896d5a0429f7f9a36af02008959c0cf13d97dcf5e29459d60cab92682"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "business_response": {
+      "source": "기업성장응답센터 운영지침",
+      "role": "기업 규제애로 상담",
+      "rationale": "기업성장응답센터의 규제애로 발굴·상담 접수·처리·관리와 시스템 운영을 연결한다.",
+      "condition": "기업의 규제애로·성장지원 상담 범위이며 KODABIZ 등 이름이 다른 센터의 운영체계와 동일시하지 않는다.",
+      "evidence": [
+        {
+          "source": "기업성장응답센터 운영지침",
+          "article": "제3조",
+          "title": "적용범위",
+          "revision": "2025.10.20 개정",
+          "quote": "기업의 규제애로 및 성장 지원",
+          "body_sha256": "3132b94cfd4167f7eb4a9e2fffbae6a42d5012391780cd8d191ae755721380cc"
+        },
+        {
+          "source": "기업성장응답센터 운영지침",
+          "article": "제4조",
+          "title": "업무",
+          "revision": "2025.10.20 개정",
+          "quote": "접수된 기업상담 정보의 처리와 관리",
+          "body_sha256": "bad894029a2a69582e92d031d9a12b8f7cfd8970dbed94ef194b5e7a6e524631"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "publications": {
+      "source": "간행물 발간 및 활용에 관한 지침",
+      "role": "간행물·CI",
+      "rationale": "기관 연보·홍보·교육·평가자료의 등록·발간·제출·공표와 홍보부서 CI 관리 역할을 연결한다.",
+      "condition": "간행물 및 그에 관한 CI 부분이다. 모든 홍보행사·광고 전략의 전용 규정은 아니다.",
+      "evidence": [
+        {
+          "source": "간행물 발간 및 활용에 관한 지침",
+          "article": "제2조",
+          "title": "간행물의 종류",
+          "revision": "2024.06.12 개정",
+          "quote": "업무자료, 연구자료, 홍보자료, 교육자료, 평가자료",
+          "body_sha256": "c181263b771d94a8d517ed0e879a41480ba3d7d355e9cb83482c79f7a6b3ba9f"
+        },
+        {
+          "source": "간행물 발간 및 활용에 관한 지침",
+          "article": "제6조",
+          "title": "간행물발간신청 및 관련 등록번호부여",
+          "revision": "2024.06.12 개정",
+          "quote": "간행물등록대장에 등록하고 협력단등록번호를 부여",
+          "body_sha256": "f858d20269ca0a638c67792932fbd46ba86d42a58f3d2c1e43f80c043d0511dc"
+        },
+        {
+          "source": "간행물 발간 및 활용에 관한 지침",
+          "article": "제9조",
+          "title": "KOICA CI 관리",
+          "revision": "2024.06.12 개정",
+          "quote": "전반적인 관리는 홍보 담당 부서가 한다.",
+          "body_sha256": "68f65d45815368d54b7a847cd0b24f25076c07eca4f76c03d4f045f2f1aa73f9"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "record_access": {
+      "source": "기록물관리에 관한 지침",
+      "role": "기록물 접근·이관",
+      "rationale": "생산·접수 기록물의 접근범위, 이관·열람·대출을 연결한다.",
+      "condition": "전자결재 문서의 기술적 권한관리는 정보보안 지침을 함께 확인한다.",
+      "evidence": [
+        {
+          "source": "기록물관리에 관한 지침",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2020.12.17 개정",
+          "quote": "생산․접수되는 모든 기록물의 관리",
+          "body_sha256": "757e20eb6400e821c913f874d17df4583af098465e05be419cac9df37ff7418a"
+        },
+        {
+          "source": "기록물관리에 관한 지침",
+          "article": "제12조",
+          "title": "접근권한 관리",
+          "revision": "2020.12.17 개정",
+          "quote": "기록물 및 접근자를 기준으로",
+          "body_sha256": "71e55050f48884c1d02757631343af017beffd85824df04642ed52d2a9a85156"
+        },
+        {
+          "source": "기록물관리에 관한 지침",
+          "article": "제16조",
+          "title": "기록물의 이관",
+          "revision": "2020.12.17 개정",
+          "quote": "기록물철 단위로 기록관으로 이관",
+          "body_sha256": "9d064c7087eae49ee42856924340de834f687c4b3ec018e5691050c552a49f1f"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "archive": {
+      "source": "한국국제협력단 기록관 운영지침",
+      "role": "기록관 운영",
+      "rationale": "기록관의 계획·분류표·평가폐기·지도감독·시스템 운영 및 기록 전시를 연결한다.",
+      "condition": "기록관 및 기록물 관리의 범위다. 모든 전시관의 위탁운영 기준을 대신하지 않는다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 기록관 운영지침",
+          "article": "제6조",
+          "title": "주요업무 및 업무분장",
+          "revision": "2021.12.21 개정",
+          "quote": "기록물평가심의회의 운영 및 기록물 평가․폐기 관리",
+          "body_sha256": "cccac0e18987ef554926cfc07d9715f5fc808f425649681eca67c1261e3bc96c"
+        },
+        {
+          "source": "한국국제협력단 기록관 운영지침",
+          "article": "제6조",
+          "title": "주요업무 및 업무분장",
+          "revision": "2021.12.21 개정",
+          "quote": "기록관리시스템의 설치 및 운영",
+          "body_sha256": "cccac0e18987ef554926cfc07d9715f5fc808f425649681eca67c1261e3bc96c"
+        },
+        {
+          "source": "한국국제협력단 기록관 운영지침",
+          "article": "제6조",
+          "title": "주요업무 및 업무분장",
+          "revision": "2021.12.21 개정",
+          "quote": "기록물의 편찬ㆍ전시ㆍ홍보",
+          "body_sha256": "cccac0e18987ef554926cfc07d9715f5fc808f425649681eca67c1261e3bc96c"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "library": {
+      "source": "ODA도서관 운영에 관한 지침",
+      "role": "ODA 도서관",
+      "rationale": "자료 수집·분류·보존·열람·대출 및 협력단 발간자료 등록 관리를 연결한다.",
+      "condition": "ODA 도서관의 관리·이용 및 위탁운영 부분이다.",
+      "evidence": [
+        {
+          "source": "ODA도서관 운영에 관한 지침",
+          "article": "제4조",
+          "title": "기능",
+          "revision": "2022.05.04 개정",
+          "quote": "자료 구입, 등록 및 관리 업무",
+          "body_sha256": "10993f26904542a56c2cfdf2d637401419b4f3cb41de6a8ef7895bedd42f1cfc"
+        },
+        {
+          "source": "ODA도서관 운영에 관한 지침",
+          "article": "제4조",
+          "title": "기능",
+          "revision": "2022.05.04 개정",
+          "quote": "협력단 발간자료 등록번호 부여 및 등록, 관리 업무",
+          "body_sha256": "10993f26904542a56c2cfdf2d637401419b4f3cb41de6a8ef7895bedd42f1cfc"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "oda_teaching": {
+      "source": "ODA 교육사업 규정",
+      "role": "ODA 교재·강사·평가",
+      "rationale": "교육교재 제작·강사 선정관리·교육운영 평가와 외부 위탁을 연결한다.",
+      "condition": "ODA 교육사업의 과정 운영 부분이다. 자격시험은 별도 지침, 교재·강사료는 별표를 확인한다.",
+      "evidence": [
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제13조",
+          "title": "원고료 및 교재제작비",
+          "revision": "2025.02.26 개정",
+          "quote": "교육교재를 제작할 수 있으며",
+          "body_sha256": "e3c5da12dec3ec994dac28f98ff28e74a4c8885407e5c2c108438a168395c5a2"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제19조",
+          "title": "강사 선정",
+          "revision": "2025.02.26 개정",
+          "quote": "경험과 전문성을 갖춘 자를 강사로 선정",
+          "body_sha256": "f7060ed0276548c77dd2aaf5281fa731121ce5b46dc842d010e697dc6bfc2520"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제22조",
+          "title": "연간 교육운영 평가",
+          "revision": "2025.02.26 개정",
+          "quote": "교육과정 운영 전반에 관하여 평가",
+          "body_sha256": "64f9764e05f58a401a297f9a03232aab87ad19b41829ac4131d862d8b824b950"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제11조",
+          "title": "업무위탁",
+          "revision": "2025.02.26 개정",
+          "quote": "별도 기관에 위탁하여 실시할 수 있다.",
+          "body_sha256": "49ed6ea66425a1b4cb15fe508f7f8840d56979605252ff1fa5d37de26f27e1ff"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "oda_exam": {
+      "source": "ODA 일반 자격시험 관리 및 운영에 관한 지침",
+      "role": "ODA 일반 자격시험",
+      "rationale": "시험 기획·시행·외부 운영인력 활용과 자격취득자 관리를 연결한다.",
+      "condition": "ODA 일반 자격시험 대상이며 ODA 전문가 자격제도와 구분한다.",
+      "evidence": [
+        {
+          "source": "ODA 일반 자격시험 관리 및 운영에 관한 지침",
+          "article": "제4조",
+          "title": "시험업무체계",
+          "revision": "2023.12.22 개정",
+          "quote": "시험업무 전반을 총괄",
+          "body_sha256": "edd1362d4a2e10b78288087effcefa62374fb2afde4097c64e1b846aaf56b6f1"
+        },
+        {
+          "source": "ODA 일반 자격시험 관리 및 운영에 관한 지침",
+          "article": "제5조",
+          "title": "업무",
+          "revision": "2023.12.22 개정",
+          "quote": "자격취득자 사후관리에 관한 사항",
+          "body_sha256": "ab027af4c8efeb2069d6b52796cad495cdd3ad422dcb31e7f80594efd6d92e53"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "development_center": {
+      "source": "국제개발협력센터사업 운영지침",
+      "role": "국내 개발협력센터",
+      "rationale": "지자체·파트너기관과 협력단의 센터 설치·예산지원·성과관리 역할을 연결한다.",
+      "condition": "국내 국제개발협력센터사업에 적용한다. KODABIZ·해외사무소·지역센터 등 다른 기관유형과 구별한다.",
+      "evidence": [
+        {
+          "source": "국제개발협력센터사업 운영지침",
+          "article": "제2조",
+          "title": "정의",
+          "revision": "2026.07.07 개정",
+          "quote": "지방자치단체의 공식 요청",
+          "body_sha256": "ea71fb302846e10988a3025a1cafad1ebb90a7a09b373a853c633dd51debe1b0"
+        },
+        {
+          "source": "국제개발협력센터사업 운영지침",
+          "article": "제6조",
+          "title": "업무의 분담",
+          "revision": "2026.07.07 개정",
+          "quote": "센터사업에 대한 모니터링 및 평가, 성과관리",
+          "body_sha256": "6e3e68d510103fff53e60d5b55b7e0f7927fba55a279c4c217361f0b35a8fb25"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "press_release": {
+      "source": "사무관리업무지침",
+      "role": "언론 보도자료",
+      "rationale": "언론기관에 제공하는 보도자료의 담당부서·담당자·연락처 표시를 연결한다.",
+      "condition": "언론대응 중 보도자료 제공 부분만 다룬다. 위기대응·기자단 운영·홍보대사 선정 절차는 별도 확인한다.",
+      "evidence": [
+        {
+          "source": "사무관리업무지침",
+          "article": "제48조",
+          "title": "행정보도 자료의 실명제공",
+          "revision": "2022.05.19 개정",
+          "quote": "담당부서․담당자․연락처 등을 함께 기재",
+          "body_sha256": "5c5f4ccd4bc723ec550fcdb1752838d73e464fa0515d34eeaba72b3fc3cf29c9"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "oda_education__oda_teaching": {
+      "source": "ODA 교육사업 규정",
+      "role": "대국민 ODA 교육 / ODA 교재·강사·평가",
+      "rationale": "국민 이해증진·전문인력 양성·진로 관련 ODA 교육, 연간 계획과 다양한 운영방식을 연결한다. 교육교재 제작·강사 선정관리·교육운영 평가와 외부 위탁을 연결한다.",
+      "condition": "대국민 ODA 교육 부분에 적용한다. 봉사단 직무교육·초청연수·직원 교육의 특별기준과 구별한다. ODA 교육사업의 과정 운영 부분이다. 자격시험은 별도 지침, 교재·강사료는 별표를 확인한다.",
+      "evidence": [
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제5조",
+          "title": "ODA 교육과정",
+          "revision": "2025.02.26 개정",
+          "quote": "국제개발협력과 ODA에 대한 국민의 이해증진",
+          "body_sha256": "1001ebff81a585e0e43c2328a833f52216b13068d29da8eb4d46f1b7977b6b14"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제7조",
+          "title": "연간 교육계획",
+          "revision": "2025.02.26 개정",
+          "quote": "연간 교육계획을 수립한다.",
+          "body_sha256": "eee132178e5571073629f9e0824751e747ea690e92a439020d8d00798b588bac"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제13조",
+          "title": "원고료 및 교재제작비",
+          "revision": "2025.02.26 개정",
+          "quote": "교육교재를 제작할 수 있으며",
+          "body_sha256": "e3c5da12dec3ec994dac28f98ff28e74a4c8885407e5c2c108438a168395c5a2"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제19조",
+          "title": "강사 선정",
+          "revision": "2025.02.26 개정",
+          "quote": "경험과 전문성을 갖춘 자를 강사로 선정",
+          "body_sha256": "f7060ed0276548c77dd2aaf5281fa731121ce5b46dc842d010e697dc6bfc2520"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제22조",
+          "title": "연간 교육운영 평가",
+          "revision": "2025.02.26 개정",
+          "quote": "교육과정 운영 전반에 관하여 평가",
+          "body_sha256": "64f9764e05f58a401a297f9a03232aab87ad19b41829ac4131d862d8b824b950"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제11조",
+          "title": "업무위탁",
+          "revision": "2025.02.26 개정",
+          "quote": "별도 기관에 위탁하여 실시할 수 있다.",
+          "body_sha256": "49ed6ea66425a1b4cb15fe508f7f8840d56979605252ff1fa5d37de26f27e1ff"
         }
       ],
       "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
@@ -12886,6 +13461,986 @@
           "level": "supporting",
           "order": 3,
           "reason": "해당 업무 중 경영공시을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d1",
+      "duty_sha256": "cfabe6fccc0b3db1f92123462e9e79e7bfc1cd8a69ab4211a4df9c754c9c9de0",
+      "link_ids": [
+        "research",
+        "rules"
+      ],
+      "scope": "분장업무 중 개발협력 연구, 내규 제·개정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "research": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 개발협력 연구 부분을 직접 확인하는 출발점입니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d2",
+      "duty_sha256": "fa3c8610f03c066c4fa509f7d648fb559006af999c051f408aa512925b97007c",
+      "link_ids": [
+        "research"
+      ],
+      "scope": "분장업무 중 개발협력 연구 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "research": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 개발협력 연구 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d3",
+      "duty_sha256": "f8d36d23ae05f864335e0469d28f61aafad42deb30e79d7cbfc6f69a44192302",
+      "link_ids": [
+        "research_share"
+      ],
+      "scope": "분장업무 중 연구 지식공유 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "research_share": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 연구 지식공유 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d4",
+      "duty_sha256": "f1c7f51c36130691541c8ab768b64bddc324544511a0bcf51b744255f5fc87b0",
+      "link_ids": [
+        "research"
+      ],
+      "scope": "분장업무 중 개발협력 연구 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "research": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 개발협력 연구 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d5",
+      "duty_sha256": "80693386bc6e585cab96decafd0229f57c391fbc58d775f14f4c673cfa2419e3",
+      "link_ids": [
+        "research_share",
+        "mou"
+      ],
+      "scope": "분장업무 중 연구 지식공유, 기관 간 협력약정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "research_share": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 연구 지식공유 부분을 직접 확인하는 출발점입니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d6",
+      "duty_sha256": "d7034f87a6a6a0b0ef41c48e8737f59ac433a1854c0e56a9f845c025aafb6bf8",
+      "link_ids": [
+        "publications"
+      ],
+      "scope": "분장업무 중 간행물·CI 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "publications": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 간행물·CI 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d7",
+      "duty_sha256": "71f37a695a77e839b682d60928175f07a30c25f2ce1be177cddf8af350568d14",
+      "link_ids": [
+        "library",
+        "publications"
+      ],
+      "scope": "분장업무 중 ODA 도서관, 간행물·CI 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "library": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 ODA 도서관 부분을 직접 확인하는 출발점입니다."
+        },
+        "publications": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 간행물·CI을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d8",
+      "duty_sha256": "19d22e6ca71093d62ecc9f617175995b6b761e541bfebfe29c1713c5e6c8515a",
+      "link_ids": [
+        "archive",
+        "record_access"
+      ],
+      "scope": "분장업무 중 기록관 운영, 기록물 접근·이관 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "archive": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기록관 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "record_access": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기록물 접근·이관을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d9",
+      "duty_sha256": "71e8a8a85f6c9ced6c36c98ac5b6142897d4a155712375effe6b68b34986e0ac",
+      "link_ids": [
+        "data_owner",
+        "publications"
+      ],
+      "scope": "분장업무 중 소관 데이터 관리, 간행물·CI 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "OECD DAC·CRS 통계분류와 IATI·원조투명성 평가의 외부 기준은 별도 확인이 필요합니다. 데이터 관리·통계집 발간 부분만 연결합니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        },
+        "publications": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 간행물·CI을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d10",
+      "duty_sha256": "e27b61802f793bb4c3ed0e774d7413ad64ea6ce56c562ad8a8ca96883ea8a9b4",
+      "link_ids": [
+        "oda_education"
+      ],
+      "scope": "분장업무 중 대국민 ODA 교육 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 대국민 ODA 교육 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d11",
+      "duty_sha256": "e73778557dca462919cc638b9be10186b1a30cef2cc1fe3a96fd280740789318",
+      "link_ids": [
+        "oda_education__oda_teaching"
+      ],
+      "scope": "분장업무 중 대국민 ODA 교육, ODA 교재·강사·평가 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_education__oda_teaching": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 대국민 ODA 교육 / ODA 교재·강사·평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d12",
+      "duty_sha256": "5528babe5edfe52b3a56b46ba812b98b320e78550fa2f7f2e75627c76ef87165",
+      "link_ids": [
+        "oda_teaching",
+        "publications"
+      ],
+      "scope": "분장업무 중 ODA 교재·강사·평가, 간행물·CI 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_teaching": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 ODA 교재·강사·평가 부분을 직접 확인하는 출발점입니다."
+        },
+        "publications": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 간행물·CI을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d13",
+      "duty_sha256": "74578a6de4393bcd074b8b5d3caa27afe54f9f4f51907e08ff5ac3bcdd1e3020",
+      "link_ids": [
+        "oda_teaching",
+        "privacy"
+      ],
+      "scope": "분장업무 중 ODA 교재·강사·평가, 개인정보 처리·권한 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_teaching": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 ODA 교재·강사·평가 부분을 직접 확인하는 출발점입니다."
+        },
+        "privacy": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 개인정보 처리·권한을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d14",
+      "duty_sha256": "192aadc4ed2036e6f101db0e8edf86977f2f427cdc0a546869d86e2b02156ecc",
+      "link_ids": [
+        "oda_teaching",
+        "mou"
+      ],
+      "scope": "분장업무 중 ODA 교재·강사·평가, 기관 간 협력약정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_teaching": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 ODA 교재·강사·평가을 수행하는 경우 함께 확인합니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d15",
+      "duty_sha256": "1e9d3a16e1f484a6643b14dc90b5b795008ccf36bd1d0e4a97290ef323047318",
+      "link_ids": [
+        "oda_exam"
+      ],
+      "scope": "분장업무 중 ODA 일반 자격시험 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_exam": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 ODA 일반 자격시험 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d16",
+      "duty_sha256": "3ce84d88e3f612bcfdbfa9866ab8a3843e38f7b154f1afe29d9596402d7e1cf5",
+      "link_ids": [
+        "oda_education",
+        "research",
+        "mou"
+      ],
+      "scope": "분장업무 중 대국민 ODA 교육, 개발협력 연구, 기관 간 협력약정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 대국민 ODA 교육 부분을 직접 확인하는 출발점입니다."
+        },
+        "research": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 개발협력 연구을 수행하는 경우 함께 확인합니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d17",
+      "duty_sha256": "76c3691f5059cdd66e7fff176082b6a1d1471872b0d50613478d1ca21648fadb",
+      "link_ids": [
+        "oda_teaching",
+        "web_security"
+      ],
+      "scope": "분장업무 중 ODA 교재·강사·평가, 홈페이지 게시 보안 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_teaching": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 ODA 교재·강사·평가 부분을 직접 확인하는 출발점입니다."
+        },
+        "web_security": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 홈페이지 게시 보안을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ODA연구·교육원",
+      "duty_id": "d18",
+      "duty_sha256": "c329376769571cd87fc93626847cae43590e3dca96bf58449225cad27aac4cd2",
+      "link_ids": [
+        "development_center"
+      ],
+      "scope": "분장업무 중 국내 개발협력센터 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "development_center": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 국내 개발협력센터 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d1",
+      "duty_sha256": "bc0484ca974480874af28726099085e081b975ee101710b9ba751bd9a8a7c6e1",
+      "link_ids": [
+        "tender"
+      ],
+      "scope": "분장업무 중 입찰·계약 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "tender": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 입찰·계약을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d2",
+      "duty_sha256": "433dcbb0dff8dd257b7e4cad9afa143c29d33bc9544dd99fba428d67f8440464",
+      "link_ids": [
+        "tender",
+        "rules"
+      ],
+      "scope": "분장업무 중 입찰·계약, 내규 제·개정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "tender": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 입찰·계약 부분을 직접 확인하는 출발점입니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d3",
+      "duty_sha256": "4f7466ddac79f4dcec3ce19130ab877e69da900da2638faad3107e33885398a1",
+      "link_ids": [
+        "rules"
+      ],
+      "scope": "분장업무 중 내규 제·개정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "rules": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내규 제·개정 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d5",
+      "duty_sha256": "0cf8cab26b59fadc0f334483b5b57c1728994d7cf5d3ab42c0e55e1e44dbc697",
+      "link_ids": [
+        "international_procurement"
+      ],
+      "scope": "분장업무 중 현지·국제 조달 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "international_procurement": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 현지·국제 조달 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d7",
+      "duty_sha256": "69c764ead250604c0e0e0ac6f42e4145f746e1bb918495f744e34f176ce99175",
+      "link_ids": [
+        "procurement_logistics"
+      ],
+      "scope": "분장업무 중 원조물자 운송·검수 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "procurement_logistics": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 원조물자 운송·검수 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d8",
+      "duty_sha256": "61e243cce33aa83bed5b75932f4e097ee1fbaff390de361d8c47a01de2bd6501",
+      "link_ids": [
+        "procurement_registry"
+      ],
+      "scope": "분장업무 중 업체등록·조달협력 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "procurement_registry": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 업체등록·조달협력 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d9",
+      "duty_sha256": "a0bdcd8be5ab308e3301623e2a5c7fe9ed086b54f0621872ec021127b6803117",
+      "link_ids": [
+        "data_owner",
+        "procurement_registry"
+      ],
+      "scope": "분장업무 중 소관 데이터 관리, 업체등록·조달협력 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        },
+        "procurement_registry": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 업체등록·조달협력을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d10",
+      "duty_sha256": "1d65241f6bc2bddd38b309076da02711189aface07036c62c69357e35bb945f8",
+      "link_ids": [
+        "it_build",
+        "procurement_registry"
+      ],
+      "scope": "분장업무 중 시스템 구축·운영, 업체등록·조달협력 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "it_build": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 시스템 구축·운영을 수행하는 경우 함께 확인합니다."
+        },
+        "procurement_registry": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 업체등록·조달협력을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d11",
+      "duty_sha256": "10fdd74dc08ddc3f7eb8c08f94dc9c55a3f477291511c8779ba994395a9845dc",
+      "link_ids": [
+        "procurement_registry"
+      ],
+      "scope": "분장업무 중 업체등록·조달협력 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "procurement_registry": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 업체등록·조달협력을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d12",
+      "duty_sha256": "58d21dc92865b2bfadf722004a6de24ba6b9a61d2c4b5ff709fbd6d3fc7105e4",
+      "link_ids": [
+        "procurement_registry",
+        "mou"
+      ],
+      "scope": "분장업무 중 업체등록·조달협력, 기관 간 협력약정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "procurement_registry": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 업체등록·조달협력을 수행하는 경우 함께 확인합니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d13",
+      "duty_sha256": "cc4d1538be221c6fc11243645587a42dfaa2cb974038e753aa6959152d15b549",
+      "link_ids": [
+        "tender",
+        "hr_training"
+      ],
+      "scope": "분장업무 중 입찰·계약, 임직원 교육훈련 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "tender": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 입찰·계약을 수행하는 경우 함께 확인합니다."
+        },
+        "hr_training": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 임직원 교육훈련을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d14",
+      "duty_sha256": "1691e1b0715e259029af394ed59a41c2b1a46cfaed4f5d3cb96da0e32167700d",
+      "link_ids": [
+        "contract_committee"
+      ],
+      "scope": "분장업무 중 계약·분쟁 심의 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "contract_committee": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 계약·분쟁 심의 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d15",
+      "duty_sha256": "9aeea583f1ee00014b463ae95489b9d14242a610fb00f0ea1d7bfe29d92f88e8",
+      "link_ids": [
+        "procurement_logistics"
+      ],
+      "scope": "분장업무 중 원조물자 운송·검수 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "전략물자 판정·수출허가·수출통제 절차의 전용 내부 규정은 확인하지 못했습니다. 물자 조달·운송 부분만 연결합니다."
+      ],
+      "priorities": {
+        "procurement_logistics": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 원조물자 운송·검수을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d16",
+      "duty_sha256": "0bfead69d0360f450e0f84061f7bf00cdf1890b9db92f47856f1fa251f489bd0",
+      "link_ids": [
+        "technical_evaluation"
+      ],
+      "scope": "분장업무 중 제안서 기술평가 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "technical_evaluation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 제안서 기술평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달1팀",
+      "duty_id": "d17",
+      "duty_sha256": "1accd64ded157818a46980948be963429b9ec21fbc5cc452902f1b787ff2b5eb",
+      "link_ids": [
+        "international_procurement",
+        "technical_evaluation"
+      ],
+      "scope": "분장업무 중 현지·국제 조달, 제안서 기술평가 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "international_procurement": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 현지·국제 조달 부분을 직접 확인하는 출발점입니다."
+        },
+        "technical_evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 제안서 기술평가을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달2팀",
+      "duty_id": "d1",
+      "duty_sha256": "aa31f350c98c1de041f4f68c6b2f46a94dda855d2b2cc57e0fd6635851b37a42",
+      "link_ids": [
+        "general_contract"
+      ],
+      "scope": "분장업무 중 기관운영 계약 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "general_contract": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관운영 계약 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달2팀",
+      "duty_id": "d2",
+      "duty_sha256": "ae7b9a9a9aab1726667865d3b4a0120c84095294849e5d3ebe167c99a60e5153",
+      "link_ids": [
+        "technical_evaluation",
+        "rules"
+      ],
+      "scope": "분장업무 중 제안서 기술평가, 내규 제·개정 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "technical_evaluation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 제안서 기술평가 부분을 직접 확인하는 출발점입니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달2팀",
+      "duty_id": "d3",
+      "duty_sha256": "1d8b923663933683dd9d11264dc0b694ecdaf5435281f050e0bd798848187350",
+      "link_ids": [
+        "general_contract",
+        "technical_evaluation"
+      ],
+      "scope": "분장업무 중 기관운영 계약, 제안서 기술평가 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "general_contract": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관운영 계약 부분을 직접 확인하는 출발점입니다."
+        },
+        "technical_evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 제안서 기술평가을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달2팀",
+      "duty_id": "d4",
+      "duty_sha256": "42399c04b847521cbbe5276fb65730a66a17f367535762074888247684ac69a4",
+      "link_ids": [
+        "general_contract",
+        "contract_committee"
+      ],
+      "scope": "분장업무 중 기관운영 계약, 계약·분쟁 심의 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "general_contract": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관운영 계약 부분을 직접 확인하는 출발점입니다."
+        },
+        "contract_committee": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 계약·분쟁 심의을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달2팀",
+      "duty_id": "d5",
+      "duty_sha256": "ef0599d34a7af06861c949935bc7b5d945bdca4dcbc7c3dff6798b3779d18a9c",
+      "link_ids": [
+        "technical_evaluation"
+      ],
+      "scope": "분장업무 중 제안서 기술평가 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "technical_evaluation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 제안서 기술평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 조달2팀",
+      "duty_id": "d6",
+      "duty_sha256": "af3dcdb856c8debaa7ce9fad9d24872d649beeedbf40d03aa8683819faae002f",
+      "link_ids": [
+        "general_contract",
+        "technical_evaluation"
+      ],
+      "scope": "분장업무 중 기관운영 계약, 제안서 기술평가 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "세부 실행·계약·평가 기준 및 관련 외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "general_contract": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관운영 계약 부분을 직접 확인하는 출발점입니다."
+        },
+        "technical_evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 제안서 기술평가을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 동반성장팀",
+      "duty_id": "d1",
+      "duty_sha256": "0bf783991dd5eeaf04df54572702d6488f818453b707b9fc8a888c00c392415b",
+      "link_ids": [
+        "management_performance"
+      ],
+      "scope": "분장업무 중 경영목표·실적보고 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "당해연도 동반성장 평가·혁신조달·우선구매·녹색제품 관련 외부 정책과 실행계획은 별도 확인해야 합니다. 해당 내부 업무 접점만 연결합니다."
+      ],
+      "priorities": {
+        "management_performance": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 동반성장팀",
+      "duty_id": "d2",
+      "duty_sha256": "918a4e7111ec47ae6b703b47fc165abe993e532a5d55e2a2610c43c3ad18fe22",
+      "link_ids": [
+        "business_response",
+        "committee"
+      ],
+      "scope": "분장업무 중 기업 규제애로 상담, 위원회 공통 운영 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "당해연도 동반성장 평가·혁신조달·우선구매·녹색제품 관련 외부 정책과 실행계획은 별도 확인해야 합니다. 해당 내부 업무 접점만 연결합니다."
+      ],
+      "priorities": {
+        "business_response": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기업 규제애로 상담을 수행하는 경우 함께 확인합니다."
+        },
+        "committee": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 위원회 공통 운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 동반성장팀",
+      "duty_id": "d3",
+      "duty_sha256": "fc8828b4e6a358888c2069f960aadcf84048cccf6fbd8247ed5876c47b3de8dc",
+      "link_ids": [
+        "general_contract",
+        "procurement_registry"
+      ],
+      "scope": "분장업무 중 기관운영 계약, 업체등록·조달협력 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "당해연도 동반성장 평가·혁신조달·우선구매·녹색제품 관련 외부 정책과 실행계획은 별도 확인해야 합니다. 해당 내부 업무 접점만 연결합니다."
+      ],
+      "priorities": {
+        "general_contract": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기관운영 계약을 수행하는 경우 함께 확인합니다."
+        },
+        "procurement_registry": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 업체등록·조달협력을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 동반성장팀",
+      "duty_id": "d4",
+      "duty_sha256": "6282efd8fcb5fd46c047379f11496e8e7bce456911a7c72cebff35c5266ba7d5",
+      "link_ids": [
+        "business_response"
+      ],
+      "scope": "분장업무 중 기업 규제애로 상담 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "당해연도 동반성장 평가·혁신조달·우선구매·녹색제품 관련 외부 정책과 실행계획은 별도 확인해야 합니다. 해당 내부 업무 접점만 연결합니다."
+      ],
+      "priorities": {
+        "business_response": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기업 규제애로 상담 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "조달실 / 동반성장팀",
+      "duty_id": "d5",
+      "duty_sha256": "ae310805f1349aa0745eed6c843f82c173d55b0dc9f7bfa23abd1f41e0f5d14a",
+      "link_ids": [
+        "management_performance",
+        "general_contract"
+      ],
+      "scope": "분장업무 중 경영목표·실적보고, 기관운영 계약 관련 내부 절차를 확인했습니다.",
+      "gaps": [
+        "당해연도 동반성장 평가·혁신조달·우선구매·녹색제품 관련 외부 정책과 실행계획은 별도 확인해야 합니다. 해당 내부 업무 접점만 연결합니다."
+      ],
+      "priorities": {
+        "management_performance": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+        },
+        "general_contract": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관운영 계약을 수행하는 경우 함께 확인합니다."
         }
       }
     }
