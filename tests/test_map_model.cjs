@@ -83,18 +83,22 @@ for (const count of [0,1,7,12]) {
   for(let i=0;i<boxes.length;i++) {
     const a=boxes[i];
     assert(a.x-a.w/2>=0 && a.x+a.w/2<=layout.width);
-    assert(a.y-a.h/2>=100 && a.y+a.h/2<=layout.height);
+    assert(a.y-a.h/2>=20 && a.y+a.h/2<=layout.height);
     for(let j=i+1;j<boxes.length;j++) {
       const b=boxes[j];
       assert(Math.abs(a.x-b.x)>=(a.w+b.w)/2 || Math.abs(a.y-b.y)>=(a.h+b.h)/2,'overlapping nodes');
     }
   }
   assert(layout.positions.get('기본').w>layout.positions.get('조건부').w);
+  // Regulations hang below the duty and its column labels, never beside it.
+  const duty=layout.positions.get('@duty');
+  for(const [id,box] of layout.positions) if(id!=='@duty') assert(box.y-box.h/2>duty.y+duty.h/2+50);
 }
 const two=[make('기본','core',1),make('실행','supporting',2)];
 const short=M.dutyLayout(two,['기본','실행']);
 assert.deepEqual(short.bands.map(b=>b.level),['core','supporting'],'no empty conditional column');
-assert(short.positions.get('기본').y<=200,'first regulation starts near the top');
-assert(short.width<1100 && short.height<=400);
+assert(short.positions.get('기본').y<=300,'first regulation starts near the top');
+assert(short.width*0.92<=830,'two columns fit a 1440px window at the readable scale');
+assert(short.height<=470,'one row fits the smallest map frame without vertical scrolling');
 assert.equal(M.dutyLayout(two,[]).bands.length,0);
 console.log('Map priority ordering, filtering, task context, and layout checks passed');

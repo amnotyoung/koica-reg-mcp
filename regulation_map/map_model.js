@@ -18,32 +18,23 @@
       });
   }
   function dutyLayout(links, ids, {overview=false}={}) {
-    // Only columns that hold a regulation are drawn, and rows start at the top,
-    // so a short list never sits at the bottom of a tall, mostly empty canvas.
+    // The duty sits on top and each priority column hangs below it, with its
+    // connector running down the column's left edge. No line passes through
+    // another regulation, so a duty→regulation link never reads as a chain.
+    // Only columns that hold a regulation are drawn.
     const groups=['core','supporting','conditional'].map(level => ({level, ids:ids.filter(id=>priority(links,id).level===level)}))
       .filter(group=>group.ids.length);
     const rows=Math.max(1,...groups.map(g=>g.ids.length));
-    if(overview) {
-      const height=Math.max(420,rows*116+250);
-      const positions=new Map([['@duty',{x:165,y:80,w:260,h:112}]]);
-      const bands=groups.map((group,i)=>{
-        const x=165+i*330;
-        group.ids.forEach((id,j)=>positions.set(id,{x,y:260+j*116,w:246,h:100}));
-        return {x:x-150,width:300,level:group.level,count:group.ids.length,label:levels[group.level].label,labelY:185};
-      });
-      const width=Math.max(560,165+Math.max(0,groups.length-1)*330+150+25);
-      return {width,height,positions,bands};
-    }
-    const top=165, height=Math.max(330,top+(rows-1)*116+56+40);
-    const positions=new Map([['@duty',{x:140,y:top,w:226,h:112}]]);
-    const bands=[];
-    const sizes={core:{w:256,h:112},supporting:{w:226,h:100},conditional:{w:204,h:94}};
-    groups.forEach((group,i) => {
-      const x=440+i*340, size=sizes[group.level];
-      bands.push({x:x-145,width:290,level:group.level,count:group.ids.length,label:levels[group.level].label});
-      group.ids.forEach((id,j)=>positions.set(id,{x,y:top+j*116,...size}));
+    const sizes=overview?{core:{w:246,h:100},supporting:{w:246,h:100},conditional:{w:246,h:100}}
+      :{core:{w:256,h:112},supporting:{w:236,h:100},conditional:{w:216,h:94}};
+    const height=Math.max(420,rows*116+250);
+    const positions=new Map([['@duty',{x:165,y:80,w:260,h:112}]]);
+    const bands=groups.map((group,i)=>{
+      const x=165+i*330,size=sizes[group.level];
+      group.ids.forEach((id,j)=>positions.set(id,{x,y:260+j*116,...size}));
+      return {x:x-150,width:300,level:group.level,count:group.ids.length,label:levels[group.level].label,labelY:185};
     });
-    const width=groups.length?440+(groups.length-1)*340+145+24:820;
+    const width=Math.max(560,165+Math.max(0,groups.length-1)*330+150+25);
     return {width,height,positions,bands};
   }
   function visibleReferences(relations, ids, selected) {

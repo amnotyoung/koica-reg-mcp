@@ -16,7 +16,7 @@
   const narrow = () => window.matchMedia('(max-width:1200px)').matches;
   // 1 SVG unit = 1 CSS px at 100%. The automatic scale fits the width only while
   // node titles stay at least ~13px; otherwise the map scrolls and can be dragged.
-  const READABLE_ZOOM=0.92, MAX_ZOOM=2, COMPACT_LIMIT=4;
+  const READABLE_ZOOM=0.92, MAX_ZOOM=2;
   const ALIO=/^https:\/\/www\.alio\.go\.kr\//;
   function officialLinks(r) {
     const o=r?.official||{},page=ALIO.test(o.page_url||'')?o.page_url:ALIO.test(o.list_url||'')?o.list_url:'',file=ALIO.test(o.file_url||'')?o.file_url:'';
@@ -109,9 +109,9 @@
   }
   function render() {
     const g=graphData();state.graph=g;
-    // A handful of regulations reads better as cards; the map is for structure.
-    // The automatic choice applies until the person picks a view themselves.
-    state.list=state.viewPref?state.viewPref==='list':window.matchMedia('(max-width:720px)').matches || (!state.focus && g.total<=COMPACT_LIMIT);
+    // The map is the default so relationships are visible at a glance; phones
+    // start with cards. A view the person picks holds within the same duty.
+    state.list=state.viewPref?state.viewPref==='list':window.matchMedia('(max-width:720px)').matches;
     $('map-title').textContent=state.focus || state.duty.title;
     const owner=state.duty.overview?`${state.department.name} 전체`:dutyOwner().name;
     $('map-subtitle').textContent=state.focus
@@ -171,7 +171,7 @@
     g.edges.forEach(e=>{
       const group=svg('g',{class:'edge-group',role:'button',tabindex:0,'aria-label':e.kind==='explicit'?`${e.from} → ${e.to} 참조 근거`:`${e.to} 업무 내용 연결 근거`});
       let path=connection(e.from,e.to);
-      if(state.duty.overview && !state.focus && e.kind==='reviewed') {
+      if(!state.focus && e.kind==='reviewed') {
         const a=positions.get(e.from),b=positions.get(e.to),spine=b.x-145;
         path=`M ${a.x} ${a.y+a.h/2+5} V 155 H ${spine} V ${b.y} H ${b.x-b.w/2-5}`;
       }
@@ -203,7 +203,7 @@
       group.addEventListener('click',activate);group.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();activate();}});viewport.append(group);
     }
     $('list-view').innerHTML=g.nodes.length?g.nodes.map(id=>{const r=regs.get(id);const links=D.relations.filter(e=>e.kind==='explicit'&&(e.from===g.center&&e.to===id||e.to===g.center&&e.from===id));const desc=state.focus?(links.length>1?'중심 규정과 서로 참조':links[0]?.from===id?'이 규정이 중심 규정을 참조':'중심 규정이 이 규정을 참조'):(state.duty.links.find(l=>l.source===id)?.role || '내용 검토 연결');return `<button class="list-card priority-${priority(id).level} ${state.selected===id?'selected':''}" data-reg="${esc(id)}" ${state.selected===id?'aria-current="true"':''}><span>${badge(priority(id))}<small>${esc(r.category)} · ${esc(r.revision)}</small><strong>${esc(id)}</strong><small>${desc}</small>${basisLabel(state.duty.links.find(l=>l.source===id))?`<small class="relation-basis">${esc(basisLabel(state.duty.links.find(l=>l.source===id)))}</small>`:''}<small class="priority-reason">${esc(priority(id).reason)}</small></span><span>↗</span></button>`;}).join(''):`<p class="empty">${g.total?'선택한 순서에 해당하는 연결이 없습니다. 전체 관계로 전환해보세요.':state.focus?'현재 추출된 규정 참조가 없습니다.':state.duty.review.status==='no_direct_basis'?'내부 규정을 검토했으나 직접 연결할 근거가 부족합니다. 오른쪽에서 연결 판단의 범위를 확인하세요.':'이 업무의 내용 연결은 아직 검토하지 않았거나 재검토가 필요합니다.'}</p>`;
-    if(!g.nodes.length) {const p=svg('text',state.focus?{x:width/2,y:height/2+110,'text-anchor':'middle',fill:'#8b9890','font-size':14}:{x:290,y:(positions.get('@duty')?.y||165)+5,fill:'#8b9890','font-size':14},g.total?'선택한 순서에 해당하는 연결이 없습니다':state.focus?'추출된 규정 참조가 없습니다':state.duty.review.status==='no_direct_basis'?'직접 연결 판단이 아직 확정되지 않았습니다':'이 업무의 내용 연결은 검토 전입니다');viewport.append(p);}
+    if(!g.nodes.length) {const p=svg('text',state.focus?{x:width/2,y:height/2+110,'text-anchor':'middle',fill:'#8b9890','font-size':14}:{x:35,y:240,fill:'#8b9890','font-size':14},g.total?'선택한 순서에 해당하는 연결이 없습니다':state.focus?'추출된 규정 참조가 없습니다':state.duty.review.status==='no_direct_basis'?'직접 연결 판단이 아직 확정되지 않았습니다':'이 업무의 내용 연결은 검토 전입니다');viewport.append(p);}
     $('graph').hidden=state.list;$('list-view').hidden=!state.list;
     $('view-toggle').textContent=state.list?'지도로 보기':'목록으로 보기';$('view-toggle').setAttribute('aria-pressed',state.list);
     applyZoom();
