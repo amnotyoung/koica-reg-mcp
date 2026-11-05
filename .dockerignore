@@ -33,7 +33,6 @@ data/semantic_model/
 # 로컬 전용 안내 문서 (LICENSE·NOTICE는 이미지에 포함해 모델 출처를 보존)
 README.md
 AGENTS.md
-CLAUDE.md
 
 # 백업 / 환경변수 / macOS
 *.bak.json

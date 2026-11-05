@@ -40,7 +40,7 @@ claude mcp add --transport http koica-reg https://koica-reg-mcp.fly.dev/mcp
 
 ### 옵션 B — 로컬 MCP(원격 서버 없이 실행)
 
-사용자 PC에서 검색 엔진과 의미 모델을 직접 실행하려면 저장소를 clone하고 로컬 stdio 서버를 등록합니다.
+사용자 PC에서 검색 엔진과 의미 모델을 직접 실행하려면 저장소를 clone하고 로컬 stdio 서버를 등록합니다. Python 3.11 이상이 필요합니다.
 
 ```bash
 git clone https://github.com/amnotyoung/koica-reg-mcp.git
