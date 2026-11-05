@@ -16,19 +16,43 @@
     if (state.focus) q.set('regulation',state.focus);
     history.replaceState(null,'','#'+q.toString());
   }
-  function departmentOptions(query='') {
-    const matches = D.departments.filter(d => (d.id+d.division).includes(query.trim()));
-    $('department').replaceChildren();
-    if (!matches.length) { const o = new Option('일치하는 부서가 없습니다',''); o.disabled=true; $('department').add(o); return; }
-    const groups = new Map();
-    matches.forEach(d => { if (!groups.has(d.division)) { const g=document.createElement('optgroup');g.label=d.division;groups.set(d.division,g);$('department').append(g); } groups.get(d.division).append(new Option(d.name,d.id)); });
-    if (state.department && matches.some(d => d.id === state.department.id)) $('department').value=state.department.id;
-    else $('department').selectedIndex=-1;
+  let departmentResults=[], departmentActive=-1, departmentComposing=false;
+  function closeDepartmentSearch() {
+    $('department-results').hidden=true;
+    $('department-search').setAttribute('aria-expanded','false');
+    $('department-search').removeAttribute('aria-activedescendant');
+    if(state.department) {
+      $('department-search').value=state.department.name;
+      $('department-search-status').textContent=`${state.department.name} 선택됨`;
+    }
+  }
+  function highlightDepartment(index, scroll=false) {
+    departmentActive=index;
+    const rows=$('department-results').querySelectorAll('[role="option"]');
+    rows.forEach((row,i)=>row.setAttribute('aria-selected',String(i===index)));
+    if(index>=0 && rows[index]) {
+      $('department-search').setAttribute('aria-activedescendant',rows[index].id);
+      if(scroll) rows[index].scrollIntoView({block:'nearest'});
+    } else $('department-search').removeAttribute('aria-activedescendant');
+  }
+  function openDepartmentSearch(query, preferCurrent=false) {
+    departmentResults=MP.departmentMatches(D.departments,query);
+    $('department-results').innerHTML=departmentResults.length?departmentResults.map((d,i)=>`<div id="department-option-${i}" role="option" aria-selected="false" data-department-index="${i}"><strong>${esc(d.name)}</strong><small>${esc([d.division,...d.path.slice(0,-1)].join(' / '))}</small></div>`).join(''):'<p class="department-empty">일치하는 부서가 없습니다.</p>';
+    $('department-results').hidden=false;
+    $('department-search').setAttribute('aria-expanded','true');
+    $('department-search-status').textContent=departmentResults.length?`${departmentResults.length}개 부서 · ↑↓ 이동, Enter 선택`:'검색 결과가 없습니다. 다른 부서명이나 본부명을 입력하세요.';
+    const selected=preferCurrent?departmentResults.findIndex(d=>d.id===state.department?.id):-1;
+    highlightDepartment(departmentResults.length?Math.max(0,selected):-1,preferCurrent);
+  }
+  function commitDepartment(index) {
+    const match=departmentResults[index];
+    if(match) selectDepartment(match.id);
   }
   function selectDepartment(id, dutyId) {
     const department = D.departments.find(d=>d.id===id);
     if (!department) return;
     state.department=department;
+    closeDepartmentSearch();
     state.duty=department.duties.find(d=>d.id===dutyId) || department.duties.find(d=>d.links.length) || department.duties[0];
     state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';
     $('department-path').textContent=department.division+' / '+department.path.join(' / ');
@@ -174,8 +198,31 @@
     $('data-info').innerHTML=`<p>${D.departments.length}개 부서 · ${D.departments.reduce((n,d)=>n+d.duties.length,0)}개 업무 중 <strong>${r.reviewed_duties}개 업무에 내용 연결</strong>을 작성했습니다. ${r.unreviewed_duties}개 업무는 미검토, ${r.stale_duties}개 업무는 원문 변경으로 재검토가 필요합니다.</p><h4>업무 → 규정: 작성한 내용검토</h4><p>업무분장과 목적·적용범위·관련 조문 전문을 읽고 규정의 역할, 연결 이유, 적용 조건을 작성했습니다. 단어 일치나 유사도 점수로 연결을 생성하지 않습니다. ${esc(r.reviewer)} · ${esc(r.reviewed_at)}. 부분 검토이며 기관의 공식 적용 판정은 아닙니다.</p><h4>규정 → 규정: 두 종류의 근거</h4><p>전체 ${D.relations.length}개 규정명 참조는 본칙에서 자동 추출했습니다. 그중 ${r.reviewed_relations}개 관계에는 조문을 읽고 작성한 관계 설명을 추가했습니다. 자동 추출만 된 관계와 내용검토 관계를 패널에서 구분합니다.</p><h4>무엇부터 확인하나요?</h4><p>먼저 확인: 선택한 업무를 직접 규율하는 기본 규정. 함께 확인: 실행 단계의 절차·기준. 해당할 때: 특정 사업요소나 수행방식의 분기입니다. 이유와 순서를 업무별로 작성했으며, 인용 건수·유사도 점수는 사용하지 않습니다. 조건부 규정도 해당 상황에서는 중요합니다. 규정 중심 화면에서 현재 업무의 판단이 없는 이웃은 순서 미평가입니다.</p><h4>개정 시 재검토</h4><p>업무분장, 근거 규정 파일, 조문 본문의 해시를 검토 당시 값과 비교합니다. 원문이 바뀌면 영향을 받는 연결을 숨기고 재검토 필요로 표시합니다. 빌드는 검토 기록을 자동 갱신하지 않습니다.</p><details><summary>실제로 읽은 조문 범위</summary>${r.reading_scope.map(s=>`<p><strong>${esc(s.source)}</strong> · ${esc(s.revision)}<br>${s.articles.map(esc).join(', ')}</p>`).join('')}</details><h4>범위와 한계</h4><p>${esc(D.meta.limits)}<br>별표 4 업무분장 기반이며 해외사무소 별표 5는 별도 모델링하지 않았습니다. 실시간 조회가 아닌 저장소 스냅샷이며 ALIO 공식 원문의 최신성은 별도로 확인하지 않았습니다. 미검토 영역은 업무마다 표시합니다.</p>${D.meta.notices.length?`<h4>업무분장 시행일 예외 — 원문</h4>${D.meta.notices.map(n=>`<p class="notice">${esc(n)}</p>`).join('')}`:''}`;
     $('info-dialog').showModal();
   }
-  $('department-search').addEventListener('input',e=>departmentOptions(e.target.value));
-  $('department').addEventListener('change',e=>selectDepartment(e.target.value));
+  $('department-search').addEventListener('input',e=>openDepartmentSearch(e.target.value));
+  $('department-search').addEventListener('focus',e=>{
+    openDepartmentSearch(e.target.value===state.department?.name?'':e.target.value,true);
+    e.target.select();
+  });
+  $('department-search').addEventListener('click',e=>{
+    if($('department-results').hidden) openDepartmentSearch(e.target.value===state.department?.name?'':e.target.value,true);
+  });
+  $('department-search').addEventListener('compositionstart',()=>{departmentComposing=true;});
+  $('department-search').addEventListener('compositionend',()=>{departmentComposing=false;});
+  $('department-search').addEventListener('keydown',e=>{
+    // The Enter used to finish a Korean IME syllable must not choose a department.
+    if(e.isComposing || departmentComposing || e.keyCode===229) return;
+    if(e.key==='Enter') {e.preventDefault();if(!$('department-results').hidden)commitDepartment(departmentActive);}
+    else if(e.key==='Escape') {e.preventDefault();closeDepartmentSearch();}
+    else if(e.key==='ArrowDown' || e.key==='ArrowUp') {
+      e.preventDefault();
+      if($('department-results').hidden) openDepartmentSearch(e.target.value===state.department?.name?'':e.target.value,true);
+      else if(departmentResults.length) highlightDepartment(Math.max(0,Math.min(departmentResults.length-1,departmentActive+(e.key==='ArrowDown'?1:-1))),true);
+    }
+  });
+  $('department-results').addEventListener('mousedown',e=>{if(e.target.closest('[role="option"]'))e.preventDefault();});
+  $('department-results').addEventListener('click',e=>{const row=e.target.closest('[data-department-index]');if(row)commitDepartment(Number(row.dataset.departmentIndex));});
+  document.querySelector('.department-picker').addEventListener('focusout',e=>{if(!e.currentTarget.contains(e.relatedTarget))closeDepartmentSearch();});
+  document.addEventListener('pointerdown',e=>{if(!e.target.closest('.department-picker'))closeDepartmentSearch();});
   $('duties').addEventListener('click',e=>{const b=e.target.closest('[data-duty]');if(!b)return;state.duty=state.department.duties.find(d=>d.id===b.dataset.duty);state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';resetZoom();renderDuties();render();showDuty();saveState();});
   document.addEventListener('click',e=>{
     const b=e.target.closest('button');
@@ -212,6 +259,6 @@
   const defaultDepartment=D.departments.find(d=>d.name==='동남아시아1팀')||D.departments[0];
   const initialDepartment=D.departments.find(d=>d.id===initial.get('department'))||defaultDepartment;
   const initialDuty=initial.get('duty')||initialDepartment.duties.find(d=>d.title.includes('국별협력사업 기획'))?.id;
-  departmentOptions();selectDepartment(initialDepartment.id,initialDuty);$('department').value=initialDepartment.id;
+  selectDepartment(initialDepartment.id,initialDuty);
   if(regs.has(initial.get('regulation')))expand(initial.get('regulation'));
 })();

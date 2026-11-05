@@ -43,7 +43,16 @@
     const current=Math.max(0,Math.min(page,pages-1));
     return {nodes:matches.slice(current*size,(current+1)*size),total:ids.length,matched:matches.length,page:current,pages};
   }
-  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage};
+  function departmentMatches(departments, query) {
+    const normalize=text=>text.normalize('NFC').toLocaleLowerCase().replace(/[\s·‧ㆍ/]+/g,'');
+    const q=normalize(query.trim());
+    return departments.map((department,index)=>{
+      const name=normalize(department.name),path=normalize(department.id),division=normalize(department.division);
+      const rank=!q?0:name===q?0:name.startsWith(q)?1:name.includes(q)?2:path.includes(q)?3:division.includes(q)?4:Infinity;
+      return {department,index,rank};
+    }).filter(x=>Number.isFinite(x.rank)).sort((a,b)=>a.rank-b.rank||a.index-b.index).map(x=>x.department);
+  }
+  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage,departmentMatches};
   if(typeof module!=='undefined' && module.exports) module.exports=api;
   else root.MapPriority=api;
 })(typeof window!=='undefined'?window:this);

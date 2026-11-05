@@ -6,6 +6,19 @@ assert.deepEqual(M.ordered(links,['미평가','조건부','실행','기본']),['
 assert.deepEqual(M.ordered(links,['조건부','실행','기본'],'core'),['기본']);
 assert.equal(M.priority(links,'미평가').level,'unassessed');
 assert.equal(M.priority([make('조건부','core',1)],'조건부').level,'core');
+const departments=[
+  {id:'인사실 / 인사교육팀',name:'인사교육팀',division:'경영전략본부'},
+  {id:'인사실 / 인사지원팀',name:'인사지원팀',division:'경영전략본부'},
+  {id:'안전·경영실 / 재무회계팀',name:'재무회계팀',division:'경영전략본부'},
+  {id:'ESG경영실 / ESG·소통팀',name:'ESG·소통팀',division:'직속부서'},
+];
+assert.deepEqual(M.departmentMatches(departments,'인사').map(d=>d.name),['인사교육팀','인사지원팀']);
+assert.equal(M.departmentMatches(departments,' 재무 회계 팀 ')[0].name,'재무회계팀');
+assert.equal(M.departmentMatches(departments,'esg 소통')[0].name,'ESG·소통팀');
+assert.equal(M.departmentMatches(departments,'경영전략본부').length,3);
+assert.equal(M.departmentMatches(departments,'없는부서').length,0);
+assert.equal(M.departmentMatches(departments,'').length,4);
+assert.equal(M.departmentMatches([{id:'가',name:'회계팀지원',division:'본부'},departments[2],{id:'나',name:'회계팀',division:'본부'}],'회계팀')[0].name,'회계팀');
 const relations=[{from:'기본',to:'실행'},{from:'실행',to:'조건부'},{from:'기본',to:'밖'}];
 assert.deepEqual(M.visibleReferences(relations,['기본','실행','조건부'],null),[]);
 assert.deepEqual(M.visibleReferences(relations,['기본','실행','조건부'],'기본'),[relations[0]]);

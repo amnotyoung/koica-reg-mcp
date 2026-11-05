@@ -15,8 +15,11 @@
     <aside class="sidebar">
       <h1>업무 선택</h1>
       <label for="department-search">부서 찾기</label>
-      <input id="department-search" type="search" placeholder="부서명 또는 본부명 검색" autocomplete="off">
-      <label for="department" class="sr-only">부서 선택</label><select id="department"></select>
+      <div class="department-picker">
+        <input id="department-search" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="department-results" aria-describedby="department-search-status" placeholder="부서명 또는 본부명 입력" autocomplete="off" enterkeyhint="go">
+        <div id="department-results" class="department-results" role="listbox" aria-label="부서 검색 결과" hidden></div>
+        <p id="department-search-status" class="department-search-status" role="status"></p>
+      </div>
       <p id="department-path" class="department-path"></p>
       <div class="duty-heading"><span>담당업무 선택</span><span id="duty-count" class="count"></span></div>
       <div id="duties" class="duties"></div>
