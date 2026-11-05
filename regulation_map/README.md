@@ -1,6 +1,8 @@
 # KOICA 업무 중심 규정 지도
 
-직제규정 시행세칙 별표 4의 부서·업무를 시작점으로 규정 간 참조 관계를 탐색하는 로컬 프로토타입입니다. Python 표준 라이브러리와 브라우저만 사용하며 서버 API, 외부 CDN, LLM 호출, OpenCrab 계정이 필요하지 않습니다.
+직제규정 시행세칙 별표 4의 부서·업무를 시작점으로 규정 간 참조 관계를 탐색하는 로컬 프로토타입입니다. Python 표준 라이브러리와 브라우저만 사용하며 서버 API, 스크립트 CDN, LLM 호출, OpenCrab 계정이 필요하지 않습니다. 글꼴(Noto Sans KR)만 Google Fonts에서 받으며, 받지 못하면 Apple SD Gothic Neo·맑은 고딕으로 표시합니다.
+
+화면은 KOICA AI 디자인 킷(`koica design.md`)의 색(KOICA Blue + 포인트색 Sky Blue, 주의는 Orange)·서체·웹 UI 규칙(버튼·포커스·모서리 8px 이하·최소 글자 크기)을 따릅니다. 비공식 개인 제작물이므로 KOICA 로고(Communication·Authority Mark), VI 기와 모티프, 핵심가치 조합 등 공식 브랜드 자산은 쓰지 않습니다.
 
 ## 실행
 

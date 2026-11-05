@@ -4,12 +4,14 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>KOICA 규정 지도 (비공식)</title>
   <meta name="description" content="KOICA 공개 규정을 업무 기준으로 탐색하는 비공식 개인 제작 프로토타입입니다. KOICA의 공식 서비스가 아닙니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script defer src="data.js"></script><script defer src="map_model.js"></script><script defer src="reader.js"></script><script defer src="app.js"></script>
 </head>
 <body>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">K<span>↗</span></span><span>KOICA <b>규정 지도</b></span><span class="prototype">PROTOTYPE</span><span class="unofficial">비공식 · 개인 제작</span></a>
+    <a class="brand" href="./"><span>KOICA <b>규정 지도</b></span><span class="prototype">PROTOTYPE</span><span class="unofficial">비공식 · 개인 제작</span></a>
     <div class="header-right"><span class="status-dot"></span><span id="review-coverage">업무 내용검토</span> <button id="about" class="text-button">데이터 안내 ↗</button><a id="download-html" class="text-button" hidden>HTML 내려받기 ↓</a></div>
   </header>
   <div class="workspace">
@@ -43,7 +45,7 @@
       <section class="map-shell" aria-label="규정 관계 탐색">
         <div class="map-toolbar"><div class="legend"><span id="reference-legend"><i class="line explicit"></i>원문 참조 →</span><span id="work-legend"><i class="line reviewed"></i>업무 내용 판단</span></div><label id="work-links-control" class="filter"><input id="show-reviewed" type="checkbox" checked>업무 연결</label></div>
         <div id="map-summary" class="map-summary" aria-live="polite"></div>
-        <div id="graph" class="graph" tabindex="-1"><svg id="map-svg" viewBox="0 0 1100 720" role="group" aria-label="규정 관계 지도. 노드를 선택해 연결 근거를 확인하세요."><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8fa6a2"/></marker></defs><g id="viewport"></g></svg></div>
+        <div id="graph" class="graph" tabindex="-1"><svg id="map-svg" viewBox="0 0 1100 720" role="group" aria-label="규정 관계 지도. 노드를 선택해 연결 근거를 확인하세요."><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#67717C"/></marker></defs><g id="viewport"></g></svg></div>
         <div id="list-view" class="list-view" hidden></div>
         <nav id="neighbor-pager" class="neighbor-pager" aria-label="연결된 규정 페이지" hidden><button id="previous-neighbors" class="outline-button">이전</button><span id="neighbor-page-label" aria-live="polite"></span><button id="next-neighbors" class="outline-button">다음</button></nav>
         <div class="map-bottom"><span id="graph-hint" aria-live="polite">노드를 선택하면 연결 이유를 볼 수 있어요</span><span id="zoom-note" class="zoom-note" hidden>글자가 작게 표시됩니다 · ＋로 확대하세요</span><div class="zoom"><button id="zoom-out" aria-label="축소">−</button><button id="zoom-reset" title="읽기 크기로 되돌리기" aria-label="현재 배율. 누르면 읽기 크기로 되돌립니다">100%</button><button id="zoom-in" aria-label="확대">＋</button><button id="zoom-fit" class="zoom-fit" aria-pressed="false" title="지도 전체를 화면에 맞춥니다. 글자가 작아질 수 있습니다">전체 맞춤</button></div></div>
