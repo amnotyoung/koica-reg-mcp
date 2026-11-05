@@ -29,20 +29,15 @@
     </aside>
     <main>
       <div class="map-heading">
-        <div><div class="section-eyebrow">관련 규정</div><h2 id="map-title">관련 규정</h2><p id="map-subtitle" class="muted"></p></div>
+        <div><h2 id="map-title">관련 규정</h2><p id="map-subtitle" class="muted"></p><details id="basis-more" class="basis-more"><summary>범위 설명</summary><p id="basis-note" class="basis-note"></p></details></div>
         <button id="reset" class="outline-button">↶ 업무 지도로</button>
       </div>
-      <div class="basis" role="group" aria-label="탐색 기준">
-        <div class="basis-switch"><button id="basis-duty" class="basis-option" aria-pressed="true">업무 기준</button><button id="basis-reference" class="basis-option" aria-pressed="false">규정 참조 기준</button></div>
-        <p id="basis-note" class="basis-note"></p>
-      </div>
-      <div class="search-row">
-        <div class="reg-search"><span aria-hidden="true">⌕</span><label for="regulation-search" class="sr-only">전체 규정에서 찾기</label><input id="regulation-search" type="search" placeholder="규정 이름으로도 탐색할 수 있어요" autocomplete="off"><div id="search-results" class="search-results" hidden></div></div>
+      <div class="control-row">
+        <div class="basis-switch" role="group" aria-label="탐색 기준"><button id="basis-duty" class="basis-option" aria-pressed="true">업무 기준</button><button id="basis-reference" class="basis-option" aria-pressed="false">규정 참조 기준</button></div>
+        <div class="reg-search"><span aria-hidden="true">⌕</span><label for="regulation-search" class="sr-only">전체 규정에서 찾기</label><input id="regulation-search" type="search" placeholder="규정 이름으로 찾기" autocomplete="off"><div id="search-results" class="search-results" hidden></div></div>
+        <label for="priority-filter" id="priority-label" class="sr-only">확인 순서로 보기</label>
+        <select id="priority-filter"><option value="all">확인 순서: 전체</option><option value="core">먼저 확인만</option><option value="supporting">함께 확인</option><option value="conditional">해당할 때</option><option value="unassessed">순서 미평가</option></select>
         <button id="view-toggle" class="outline-button" aria-pressed="false">목록으로 보기</button>
-      </div>
-      <div class="priority-controls">
-        <label for="priority-filter" id="priority-label">확인 순서로 보기</label>
-        <select id="priority-filter"><option value="all">전체 관계</option><option value="core">먼저 확인만</option><option value="supporting">함께 확인</option><option value="conditional">해당할 때</option><option value="unassessed">순서 미평가</option></select>
       </div>
       <section class="map-shell" aria-label="규정 관계 탐색">
         <div class="map-toolbar"><div class="legend"><span id="reference-legend"><i class="line explicit"></i>원문 참조 →</span><span id="work-legend"><i class="line reviewed"></i>업무 내용 판단</span></div><label id="work-links-control" class="filter"><input id="show-reviewed" type="checkbox" checked>업무 연결</label></div>
@@ -50,7 +45,7 @@
         <div id="graph" class="graph" tabindex="-1"><svg id="map-svg" viewBox="0 0 1100 720" role="group" aria-label="규정 관계 지도. 노드를 선택해 연결 근거를 확인하세요."><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8fa6a2"/></marker></defs><g id="viewport"></g></svg></div>
         <div id="list-view" class="list-view" hidden></div>
         <nav id="neighbor-pager" class="neighbor-pager" aria-label="연결된 규정 페이지" hidden><button id="previous-neighbors" class="outline-button">이전</button><span id="neighbor-page-label" aria-live="polite"></span><button id="next-neighbors" class="outline-button">다음</button></nav>
-        <div class="map-bottom"><span id="graph-hint">노드를 선택하면 연결 이유를 볼 수 있어요</span><span id="zoom-note" class="zoom-note" hidden>글자가 작게 표시됩니다 · ＋로 확대하세요</span><div class="zoom"><button id="zoom-out" aria-label="축소">−</button><button id="zoom-reset" title="읽기 크기로 되돌리기" aria-label="현재 배율. 누르면 읽기 크기로 되돌립니다">100%</button><button id="zoom-in" aria-label="확대">＋</button><button id="zoom-fit" class="zoom-fit" aria-pressed="false" title="지도 전체를 화면에 맞춥니다. 글자가 작아질 수 있습니다">전체 맞춤</button></div></div>
+        <div class="map-bottom"><span id="graph-hint" aria-live="polite">노드를 선택하면 연결 이유를 볼 수 있어요</span><span id="zoom-note" class="zoom-note" hidden>글자가 작게 표시됩니다 · ＋로 확대하세요</span><div class="zoom"><button id="zoom-out" aria-label="축소">−</button><button id="zoom-reset" title="읽기 크기로 되돌리기" aria-label="현재 배율. 누르면 읽기 크기로 되돌립니다">100%</button><button id="zoom-in" aria-label="확대">＋</button><button id="zoom-fit" class="zoom-fit" aria-pressed="false" title="지도 전체를 화면에 맞춥니다. 글자가 작아질 수 있습니다">전체 맞춤</button></div></div>
       </section>
     </main>
     <aside class="inspector" aria-label="선택한 관계와 근거">
@@ -61,11 +56,11 @@
   </div>
   <dialog id="info-dialog"><button id="close-info" class="close" aria-label="안내 닫기">×</button><h2>데이터와 검토 범위</h2><div id="data-info"></div></dialog>
   <dialog id="regulation-reader" class="regulation-reader" aria-labelledby="reader-title">
-    <header class="reader-header"><div><h2 id="reader-title"></h2><p id="reader-meta"></p><p id="reader-official" class="reader-official"></p></div><button id="reader-close" class="outline-button">지도 보기로 돌아가기</button></header>
-    <p class="reader-notice">ALIO 원본 파일을 변환해 저장소에 수록한 추출본 전문입니다. 본문·부칙·별표를 포함합니다. 원본 HWP/PDF와 편집 모양이 다를 수 있고, 이미지로 된 표·도식과 추출 누락, 수집일 이후의 개정 여부는 위의 공식 게시 페이지와 원본 파일에서 확인할 수 있습니다.</p>
-    <div class="reader-controls"><label for="reader-kind">구분</label><select id="reader-kind"><option value="all">전체</option><option value="main">본문</option><option value="supplementary">부칙</option><option value="attachment">별표·별지</option></select><label for="reader-query" class="sr-only">규정 안에서 검색</label><input id="reader-query" type="search" placeholder="규정 안에서 검색"><button id="reader-download" class="outline-button">추출본 내려받기</button></div>
+    <header class="reader-header"><div><h2 id="reader-title"></h2><p id="reader-meta"></p><p id="reader-official" class="reader-official"></p></div><button id="reader-close" class="outline-button" aria-label="전문 닫고 지도로 돌아가기"><span class="wide-label">지도 보기로 돌아가기</span><span class="narrow-label">닫기</span></button></header>
+    <details class="reader-notice"><summary>추출본 안내 · 원본과 다를 수 있음</summary><p>ALIO 원본 파일을 변환해 저장소에 수록한 추출본 전문입니다. 본문·부칙·별표를 포함합니다. 원본 HWP/PDF와 편집 모양이 다를 수 있고, 이미지로 된 표·도식과 추출 누락, 수집일 이후의 개정 여부는 위의 공식 게시 페이지와 원본 파일에서 확인할 수 있습니다.</p></details>
+    <div class="reader-controls"><label for="reader-kind">구분</label><select id="reader-kind"><option value="all">전체</option><option value="main">본문</option><option value="supplementary">부칙</option><option value="attachment">별표·별지</option></select><label for="reader-query" class="sr-only">규정 안에서 검색</label><input id="reader-query" type="search" placeholder="규정 안에서 검색"><button id="reader-toc-toggle" class="outline-button reader-toc-toggle" aria-expanded="false" aria-controls="reader-toc">목차</button><button id="reader-download" class="outline-button" aria-label="추출본 내려받기"><span class="wide-label">추출본 내려받기</span><span class="narrow-label">↓</span></button></div>
     <p id="reader-status" class="reader-status" role="status"></p>
-    <div class="reader-layout"><nav id="reader-toc" aria-label="규정 목차"></nav><div id="reader-body" tabindex="0" aria-label="규정 전문"></div></div>
+    <div id="reader-layout" class="reader-layout"><nav id="reader-toc" aria-label="규정 목차"></nav><div id="reader-body" tabindex="0" aria-label="규정 전문"></div></div>
   </dialog>
   <noscript>규정 지도를 사용하려면 JavaScript를 활성화해주세요.</noscript>
 </body>

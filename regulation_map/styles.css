@@ -123,3 +123,40 @@ dialog.regulation-reader{width:96vw;max-width:1500px;height:94vh;max-height:94vh
 .back-to-list{position:sticky;top:8px;z-index:5;display:block;width:100%;margin:0 0 14px;padding:11px 14px;font-size:12px;font-weight:600;color:#fff;background:var(--ink);border-radius:7px;box-shadow:0 6px 16px #203b3926}
 @media(max-width:1200px){.inspector{overflow:visible}}
 @media(max-width:720px){.basis{padding:9px 10px;gap:8px}.basis-note{min-width:0;font-size:10px}.basis-option{padding:6px 9px;font-size:10px}.graph svg{min-height:0}}
+
+/* Compact header: title, one summary line, one control row. Details fold away. */
+.map-heading{min-height:0;align-items:flex-start}
+.map-heading p{margin:6px 0 0}
+.basis-more{margin-top:4px;font-size:11px;color:var(--muted)}
+.basis-more>summary{cursor:pointer;color:#5f796a;width:max-content}
+.basis-more .basis-note{min-width:0;max-width:640px;margin:6px 0 0}
+.control-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 0 14px}
+.control-row .reg-search{flex:1 1 220px;min-width:180px}
+.control-row select{width:auto;margin:0;padding:9px 8px;font-size:11px}
+.map-summary .inline-action{margin-left:6px;font-size:10px;color:var(--teal);font-weight:600}
+/* Card view sizes to its content instead of a fixed map-height box. */
+.list-view{height:auto;min-height:0;max-height:calc(100vh - 290px)}
+.list-view .empty{padding:16px 4px}
+@media(max-width:720px){.control-row{gap:8px;margin:12px 0}.control-row .basis-switch{order:-1}.control-row .reg-search{flex-basis:100%;order:1}.control-row select{flex:1}.list-view{max-height:none;height:auto}}
+
+/* Reader: the extraction notice and the mobile table of contents fold. */
+.narrow-label{display:none}
+details.reader-notice{margin:10px 26px;font-size:11px;color:#778478}
+details.reader-notice>summary{cursor:pointer;width:max-content;max-width:100%}
+details.reader-notice p{margin:6px 0 0;line-height:1.8}
+.reader-toc-toggle{display:none}
+#reader-body strong{color:#203b39}
+@media(max-width:720px){
+  .wide-label{display:none}.narrow-label{display:inline}
+  .reader-header{padding:12px 16px 8px}.reader-header h2{font-size:17px}.reader-header p{margin-top:3px}
+  .reader-official{gap:2px 10px;font-size:11px!important}
+  details.reader-notice{margin:6px 16px;font-size:10px}
+  .reader-controls{flex-wrap:nowrap;gap:6px}.reader-controls select{width:84px;flex:none;padding:8px 4px}.reader-controls input{min-width:0;padding:8px}
+  .reader-toc-toggle{display:inline-block;padding:8px 10px}
+  #reader-download{padding:8px 10px}
+  .reader-status{margin:4px 16px!important}
+  .reader-layout{grid-template-rows:minmax(0,1fr)}
+  .reader-layout #reader-toc{display:none}
+  .reader-layout.toc-open{grid-template-rows:auto minmax(0,1fr)}
+  .reader-layout.toc-open #reader-toc{display:block;max-height:40vh}
+}

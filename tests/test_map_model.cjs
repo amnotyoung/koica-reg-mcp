@@ -58,7 +58,8 @@ assert.equal(JSON.stringify(repeated),snapshot);
 assert.equal(M.departmentOverview({id:'빈팀',name:'빈팀',duties:[]}).links.length,0);
 const compact=M.dutyLayout(combined.links,['공통규정'],{overview:true});
 assert.equal(compact.positions.size,2);
-assert.equal(compact.width,1000);
+assert.equal(compact.bands.length,1,'empty priority columns are not drawn');
+assert(compact.width<1000);
 assert(compact.positions.get('공통규정').y>compact.positions.get('@duty').y);
 assert(compact.positions.get('공통규정').y-50>compact.bands[0].labelY);
 const nested=M.organizationalChoices([{id:'처 / 실 / 팀',name:'팀',division:'본부',path:['처','실','팀'],duties:leaves[0].duties}]);
@@ -90,4 +91,10 @@ for (const count of [0,1,7,12]) {
   }
   assert(layout.positions.get('기본').w>layout.positions.get('조건부').w);
 }
+const two=[make('기본','core',1),make('실행','supporting',2)];
+const short=M.dutyLayout(two,['기본','실행']);
+assert.deepEqual(short.bands.map(b=>b.level),['core','supporting'],'no empty conditional column');
+assert(short.positions.get('기본').y<=200,'first regulation starts near the top');
+assert(short.width<1100 && short.height<=400);
+assert.equal(M.dutyLayout(two,[]).bands.length,0);
 console.log('Map priority ordering, filtering, task context, and layout checks passed');

@@ -3,14 +3,27 @@
   const $=id=>document.getElementById(id);
   let current=null;
   const make=(tag,text)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;return node;};
+  // Inline formatting left by the HWP→Markdown conversion. Only paired **bold**
+  // with real content becomes <strong>; a lone ** or masked 010-****-**** is a
+  // footnote mark or data and stays as written. Backslash escapes are unescaped.
+  const INLINE=/(?<!\*)\*\*(?=[^\s*])([^\n]*?[^\s*])\*\*(?!\*)|<(u|sup|sub)>([\s\S]*?)<\/\2>|<br\s*\/?\s*>|\\([\\`*_{}\[\]()#+\-.!|<>~$])/gi;
   function inlineText(parent,text) {
-    text.split(/<br\s*\/?\s*>/i).forEach((part,i)=>{if(i)parent.append(make('br'));parent.append(document.createTextNode(part));});
+    let last=0;
+    for(const m of text.matchAll(INLINE)) {
+      if(m.index>last)parent.append(document.createTextNode(text.slice(last,m.index)));
+      if(m[1]!==undefined){const strong=make('strong');inlineText(strong,m[1]);parent.append(strong);}
+      else if(m[2]){const tag=make(m[2].toLowerCase());inlineText(tag,m[3]);parent.append(tag);}
+      else if(m[4]!==undefined)parent.append(document.createTextNode(m[4]));
+      else parent.append(make('br'));
+      last=m.index+m[0].length;
+    }
+    if(last<text.length)parent.append(document.createTextNode(text.slice(last)));
   }
   // Extracted tables are data, not executable markup. Copy only inert table tags
   // and numeric row/column spans; discard every URL, style and event attribute.
   function safeTable(raw) {
     const inert=raw.replace(/<[^>]*>/g,tag=>{
-      const match=tag.match(/^<(\/?)(table|thead|tbody|tfoot|tr|th|td|caption|br|strong|em|b|i|p)\b[^>]*>$/i);
+      const match=tag.match(/^<(\/?)(table|thead|tbody|tfoot|tr|th|td|caption|br|strong|em|b|i|p|u|sup|sub)\b[^>]*>$/i);
       if(!match)return tag.replace(/</g,'&lt;').replace(/>/g,'&gt;');
       const spans=[...tag.matchAll(/\b(rowspan|colspan)\s*=\s*["']?(\d{1,3})\b/gi)]
         .map(m=>` ${m[1].toLowerCase()}="${Math.max(1,Math.min(Number(m[2]),100))}"`).join('');
@@ -19,9 +32,9 @@
     const parsed=new DOMParser().parseFromString(inert,'text/html');
     const table=parsed.querySelector('table');
     if(!table)return make('pre',raw);
-    const allowed=new Set(['TABLE','THEAD','TBODY','TFOOT','TR','TH','TD','CAPTION','BR','STRONG','EM','B','I','P']);
+    const allowed=new Set(['TABLE','THEAD','TBODY','TFOOT','TR','TH','TD','CAPTION','BR','STRONG','EM','B','I','P','U','SUP','SUB']);
     function copy(node) {
-      if(node.nodeType===3)return document.createTextNode(node.textContent);
+      if(node.nodeType===3){const text=document.createDocumentFragment();inlineText(text,node.textContent);return text;}
       if(node.nodeType!==1)return document.createTextNode('');
       if(!allowed.has(node.tagName))return document.createTextNode(node.textContent);
       const clean=make(node.tagName.toLowerCase());
@@ -72,6 +85,10 @@
     if(!sections.length)$('reader-body').append(make('p','일치하는 내용이 없습니다. 검색어나 구분을 변경하세요.'));
     $('reader-body').scrollTop=0;$('reader-toc').scrollTop=0;
   }
+  // On narrow screens the table of contents folds behind a button so the text
+  // keeps most of the screen; picking an entry folds it again.
+  const narrow=()=>window.matchMedia('(max-width:720px)').matches;
+  function setToc(open) {$('reader-layout').classList.toggle('toc-open',open);$('reader-toc-toggle').setAttribute('aria-expanded',String(open));}
   // Official ALIO publication for the extracted text. Only alio.go.kr URLs that
   // the build recorded are linked; nothing is guessed when a value is missing.
   const ALIO=/^https:\/\/www\.alio\.go\.kr\//;
@@ -91,14 +108,15 @@
     if(!regulation?.document)return;
     current=regulation;$('reader-title').textContent=source;$('reader-meta').textContent=`${regulation.category} · ${regulation.revision} · 저장소 수록 판본`;
     renderOfficial(regulation);
-    $('reader-kind').value='all';$('reader-query').value='';render();
+    $('reader-kind').value='all';$('reader-query').value='';setToc(false);render();
     if(!$('regulation-reader').open)$('regulation-reader').showModal();
     if(article){const section=regulation.document.sections.find(s=>s.kind==='main' && s.label.replace(/\s/g,'').startsWith(article.replace(/\s/g,'')+'('));if(section)$('reader-'+section.id)?.scrollIntoView({block:'start'});}
   }
   document.addEventListener('click',e=>{const button=e.target.closest('[data-read-source]');if(button)open(button.dataset.readSource,button.dataset.readArticle);});
   $('reader-close').addEventListener('click',()=>$('regulation-reader').close());
   $('reader-query').addEventListener('input',render);$('reader-kind').addEventListener('change',render);
-  $('reader-toc').addEventListener('click',e=>{const button=e.target.closest('[data-section]');if(button)$('reader-'+button.dataset.section)?.scrollIntoView({block:'start'});});
+  $('reader-toc').addEventListener('click',e=>{const button=e.target.closest('[data-section]');if(!button)return;if(narrow())setToc(false);$('reader-'+button.dataset.section)?.scrollIntoView({block:'start'});});
+  $('reader-toc-toggle').addEventListener('click',()=>setToc(!$('reader-layout').classList.contains('toc-open')));
   $('reader-download').addEventListener('click',()=>{
     const url=URL.createObjectURL(new Blob([current.document.sections.map(s=>s.text).join('')],{type:'text/markdown;charset=utf-8'}));
     const a=make('a');a.href=url;a.download=current.id.replace(/[\\/:*?"<>|]/g,'_')+'.md';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
