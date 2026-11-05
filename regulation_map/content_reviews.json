@@ -860,6 +860,83 @@
         "제15조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "민관협력사업 규정": {
+      "sha256": "59834308b6aa4de0843996434c1365b86b67e08ef3f6a4b4fd2739349658c9ef",
+      "revision": "2025.08.25 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조",
+        "제4조",
+        "제7조",
+        "제8조",
+        "제16조",
+        "제19조",
+        "제20조",
+        "제21조",
+        "제31조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "전략형파트너십사업에 관한 지침": {
+      "sha256": "59a2077f6767c703591d84b848fd05da55bfc2f08a4e2bb44af0a183c4cac6f8",
+      "revision": "2025.08.25 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제4조",
+        "제11조",
+        "제13조의2"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "시민사회협력프로그램에 관한 지침": {
+      "sha256": "caad06bd700ed1958ddb8614f83c49f91a1d1f6078db30ee1ecc9905b029a62c",
+      "revision": "2025.08.25 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조",
+        "제9조",
+        "제17조",
+        "제18조",
+        "제19조",
+        "제20조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "글로벌연수사업 규정": {
+      "sha256": "2952a2527c790e0b9f5c9d85425c6752594683ef6af213c9e2ca386411652f98",
+      "revision": "2026.02.24 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조",
+        "제4조",
+        "제10조",
+        "제11조",
+        "제12조",
+        "제17조",
+        "제18조",
+        "제19조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "혁신적 개발협력프로그램에 관한 지침": {
+      "sha256": "b883a9a3a9c1260e362a348153b663163ae03c04b8ed97a3fe9f182d6971463a",
+      "revision": "2025.02.26 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조",
+        "제12조",
+        "제14조",
+        "제17조",
+        "제20조",
+        "제22조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
     }
   },
   "links": {
@@ -3816,6 +3893,403 @@
           "revision": "2024.03.28 개정",
           "quote": "재물조사를 실시하여야 한다.",
           "body_sha256": "f81ab9143a9e1394bcaee51ff63c9819e6b418111bf95044839aa1493c25e966"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "private_partnership": {
+      "source": "민관협력사업 규정",
+      "role": "민관협력 기획·운영",
+      "rationale": "프로그램별 정책·전략·연간계획, 담당부서 운영과 파트너 약정을 연결한다.",
+      "condition": "시민사회·혁신·인도적 민관협력의 공통 체계이며 개별 프로그램 지침의 특별사항을 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "민관협력사업 규정",
+          "article": "제7조",
+          "title": "정책, 전략 및 연간계획 수립",
+          "revision": "2025.08.25 개정",
+          "quote": "매년 프로그램별 연간계획을 수립한다.",
+          "body_sha256": "2dc68b647835292c5e8e3fe0677a9510e4b2241489d98892c103465669d4c481"
+        },
+        {
+          "source": "민관협력사업 규정",
+          "article": "제8조",
+          "title": "프로그램 운영",
+          "revision": "2025.08.25 개정",
+          "quote": "프로그램별로 담당부서를 별도로 둘 수 있고",
+          "body_sha256": "c7a7bc99a8853d868aa42721d0d6de0e3372573844b27d263a2048f2df3de8bf"
+        },
+        {
+          "source": "민관협력사업 규정",
+          "article": "제16조",
+          "title": "약정체결",
+          "revision": "2025.08.25 개정",
+          "quote": "사업수행을 위한 약정을 체결한다.",
+          "body_sha256": "3495656e7f97054f0a34ddba13ec1c56475c7325faaa945eda7ecbfe88a64d04"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "private_results": {
+      "source": "민관협력사업 규정",
+      "role": "민관협력 성과·확산",
+      "rationale": "사업 전 과정 성과관리와 결과 공유·확산 및 사후관리·출구전략을 연결한다.",
+      "condition": "경영평가 편람이 아니라 민관협력 사업성과 관리의 근거다. 평가 세부기준은 프로그램별 기준을 확인한다.",
+      "evidence": [
+        {
+          "source": "민관협력사업 규정",
+          "article": "제20조",
+          "title": "성과관리 및 사업평가",
+          "revision": "2025.08.25 개정",
+          "quote": "사업 결과를 공유, 확산할 수 있다.",
+          "body_sha256": "0e80db12cb1708ca2e6f8b1a139035261491daad778fdfa8607164ba921583c0"
+        },
+        {
+          "source": "민관협력사업 규정",
+          "article": "제21조",
+          "title": "사후관리",
+          "revision": "2025.08.25 개정",
+          "quote": "사업종료 이후의 출구전략",
+          "body_sha256": "bf4f9ec060f2aa96d684843639564ae4cdd507841f518e6627522a0914d3eabd"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "private_capacity": {
+      "source": "민관협력사업 규정",
+      "role": "파트너 역량·네트워크",
+      "rationale": "파트너 발굴·기획·수행 역량강화와 개발협력연대의 구성·활동 지원을 연결한다.",
+      "condition": "민관협력 파트너를 대상으로 하는 역량강화·DAK 지원 부분이다.",
+      "evidence": [
+        {
+          "source": "민관협력사업 규정",
+          "article": "제31조",
+          "title": "사업수행 역량강화 지원",
+          "revision": "2025.08.25 개정",
+          "quote": "“역량강화 프로그램”을 운영할 수 있다.",
+          "body_sha256": "3979850c8f91f27e7ad74d58ba1d44ce01ea6cd1dfabbd0bda99d4cb0ac43d98"
+        },
+        {
+          "source": "민관협력사업 규정",
+          "article": "제31조",
+          "title": "사업수행 역량강화 지원",
+          "revision": "2025.08.25 개정",
+          "quote": "개발협력연대를 구성할 수 있고",
+          "body_sha256": "3979850c8f91f27e7ad74d58ba1d44ce01ea6cd1dfabbd0bda99d4cb0ac43d98"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "innovation": {
+      "source": "혁신적 개발협력프로그램에 관한 지침",
+      "role": "CTS·IBS·IPS",
+      "rationale": "혁신기술·포용적 비즈니스·혁신적 파트너십의 사업유형과 약정·재원분담·정산·평가를 연결한다.",
+      "condition": "기업 프로그램별 안내서·약정 특수조건을 확인한다. 모든 민간기업 지원이나 기술임치의 전용 절차를 규정하는 것은 아니다.",
+      "evidence": [
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.02.26 개정",
+          "quote": "파트너기관 및 신규사업 육성을 위한 사업",
+          "body_sha256": "bb4f827d489cc97bbf9d9eb5ed1a6b4e5876a0806487329d4839a37f8a1c3ca8"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제3조",
+          "title": "사업의 종류",
+          "revision": "2025.02.26 개정",
+          "quote": "포용적 비즈니스 프로그램(IBS)",
+          "body_sha256": "55137b1325babccaee86760cb24a3026cc9e2637de8602a0a4fc6127c0b4764f"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제12조",
+          "title": "약정체결",
+          "revision": "2025.02.26 개정",
+          "quote": "최종 사업 실행계획을 수립하고, 약정을 체결한다.",
+          "body_sha256": "8f7c223e9d83aaa47a326a0bafed620e67c7d8bc4e38e7656de638b83627c9e1"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "innovation_results": {
+      "source": "혁신적 개발협력프로그램에 관한 지침",
+      "role": "혁신사업 평가·육성",
+      "rationale": "프로그램별 모니터링·평가, 확산사업 반영과 파트너 역량강화 프로그램을 연결한다.",
+      "condition": "CTS·IBS·IPS 해당 프로그램에서 활용한다. INNOPORT 공간 운영·입주 규정은 별도 확인한다.",
+      "evidence": [
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제20조",
+          "title": "모니터링 및 평가",
+          "revision": "2025.02.26 개정",
+          "quote": "평가결과는 향후 확산사업으로의 선정",
+          "body_sha256": "60bf33c5fa828f9ca8fde536cda3b7a5641d5144103dda0578c2856cd05dc2bc"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제22조",
+          "title": "파트너 역량강화",
+          "revision": "2025.02.26 개정",
+          "quote": "비즈니스 역량강화, 국제포럼 참가, 국제전시 참가",
+          "body_sha256": "bce01a05ee2a037f547e15c7280a0355925e7bf6590091d702a52ca877f6689c"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "innovation_funds": {
+      "source": "혁신적 개발협력프로그램에 관한 지침",
+      "role": "파트너 재원·정산",
+      "rationale": "파트너 재원 분담과 회계법인 위탁 정산검토 경로를 연결한다.",
+      "condition": "프로그램·파트너 유형별 비율, 비현금 인정 및 약정의 특수조항은 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제14조",
+          "title": "재원 분담",
+          "revision": "2025.02.26 개정",
+          "quote": "파트너와 재원을 분담하는 것을 원칙",
+          "body_sha256": "4057bcdf37fd8401b4bb207f0f51e02689a9ff5bcc7675384e5337c53e3c29b8"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제17조",
+          "title": "사업비 정산 및 반납",
+          "revision": "2025.02.26 개정",
+          "quote": "회계법인을 지정하여 정산검토를 위탁할 수 있다.",
+          "body_sha256": "eb65f7f616a032736aa4b61f7ae49f78c77ff76f84f39b22f98ca88a0e81c537"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "civil_program": {
+      "source": "시민사회협력프로그램에 관한 지침",
+      "role": "시민사회 사업",
+      "rationale": "공모·약정과 시민사회 프로그램·인큐베이팅·정책협력 지원의 구체적 경로를 연결한다.",
+      "condition": "전략형파트너십은 별도 지침이 우선한다. 개별연도 운영지침·안내서의 특별내용을 확인한다.",
+      "evidence": [
+        {
+          "source": "시민사회협력프로그램에 관한 지침",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.08.25 개정",
+          "quote": "인큐베이팅프로그램",
+          "body_sha256": "72fd7461af50e597e7aa129c9c68577c90e286df21733b62e5cec6a83db51338"
+        },
+        {
+          "source": "시민사회협력프로그램에 관한 지침",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.08.25 개정",
+          "quote": "시민사회단체 협의체를 지원하는 사업",
+          "body_sha256": "72fd7461af50e597e7aa129c9c68577c90e286df21733b62e5cec6a83db51338"
+        },
+        {
+          "source": "시민사회협력프로그램에 관한 지침",
+          "article": "제9조",
+          "title": "신규사업 선정 및 약정체결",
+          "revision": "2025.08.25 개정",
+          "quote": "사업실행계획서 및 예산서 제출이 완료된 사업",
+          "body_sha256": "a444c1dc8fd52ce1b88b105529846f792ad30748ede3f430da56ce9d46f246dc"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "civil_results": {
+      "source": "시민사회협력프로그램에 관한 지침",
+      "role": "시민사회 평가·사후",
+      "rationale": "중간·종료·사후 평가, 결과 환류·사업 이양과 종료 후 점검을 연결한다.",
+      "condition": "평가 생략·대체와 지속사업의 경우를 포함하여 해당 연도 기준·약정을 확인한다.",
+      "evidence": [
+        {
+          "source": "시민사회협력프로그램에 관한 지침",
+          "article": "제17조",
+          "title": "사업평가",
+          "revision": "2025.08.25 개정",
+          "quote": "성과 중심의 시민사회협력프로그램 수행",
+          "body_sha256": "ac5463d489cf8325886ea0daed306ca2f5d4300f3a16b9cacc0a5773ed286682"
+        },
+        {
+          "source": "시민사회협력프로그램에 관한 지침",
+          "article": "제19조",
+          "title": "사업이양",
+          "revision": "2025.08.25 개정",
+          "quote": "필요 시 사후관리 재원을 투입할 수 있다.",
+          "body_sha256": "3ffb58e2e82db98f6f8da8fce4ee20e8920654f0112ab97095f4f352b20e1243"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "fellowship": {
+      "source": "글로벌연수사업 규정",
+      "role": "글로벌연수 운영",
+      "rationale": "국별·다국가·특별·학위·비대면 연수의 구분, 사업계획과 기관선정·약정을 연결한다.",
+      "condition": "직원 교육훈련·봉사단 국내교육과 구별한다. 연수기관 심사기준·경비는 시행세칙을 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제3조",
+          "title": "사업의 구분",
+          "revision": "2026.02.24 개정",
+          "quote": "학위연수(Scholarship program)",
+          "body_sha256": "46c9e6cb3a63ce4bf568a7471c297c30f6f148bbcffe84f5602b54cf11b628f0"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제4조",
+          "title": "사업계획 수립",
+          "revision": "2026.02.24 개정",
+          "quote": "연간 연수사업 계획을 수립한다.",
+          "body_sha256": "bf0a84571b0f964ff22afcc08dfd0c396ad2244cf6102afe4ad3c59141251e29"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제11조",
+          "title": "연수기관의 선정",
+          "revision": "2026.02.24 개정",
+          "quote": "연수기관을 선정하여 연수사업을 위탁 실시할 수 있다.",
+          "body_sha256": "d0975c76bc4152302caa7701eeb4afc3d540becf9438879dcbd62ef341834ede"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "fellowship_results": {
+      "source": "글로벌연수사업 규정",
+      "role": "연수 성과·동창회",
+      "rationale": "연수결과 평가·정기 성과관리와 수료연수생 동창회·심화교육·온라인 네트워킹을 연결한다.",
+      "condition": "수료연수생 사후관리 범위. 다른 사업의 사후지원 예산기준을 적용하지 않는다.",
+      "evidence": [
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제18조",
+          "title": "연수사업 성과관리",
+          "revision": "2026.02.24 개정",
+          "quote": "연수사업의 성과를 정기적으로 측정",
+          "body_sha256": "7de22188cddc25b604c075191b06ffe2e3af189709100a19b3afd6035bf0bcb0"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제19조",
+          "title": "사후관리 지원",
+          "revision": "2026.02.24 개정",
+          "quote": "연수생 동창회(KOICA Club)의 결성 및 활동 지원",
+          "body_sha256": "f0ca48fd5df9e01283095bd77f27444c99a5851734fe17d2daf4ec48a7d007f3"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "fellowship_safety": {
+      "source": "글로벌연수사업 규정",
+      "role": "연수생 안전·체류",
+      "rationale": "초청연수의 입출국·사고예방과 현지·제3국·비대면 연수의 감독을 연결한다.",
+      "condition": "의료비·보험·조기귀국 세부 처리 및 법령은 업무매뉴얼·계약을 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제10조",
+          "title": "연수생 관리",
+          "revision": "2026.02.24 개정",
+          "quote": "연수생의 사고예방 및 안전관리를 위해 필요한 사항을 업무 매뉴얼에 포함",
+          "body_sha256": "d2576d877ef24b50aeaea0cad72bb5a3ad80eacc1be6a3438c3f813b4c4fd4e2"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "innovation__innovation_funds": {
+      "source": "혁신적 개발협력프로그램에 관한 지침",
+      "role": "CTS·IBS·IPS / 파트너 재원·정산",
+      "rationale": "혁신기술·포용적 비즈니스·혁신적 파트너십의 사업유형과 약정·재원분담·정산·평가를 연결한다. 파트너 재원 분담과 회계법인 위탁 정산검토 경로를 연결한다.",
+      "condition": "기업 프로그램별 안내서·약정 특수조건을 확인한다. 모든 민간기업 지원이나 기술임치의 전용 절차를 규정하는 것은 아니다. 프로그램·파트너 유형별 비율, 비현금 인정 및 약정의 특수조항은 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.02.26 개정",
+          "quote": "파트너기관 및 신규사업 육성을 위한 사업",
+          "body_sha256": "bb4f827d489cc97bbf9d9eb5ed1a6b4e5876a0806487329d4839a37f8a1c3ca8"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제3조",
+          "title": "사업의 종류",
+          "revision": "2025.02.26 개정",
+          "quote": "포용적 비즈니스 프로그램(IBS)",
+          "body_sha256": "55137b1325babccaee86760cb24a3026cc9e2637de8602a0a4fc6127c0b4764f"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제12조",
+          "title": "약정체결",
+          "revision": "2025.02.26 개정",
+          "quote": "최종 사업 실행계획을 수립하고, 약정을 체결한다.",
+          "body_sha256": "8f7c223e9d83aaa47a326a0bafed620e67c7d8bc4e38e7656de638b83627c9e1"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제14조",
+          "title": "재원 분담",
+          "revision": "2025.02.26 개정",
+          "quote": "파트너와 재원을 분담하는 것을 원칙",
+          "body_sha256": "4057bcdf37fd8401b4bb207f0f51e02689a9ff5bcc7675384e5337c53e3c29b8"
+        },
+        {
+          "source": "혁신적 개발협력프로그램에 관한 지침",
+          "article": "제17조",
+          "title": "사업비 정산 및 반납",
+          "revision": "2025.02.26 개정",
+          "quote": "회계법인을 지정하여 정산검토를 위탁할 수 있다.",
+          "body_sha256": "eb65f7f616a032736aa4b61f7ae49f78c77ff76f84f39b22f98ca88a0e81c537"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "fellowship__fellowship_results": {
+      "source": "글로벌연수사업 규정",
+      "role": "글로벌연수 운영 / 연수 성과·동창회",
+      "rationale": "국별·다국가·특별·학위·비대면 연수의 구분, 사업계획과 기관선정·약정을 연결한다. 연수결과 평가·정기 성과관리와 수료연수생 동창회·심화교육·온라인 네트워킹을 연결한다.",
+      "condition": "직원 교육훈련·봉사단 국내교육과 구별한다. 연수기관 심사기준·경비는 시행세칙을 추가 확인한다. 수료연수생 사후관리 범위. 다른 사업의 사후지원 예산기준을 적용하지 않는다.",
+      "evidence": [
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제3조",
+          "title": "사업의 구분",
+          "revision": "2026.02.24 개정",
+          "quote": "학위연수(Scholarship program)",
+          "body_sha256": "46c9e6cb3a63ce4bf568a7471c297c30f6f148bbcffe84f5602b54cf11b628f0"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제4조",
+          "title": "사업계획 수립",
+          "revision": "2026.02.24 개정",
+          "quote": "연간 연수사업 계획을 수립한다.",
+          "body_sha256": "bf0a84571b0f964ff22afcc08dfd0c396ad2244cf6102afe4ad3c59141251e29"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제11조",
+          "title": "연수기관의 선정",
+          "revision": "2026.02.24 개정",
+          "quote": "연수기관을 선정하여 연수사업을 위탁 실시할 수 있다.",
+          "body_sha256": "d0975c76bc4152302caa7701eeb4afc3d540becf9438879dcbd62ef341834ede"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제18조",
+          "title": "연수사업 성과관리",
+          "revision": "2026.02.24 개정",
+          "quote": "연수사업의 성과를 정기적으로 측정",
+          "body_sha256": "7de22188cddc25b604c075191b06ffe2e3af189709100a19b3afd6035bf0bcb0"
+        },
+        {
+          "source": "글로벌연수사업 규정",
+          "article": "제19조",
+          "title": "사후관리 지원",
+          "revision": "2026.02.24 개정",
+          "quote": "연수생 동창회(KOICA Club)의 결성 및 활동 지원",
+          "body_sha256": "f0ca48fd5df9e01283095bd77f27444c99a5851734fe17d2daf4ec48a7d007f3"
         }
       ],
       "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
@@ -9454,6 +9928,1036 @@
           "level": "supporting",
           "order": 1,
           "reason": "해당 업무 중 회계처리 원칙을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d1",
+      "duty_sha256": "e72f3352d9d18e143e0e7ad7f00dede27b0a2778f851a1c3280f66fb1d9d9576",
+      "link_ids": [
+        "private_partnership",
+        "rules",
+        "appraisal"
+      ],
+      "scope": "분장업무의 민관협력 기획·운영, 내규 제·개정, 조직·직원 업적평가에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "private_partnership": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 민관협력 기획·운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        },
+        "appraisal": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 조직·직원 업적평가을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d2",
+      "duty_sha256": "b140cf91901b3e2feec7823df37ec6bccae2f63aa645dfbc5351fc6e6ae195d4",
+      "link_ids": [
+        "innovation",
+        "rules"
+      ],
+      "scope": "분장업무의 CTS·IBS·IPS, 내규 제·개정에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 CTS·IBS·IPS 부분을 직접 확인하는 출발점입니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d3",
+      "duty_sha256": "88632636d19c9ae267571b0a4e30235710f73faaf5e669be45687dfdbde7c011",
+      "link_ids": [
+        "innovation",
+        "private_partnership"
+      ],
+      "scope": "분장업무의 CTS·IBS·IPS, 민관협력 기획·운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 CTS·IBS·IPS 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_partnership": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 기획·운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d4",
+      "duty_sha256": "511d80e5e236e285f1416939f822b2e091e1a67593c7d2bad98f516a5a929eb3",
+      "link_ids": [
+        "innovation__innovation_funds"
+      ],
+      "scope": "분장업무의 CTS·IBS·IPS, 파트너 재원·정산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation__innovation_funds": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 CTS·IBS·IPS / 파트너 재원·정산 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d5",
+      "duty_sha256": "d379a451f29626adf9c5e5bd7cca72ed2166199371976d92369f20ffecce9671",
+      "link_ids": [
+        "innovation_results",
+        "private_results"
+      ],
+      "scope": "분장업무의 혁신사업 평가·육성, 민관협력 성과·확산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 혁신사업 평가·육성 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 성과·확산을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d6",
+      "duty_sha256": "0bb5d6fdc3dba43da5255193f005e02a29d2ba74fabb524f371ba9776339e01d",
+      "link_ids": [
+        "private_results",
+        "innovation_results"
+      ],
+      "scope": "분장업무의 민관협력 성과·확산, 혁신사업 평가·육성에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "private_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 민관협력 성과·확산 부분을 직접 확인하는 출발점입니다."
+        },
+        "innovation_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 혁신사업 평가·육성을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d7",
+      "duty_sha256": "a6e30077944f62e6d7ffecd4f0bf730d6ff15765f39418a026db8de0652c3d93",
+      "link_ids": [
+        "innovation_funds"
+      ],
+      "scope": "분장업무의 파트너 재원·정산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation_funds": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 파트너 재원·정산 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d8",
+      "duty_sha256": "d9aea0f8db16068005642ee36922af3df8f6fc772a85fcb1aed5d8b7c491b757",
+      "link_ids": [
+        "data_owner"
+      ],
+      "scope": "분장업무의 소관 데이터 관리에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 기업협력사업팀",
+      "duty_id": "d9",
+      "duty_sha256": "0168ac88b60e9cf979e499ac75ea6ace7960e07400baa6ff40c7bdf1d583bd0d",
+      "link_ids": [
+        "management_performance",
+        "private_results"
+      ],
+      "scope": "분장업무의 경영목표·실적보고, 민관협력 성과·확산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "management_performance": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 경영목표·실적보고 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 성과·확산을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d1",
+      "duty_sha256": "e9046a06a7369bb0ab7f72d622baea8279376f44a5dcb3ecb47105c110f5ec14",
+      "link_ids": [
+        "innovation",
+        "rules"
+      ],
+      "scope": "분장업무의 CTS·IBS·IPS, 내규 제·개정에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 CTS·IBS·IPS 부분을 직접 확인하는 출발점입니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d2",
+      "duty_sha256": "30b9e2a71b6b2905cc7e4606b996b4c590d14b7acd73160a535328d2f2cb6583",
+      "link_ids": [
+        "innovation__innovation_funds"
+      ],
+      "scope": "분장업무의 CTS·IBS·IPS, 파트너 재원·정산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation__innovation_funds": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 CTS·IBS·IPS / 파트너 재원·정산 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d3",
+      "duty_sha256": "b92cdc65e9a16dfea82efc66007ff3f2b30fcd9a1f33e56dbac6c5b02ad3a004",
+      "link_ids": [
+        "innovation_results"
+      ],
+      "scope": "분장업무의 혁신사업 평가·육성에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 혁신사업 평가·육성 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d4",
+      "duty_sha256": "c0f13a9180910255d342f9ec2ed91cbfa27cdddc62eaf28b58eee9ae10774223",
+      "link_ids": [
+        "private_results",
+        "innovation_results"
+      ],
+      "scope": "분장업무의 민관협력 성과·확산, 혁신사업 평가·육성에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "private_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 민관협력 성과·확산 부분을 직접 확인하는 출발점입니다."
+        },
+        "innovation_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 혁신사업 평가·육성을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d5",
+      "duty_sha256": "90699f3985c7445b0314144dbe2da6e630f293201701dcb4b0a131af11530737",
+      "link_ids": [
+        "innovation_results",
+        "asset"
+      ],
+      "scope": "분장업무의 혁신사업 평가·육성, 자산·시설 관리에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation_results": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 혁신사업 평가·육성을 수행하는 경우 함께 확인합니다."
+        },
+        "asset": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d6",
+      "duty_sha256": "53c7016626898e50856b124a8d66ce170b82fec0b58dd369efce0dff70abc77a",
+      "link_ids": [
+        "innovation_results"
+      ],
+      "scope": "분장업무의 혁신사업 평가·육성에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 혁신사업 평가·육성 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d7",
+      "duty_sha256": "f4c75f2c00565087d268f5229c81b0dfd43ac46675f85349f87782988bc59e9d",
+      "link_ids": [
+        "innovation_funds",
+        "procurement"
+      ],
+      "scope": "분장업무의 파트너 재원·정산, 조달·계약에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "innovation_funds": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 파트너 재원·정산 부분을 직접 확인하는 출발점입니다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 조달·계약을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d8",
+      "duty_sha256": "7c84091ec8e85b29275eb5963fbf60e5833d72e6af1fa38400cd662f896850ab",
+      "link_ids": [
+        "data_owner"
+      ],
+      "scope": "분장업무의 소관 데이터 관리에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 혁신기술사업팀",
+      "duty_id": "d9",
+      "duty_sha256": "1fbb45dbff543a77a8ef9aff2e055799dfcb0fe34f0bbaf7477f849f096af610",
+      "link_ids": [
+        "management_performance",
+        "private_results"
+      ],
+      "scope": "분장업무의 경영목표·실적보고, 민관협력 성과·확산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "management_performance": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 경영목표·실적보고 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 성과·확산을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d1",
+      "duty_sha256": "7259a54d4819bafe37900a989be7a7c4dc376c8d2f98f94e1050d68941c30b07",
+      "link_ids": [
+        "civil_program",
+        "private_partnership",
+        "rules"
+      ],
+      "scope": "분장업무의 시민사회 사업, 민관협력 기획·운영, 내규 제·개정에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "civil_program": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 시민사회 사업 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_partnership": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 기획·운영을 수행하는 경우 함께 확인합니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d2",
+      "duty_sha256": "d2fa699d882130309d10159ea28fa68d822f0be5648e77e69b1c9763354685ba",
+      "link_ids": [
+        "civil_program",
+        "private_partnership"
+      ],
+      "scope": "분장업무의 시민사회 사업, 민관협력 기획·운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "civil_program": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 시민사회 사업 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_partnership": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 기획·운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d3",
+      "duty_sha256": "27e9ea047d47ac69803ae3000aa2f6513dd701cd02a6ff0e999b3d15640f0f42",
+      "link_ids": [
+        "civil_results",
+        "private_results"
+      ],
+      "scope": "분장업무의 시민사회 평가·사후, 민관협력 성과·확산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "civil_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 시민사회 평가·사후 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 성과·확산을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d4",
+      "duty_sha256": "e0feed32b266815ed2fc8911b42a343661b4e9a1094b07c7fae915fca5c9113b",
+      "link_ids": [
+        "civil_program",
+        "private_capacity"
+      ],
+      "scope": "분장업무의 시민사회 사업, 파트너 역량·네트워크에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "civil_program": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 시민사회 사업 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_capacity": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 파트너 역량·네트워크을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d5",
+      "duty_sha256": "2d6fe1e3003dc2421d6c1f5d41c981a9c022e69b8cabafa0500283ff0e269675",
+      "link_ids": [
+        "humanitarian_partnership"
+      ],
+      "scope": "분장업무의 HDP·RAPID에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "humanitarian_partnership": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 HDP·RAPID 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d6",
+      "duty_sha256": "ba0222af6546df84393688d997b4b58fbebf249b383c91e65b77220a5005af55",
+      "link_ids": [
+        "private_capacity"
+      ],
+      "scope": "분장업무의 파트너 역량·네트워크에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "private_capacity": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 파트너 역량·네트워크 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d7",
+      "duty_sha256": "14f55e474aa65cd8e3f79170daf71e1c5aee7df0a8053aeb6fb15b7d5b1152ef",
+      "link_ids": [
+        "civil_results"
+      ],
+      "scope": "분장업무의 시민사회 평가·사후에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "civil_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 시민사회 평가·사후 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d8",
+      "duty_sha256": "e554c9807bbf69c4fad8a6d6c5937b2f1d04d2639e60e9d4e678e68e1de75b4b",
+      "link_ids": [
+        "private_capacity",
+        "mou"
+      ],
+      "scope": "분장업무의 파트너 역량·네트워크, 기관 간 협력약정에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "private_capacity": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 파트너 역량·네트워크 부분을 직접 확인하는 출발점입니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d9",
+      "duty_sha256": "9deead208fdabd2b0bee89e5c0fc9d9440e9f1f8f0da5c98fa5237cd2f299088",
+      "link_ids": [
+        "data_owner"
+      ],
+      "scope": "분장업무의 소관 데이터 관리에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "파트너사업실 / 시민사회협력사업팀",
+      "duty_id": "d10",
+      "duty_sha256": "85553c99e9a701b75d76e63d3b517e9425581cbad37b11fac0f414c5115f0a12",
+      "link_ids": [
+        "management_performance",
+        "private_results"
+      ],
+      "scope": "분장업무의 경영목표·실적보고, 민관협력 성과·확산에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "management_performance": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 경영목표·실적보고 부분을 직접 확인하는 출발점입니다."
+        },
+        "private_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 민관협력 성과·확산을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d1",
+      "duty_sha256": "8a630a218ac747f05580bb1626e3fbab83b79d6f16bde4088d8a3c7220ba9d16",
+      "link_ids": [
+        "fellowship",
+        "change",
+        "budget_accounting"
+      ],
+      "scope": "분장업무의 글로벌연수 운영, 변경·승인, 예산·회계에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "change": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 변경·승인을 수행하는 경우 함께 확인합니다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 예산·회계을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d2",
+      "duty_sha256": "94393059bff953871aec93bb27bf01c74c7088855a476df7a4802fd83c045b00",
+      "link_ids": [
+        "rules",
+        "fellowship"
+      ],
+      "scope": "분장업무의 내규 제·개정, 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "rules": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내규 제·개정 부분을 직접 확인하는 출발점입니다."
+        },
+        "fellowship": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 글로벌연수 운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d3",
+      "duty_sha256": "f4687ec1ee70e8e994f078536facf1a977ba43a303834780033b3d31a1448825",
+      "link_ids": [
+        "fellowship_results"
+      ],
+      "scope": "분장업무의 연수 성과·동창회에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 연수 성과·동창회 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d4",
+      "duty_sha256": "fd49e5d953982eb4117c019645b04df41fb888689f0d3bc3d89aa88e6e99255b",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d5",
+      "duty_sha256": "c78830df036c4204ee7c22f76c0cc9dadd12682a5b6dab04c6739242058685e9",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d6",
+      "duty_sha256": "225cccc642cdd8837395cd7ba348b8ebba73d934b9988e7bfd29f662d9bb8130",
+      "link_ids": [
+        "fellowship_safety"
+      ],
+      "scope": "분장업무의 연수생 안전·체류에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship_safety": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 연수생 안전·체류 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d7",
+      "duty_sha256": "369a6aee13814d83762c6f7206a0fd502caa7780f9f72d6f59cda5eeeb06dee9",
+      "link_ids": [
+        "fellowship",
+        "mou"
+      ],
+      "scope": "분장업무의 글로벌연수 운영, 기관 간 협력약정에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d8",
+      "duty_sha256": "26a304f537bcf7b3b01fb26f8969b19b8a2b34cdaf287b222f5624b84df517ef",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d9",
+      "duty_sha256": "812e8e5ab84b3799bea9a52561915bfedc6e30844bba8ba90861c7c74908d786",
+      "link_ids": [
+        "data_owner"
+      ],
+      "scope": "분장업무의 소관 데이터 관리에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업1팀",
+      "duty_id": "d10",
+      "duty_sha256": "858090f1350a5eb8aac6932f9c109b2076381f6d15a2450907a1a7c3a3fa1e5c",
+      "link_ids": [
+        "fellowship__fellowship_results"
+      ],
+      "scope": "분장업무의 글로벌연수 운영, 연수 성과·동창회에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship__fellowship_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 / 연수 성과·동창회 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d1",
+      "duty_sha256": "7653ead5ba5697872c6a3e590f7c6f370cf31191286e7e2c2aca7830ed841ae8",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d2",
+      "duty_sha256": "18495014eb7033c7a25d208167d4fc22d1a74ab7c04e642f81eea6d64417f61d",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d3",
+      "duty_sha256": "aa4d0cdc983cc4f61969ef69b880c67c8587630b8f6ff59941a0488e44a12d5e",
+      "link_ids": [
+        "web_security",
+        "data_owner"
+      ],
+      "scope": "분장업무의 홈페이지 게시 보안, 소관 데이터 관리에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "web_security": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 홈페이지 게시 보안을 수행하는 경우 함께 확인합니다."
+        },
+        "data_owner": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d4",
+      "duty_sha256": "c339100e983f045aa2e15c28059765f845aae0f102b425d51a8173febc785bd3",
+      "link_ids": [
+        "fellowship__fellowship_results"
+      ],
+      "scope": "분장업무의 글로벌연수 운영, 연수 성과·동창회에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship__fellowship_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 / 연수 성과·동창회 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d5",
+      "duty_sha256": "f53ea16c3cb01edff9c125660d4a644d6c137f09d4ce91237db01fae5639e298",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d6",
+      "duty_sha256": "6aa48846820403f1df082c3d33e80e9124a2e703ec7b6d2bae175ee8a374ef3d",
+      "link_ids": [
+        "fellowship"
+      ],
+      "scope": "분장업무의 글로벌연수 운영에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d7",
+      "duty_sha256": "44d9c9bd0e321790a9917e8b4a60cae0492d813221b361cfc042fe242ba3506e",
+      "link_ids": [
+        "fellowship_results"
+      ],
+      "scope": "분장업무의 연수 성과·동창회에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 연수 성과·동창회 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "연수사업실 / 연수사업2팀",
+      "duty_id": "d8",
+      "duty_sha256": "fd62302f4f71f14bd3d25da0431a07ce8035bb77ea54c42d23fd91668a2602a0",
+      "link_ids": [
+        "fellowship",
+        "it_build",
+        "data_system"
+      ],
+      "scope": "분장업무의 글로벌연수 운영, 시스템 구축·운영, 데이터 시스템에 관한 프로그램별 내부 기준을 검토했습니다.",
+      "gaps": [
+        "사업별 운영 안내서·약정·평가 편람·홍보 또는 공간 운영의 세부기준은 추가 확인 대상입니다."
+      ],
+      "priorities": {
+        "fellowship": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 글로벌연수 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "it_build": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 시스템 구축·운영을 수행하는 경우 함께 확인합니다."
+        },
+        "data_system": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 데이터 시스템을 수행하는 경우 함께 확인합니다."
         }
       }
     }
