@@ -193,6 +193,34 @@ class ContentReviewTests(unittest.TestCase):
         self.assertEqual({r["priorities"]["experts"]["level"] for r in regional_planning}, {"supporting"})
         self.assertNotIn("relief_supplies", reviews[("중미·카리브팀", "d8")]["link_ids"])
 
+    def test_priority_reasons_are_written_for_each_duty(self):
+        # A shared template ("해당 업무 중 …를 수행하는 경우 함께 확인합니다.") hid links that did
+        # not fit the duty, so every reason names the duty part and the article it relies on.
+        catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
+        template = re.compile(r"^(해당 업무 중 .+ 수행하는 경우 함께 확인합니다\.|업무분장 중 .+ 부분을 직접 확인하는 출발점입니다\.)$")
+        reasons = [p["reason"] for r in catalog["duty_reviews"] for p in r["priorities"].values()]
+        self.assertFalse([x for x in reasons if template.match(x)])
+
+    def test_article_numbers_in_priority_reasons_exist(self):
+        catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
+        articles = {}
+        for p in ks.DATA_DIR.glob("*.md"):
+            parsed, _ = ks.parse_md(p, p.stem.split("_", 1)[0])
+            for a in parsed:
+                if not a.is_supplementary:
+                    articles.setdefault(a.source, set()).add(a.article)
+        short = {"정관": "한국국제협력단 정관", "정보화 지침": "정보화업무처리 및 정보보안관리지침",
+                 "인권경영규정": "한국국제협력단 인권경영규정"}
+        for review in catalog["duty_reviews"]:
+            for key, priority in review["priorities"].items():
+                source, reason = catalog["links"][key]["source"], priority["reason"]
+                named = {source, source + " 시행세칙"} | {n for n in articles if n in reason}
+                named |= {full for name, full in short.items() if name in reason}
+                for m in re.finditer(r"제(\d+)조(?:의(\d+))?", reason):
+                    cited = f"제{m[1]}조" + (f"의{m[2]}" if m[2] else "")
+                    self.assertTrue(any(cited in articles.get(n, ()) for n in named),
+                                    f"{review['department']} {review['duty_id']} {key}: {cited}")
+
     def setUp(self):
         self.articles = [article("회계규정", "자금의 출납을 관리한다.")]
         self.texts = {ORG: "업무분장 원문", "회계규정": "회계규정 원문"}
