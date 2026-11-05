@@ -9,7 +9,7 @@
   const badge = p => `<span class="priority-badge ${esc(p.level)}">${esc(p.label)}</span>`;
   const regs = new Map(D.regulations.map(r => [r.id, r]));
   const adjacent = id => D.relations.filter(e => e.from === id || e.to === id);
-  const state = {department: null, duty: null, focus: null, selected: null, list: window.matchMedia('(max-width:720px)').matches, zoom: 1, pan: {x:0,y:0}};
+  const state = {department: null, duty: null, focus: null, selected: null, page: 0, list: window.matchMedia('(max-width:720px)').matches, zoom: 1, pan: {x:0,y:0}};
   const color = category => ({'규정':'#507c72','시행세칙':'#82719d','지침':'#4e7b97','기준':'#a98040','정관':'#697c62'}[category] || '#798c7b');
   function saveState() {
     const q = new URLSearchParams({department:state.department.id,duty:state.duty.id});
@@ -30,7 +30,7 @@
     if (!department) return;
     state.department=department;
     state.duty=department.duties.find(d=>d.id===dutyId) || department.duties.find(d=>d.links.length) || department.duties[0];
-    state.focus=null;state.selected=null;$('priority-filter').value='all';
+    state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';
     $('department-path').textContent=department.division+' / '+department.path.join(' / ');
     $('duty-count').textContent=department.duties.length;
     renderDuties();resetZoom();render();showDuty();saveState();
@@ -41,14 +41,12 @@
   function graphData() {
     const filter=$('priority-filter').value;
     if (state.focus) {
-      const ids=[...new Set(adjacent(state.focus).map(e=>e.from===state.focus?e.to:e.from))];
-      const ordered=MP.ordered(state.duty.links,ids,filter),visible=ordered.slice(0,12);
-      const allowed=new Set([state.focus,...visible]);
-      return {center:state.focus,nodes:visible,edges:D.relations.filter(e=>allowed.has(e.from)&&allowed.has(e.to)),total:ids.length,matched:ordered.length};
+      const result=MP.referencePage(D.relations,state.duty.links,state.focus,filter,state.page);
+      state.page=result.page;
+      return {center:state.focus,...result,edges:MP.visibleReferences(D.relations,[state.focus,...result.nodes],state.selected||state.focus)};
     }
     const ids=state.duty.links.map(r=>r.source),nodes=MP.ordered(state.duty.links,ids,filter);
-    const allowed=new Set(nodes);
-    const edges=D.relations.filter(e=>allowed.has(e.from)&&allowed.has(e.to));
+    const edges=MP.visibleReferences(D.relations,nodes,state.selected);
     if ($('show-reviewed').checked) nodes.forEach(id=>edges.push({from:'@duty',to:id,kind:'reviewed'}));
     return {center:'@duty',nodes,edges,total:ids.length,matched:nodes.length};
   }
@@ -70,8 +68,13 @@
     $('map-subtitle').textContent=state.focus?'이 규정이 참조하는 규정과, 이 규정을 참조하는 규정':`${state.department.name} · ${state.duty.shared?'공통업무':'분장업무'} ${state.duty.number}에서 시작한 규정 지도`;
     $('show-reviewed').disabled=!!state.focus;
     const explicit=g.edges.filter(e=>e.kind==='explicit').length;
-    $('map-summary').textContent=state.focus?`연결된 규정 ${g.total}종 중 ${g.nodes.length}종 표시 · 화면 내 참조 ${explicit}개`:`내용 검토 ${g.total}종 중 ${g.nodes.length}종 표시 · 원문 참조 ${explicit}개 · ${state.duty.review.status==='stale'?'재검토 필요':g.total?'일부 범위 검토':'미검토'}`;
-    $('graph-hint').textContent=state.focus?'화살표: 참조하는 규정 → 참조되는 규정':'규정 선택 → 연결 근거 확인 → 주변 규정 펼치기';
+    const refSummary=(state.selected||state.focus)?` · 선택 규정 참조 ${explicit}개 표시`:'';
+    $('map-summary').textContent=state.focus?`연결 규정 ${g.total}종 · 필터 결과 ${g.matched}종 중 ${g.nodes.length}종 표시${refSummary}`:`내용 검토 ${g.total}종 중 ${g.nodes.length}종 표시 · ${state.duty.review.status==='stale'?'재검토 필요':g.total?'일부 범위 검토':'미검토'}${refSummary}`;
+    $('graph-hint').textContent=state.focus?'선택한 규정의 참조만 표시합니다. 다른 연결은 노드를 선택해 확인하세요.':state.selected?'선택한 규정의 참조를 표시합니다. 업무 노드를 선택하면 해제됩니다.':'규정을 선택하면 해당 규정의 참조선과 근거를 볼 수 있습니다.';
+    $('neighbor-pager').hidden=!state.focus || g.pages<2;
+    $('neighbor-page-label').textContent=state.focus?`${g.page+1} / ${g.pages} 페이지`:'';
+    $('previous-neighbors').disabled=!state.focus || g.page===0;
+    $('next-neighbors').disabled=!state.focus || g.page+1>=g.pages;
     const first=state.duty.links.find(link=>link.priority.level==='core');
     $('reading-start').hidden=!!state.focus || !first;
     $('reading-start').innerHTML=first?`<button data-start-reg="${esc(first.source)}"><span class="reading-number">01</span><span><small>이 업무에서 먼저 확인할 규정</small><strong>${esc(first.source)}</strong><span>${esc(first.priority.reason)}</span></span><b aria-hidden="true">↗</b></button>`:'';
@@ -128,7 +131,7 @@
       group.addEventListener('click',activate);group.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();activate();}});viewport.append(group);
     }
     transform();
-    $('list-view').innerHTML=g.nodes.length?g.nodes.map(id=>{const r=regs.get(id);const links=g.edges.filter(e=>e.kind==='explicit'&&(e.from===g.center&&e.to===id||e.to===g.center&&e.from===id));const desc=state.focus?(links.length>1?'중심 규정과 서로 참조':links[0]?.from===id?'이 규정이 중심 규정을 참조':'중심 규정이 이 규정을 참조'):(state.duty.links.find(l=>l.source===id)?.role || '내용 검토 연결');return `<button class="list-card priority-${priority(id).level}" data-reg="${esc(id)}"><span>${badge(priority(id))}<small>${esc(r.category)} · ${esc(r.revision)}</small><strong>${esc(id)}</strong><small>${desc}</small><small class="priority-reason">${esc(priority(id).reason)}</small></span><span>↗</span></button>`;}).join(''):`<p class="empty">${g.total?'선택한 순서에 해당하는 연결이 없습니다. 전체 관계로 전환해보세요.':state.focus?'현재 추출된 규정 참조가 없습니다.':'이 업무의 내용 연결은 아직 검토하지 않았거나 재검토가 필요합니다.'}</p>`;
+    $('list-view').innerHTML=g.nodes.length?g.nodes.map(id=>{const r=regs.get(id);const links=D.relations.filter(e=>e.kind==='explicit'&&(e.from===g.center&&e.to===id||e.to===g.center&&e.from===id));const desc=state.focus?(links.length>1?'중심 규정과 서로 참조':links[0]?.from===id?'이 규정이 중심 규정을 참조':'중심 규정이 이 규정을 참조'):(state.duty.links.find(l=>l.source===id)?.role || '내용 검토 연결');return `<button class="list-card priority-${priority(id).level}" data-reg="${esc(id)}"><span>${badge(priority(id))}<small>${esc(r.category)} · ${esc(r.revision)}</small><strong>${esc(id)}</strong><small>${desc}</small><small class="priority-reason">${esc(priority(id).reason)}</small></span><span>↗</span></button>`;}).join(''):`<p class="empty">${g.total?'선택한 순서에 해당하는 연결이 없습니다. 전체 관계로 전환해보세요.':state.focus?'현재 추출된 규정 참조가 없습니다.':'이 업무의 내용 연결은 아직 검토하지 않았거나 재검토가 필요합니다.'}</p>`;
     if(!g.nodes.length) {const p=svg('text',{x:width/2,y:height/2+110,'text-anchor':'middle',fill:'#8b9890','font-size':14},g.total?'선택한 순서에 해당하는 연결이 없습니다':state.focus?'추출된 규정 참조가 없습니다':'이 업무의 내용 연결은 검토 전입니다');viewport.append(p);}
     $('graph').hidden=state.list;$('list-view').hidden=!state.list;
     $('view-toggle').textContent=state.list?'지도로 보기':'목록으로 보기';$('view-toggle').setAttribute('aria-pressed',state.list);
@@ -160,7 +163,7 @@
     $('detail').innerHTML=`<div class="detail-kicker">${review?'규정 관계 내용검토':'규정명 참조 자동 추출 · 내용 미검토'}</div><h3>${esc(e.from)}</h3><p class="detail-description">↓ ${esc(review?.label || '참조합니다')}</p><h3>${esc(e.to)}</h3>${review?`<p class="detail-description">${esc(review.explanation)}</p><div class="source-label">${esc(review.reviewed_at)} · AI 내용검토, 기관 검토 전</div>${evidenceCards(review.evidence)}`:`<p class="detail-description">원문에 규정명이 명시되어 자동 추출한 참조입니다. 관계의 의미·적용 조건은 아직 내용 검토하지 않았습니다.</p>`}<details class="more-relations" ${review?'':'open'}><summary>자동 추출 참조 ${e.evidence.length}건 확인</summary>${e.evidence.map(v=>`<div class="evidence-card"><div class="citation">${esc(e.from)} ${esc(v.article)}<br>${esc(v.title)}</div><p>${esc(v.quote)}</p><div class="terms">대상: ${esc(e.to)} ${esc(v.target_article || '(규정명 참조)')}</div>${articleDetail(e.from,v.article)}</div>`).join('')}</details><button class="primary-button" data-expand="${esc(e.to)}">참조 대상 주변으로 이동 ↗</button><button class="outline-button" data-reg="${esc(e.from)}">출발 규정 살펴보기</button>`;
     revealDetail();
   }
-  function expand(id) {if(!regs.has(id))return;$('priority-filter').value='all';state.focus=id;state.selected=id;resetZoom();render();showRegulation(id);saveState();if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('main').scrollIntoView({behavior:'smooth',block:'start'});}
+  function expand(id) {if(!regs.has(id))return;$('priority-filter').value='all';state.focus=id;state.selected=id;state.page=0;resetZoom();render();showRegulation(id);saveState();if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('main').scrollIntoView({behavior:'smooth',block:'start'});}
   function transform() {const {width=1100,height=720}=state.canvas||{};$('viewport').setAttribute('transform',`translate(${width/2+state.pan.x} ${height/2+state.pan.y}) scale(${state.zoom}) translate(${-width/2} ${-height/2})`);$('zoom-reset').textContent=Math.round(state.zoom*100)+'%';}
   function resetZoom() {state.zoom=1;state.pan={x:0,y:0};transform();}
   function info() {
@@ -170,7 +173,7 @@
   }
   $('department-search').addEventListener('input',e=>departmentOptions(e.target.value));
   $('department').addEventListener('change',e=>selectDepartment(e.target.value));
-  $('duties').addEventListener('click',e=>{const b=e.target.closest('[data-duty]');if(!b)return;state.duty=state.department.duties.find(d=>d.id===b.dataset.duty);state.focus=null;state.selected=null;$('priority-filter').value='all';resetZoom();renderDuties();render();showDuty();saveState();});
+  $('duties').addEventListener('click',e=>{const b=e.target.closest('[data-duty]');if(!b)return;state.duty=state.department.duties.find(d=>d.id===b.dataset.duty);state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';resetZoom();renderDuties();render();showDuty();saveState();});
   document.addEventListener('click',e=>{
     const b=e.target.closest('button');
     if(b?.dataset.startReg){$('priority-filter').value='all';selectRegulation(b.dataset.startReg);}
@@ -188,9 +191,10 @@
   });
   $('search-results').addEventListener('click',e=>{const b=e.target.closest('[data-search-reg]');if(b){expand(b.dataset.searchReg);$('search-results').hidden=true;$('regulation-search').value='';}});
   $('regulation-search').addEventListener('keydown',e=>{if(e.key==='Escape')$('search-results').hidden=true;if(e.key==='ArrowDown'){$('search-results').querySelector('button')?.focus();e.preventDefault();}});
-  $('reset').addEventListener('click',()=>{state.focus=null;state.selected=null;$('priority-filter').value='all';resetZoom();render();showDuty();saveState();});
+  $('reset').addEventListener('click',()=>{state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';resetZoom();render();showDuty();saveState();});
   $('show-reviewed').addEventListener('change',render);
-  $('priority-filter').addEventListener('change',()=>{state.selected=null;render();state.focus?showRegulation(state.focus):showDuty();});
+  $('priority-filter').addEventListener('change',()=>{state.selected=null;state.page=0;render();state.focus?showRegulation(state.focus):showDuty();});
+  for(const [id,step] of [['previous-neighbors',-1],['next-neighbors',1]]) $(id).addEventListener('click',()=>{state.page+=step;state.selected=state.focus;render();showRegulation(state.focus);});
   $('view-toggle').addEventListener('click',()=>{state.list=!state.list;render();});
   $('zoom-in').addEventListener('click',()=>{state.zoom=Math.min(2.5,state.zoom+.2);transform();});
   $('zoom-out').addEventListener('click',()=>{state.zoom=Math.max(.4,state.zoom-.2);transform();});

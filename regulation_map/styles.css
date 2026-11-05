@@ -48,3 +48,5 @@
 .list-card.priority-conditional{border-left:3px dashed #c6b48f}
 .list-card .priority-reason{display:block;margin-top:6px;line-height:1.75;color:#6e8071}
 @media(max-width:720px){.reading-start button{padding:12px;gap:10px}.reading-start strong{font-size:13px}.reading-start span span{font-size:10px}.priority-controls{align-items:flex-start}.priority-legend{gap:4px}.priority-badge{font-size:9px;padding:3px 5px}.priority-controls select{font-size:10px;max-width:110px}.priority-explanation{font-size:12px}}
+
+.neighbor-pager{display:flex;justify-content:center;align-items:center;gap:16px;padding:10px 16px;font-size:11px;border-top:1px solid var(--line)}.neighbor-pager button:disabled{opacity:.4;cursor:default}

@@ -30,7 +30,20 @@
     });
     return {width:1400,height,positions,bands};
   }
-  const api={levels,priority,ordered,dutyLayout};
+  function visibleReferences(relations, ids, selected) {
+    const visible=new Set(ids);
+    if(!selected || !visible.has(selected)) return [];
+    return relations.filter(edge => (edge.from===selected || edge.to===selected) &&
+      visible.has(edge.from) && visible.has(edge.to));
+  }
+  function referencePage(relations, links, center, filter='all', page=0, size=12) {
+    const ids=[...new Set(relations.filter(e=>e.from===center || e.to===center)
+      .map(e=>e.from===center?e.to:e.from))];
+    const matches=ordered(links,ids,filter),pages=Math.max(1,Math.ceil(matches.length/size));
+    const current=Math.max(0,Math.min(page,pages-1));
+    return {nodes:matches.slice(current*size,(current+1)*size),total:ids.length,matched:matches.length,page:current,pages};
+  }
+  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage};
   if(typeof module!=='undefined' && module.exports) module.exports=api;
   else root.MapPriority=api;
 })(typeof window!=='undefined'?window:this);
