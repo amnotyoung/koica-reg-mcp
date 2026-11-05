@@ -5,6 +5,8 @@
   if (!D) { $('detail').textContent = '데이터가 없습니다. python3 regulation_map/build.py를 먼저 실행해주세요.'; return; }
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const MP = window.MapPriority;
+  const departmentChoices = MP.organizationalChoices(D.departments);
+  const dutyOwner = () => state.duty.owner_department || state.department;
   const priority = id => MP.priority(state.duty.links,id);
   const basisLabel = link => ({direct_component:'특정 행위의 직접 근거',related_principle:'관련 원칙',common_procedure:'공통 처리 절차'}[link?.relation_basis] || '');
   const badge = p => `<span class="priority-badge ${esc(p.level)}">${esc(p.label)}</span>`;
@@ -37,8 +39,8 @@
     } else $('department-search').removeAttribute('aria-activedescendant');
   }
   function openDepartmentSearch(query, preferCurrent=false) {
-    departmentResults=MP.departmentMatches(D.departments,query);
-    $('department-results').innerHTML=departmentResults.length?departmentResults.map((d,i)=>`<div id="department-option-${i}" role="option" aria-selected="false" data-department-index="${i}"><strong>${esc(d.name)}</strong><small>${esc([d.division,...d.path.slice(0,-1)].join(' / '))}</small></div>`).join(''):'<p class="department-empty">일치하는 부서가 없습니다.</p>';
+    departmentResults=MP.departmentMatches(departmentChoices,query);
+    $('department-results').innerHTML=departmentResults.length?departmentResults.map((d,i)=>`<div id="department-option-${i}" role="option" aria-selected="false" data-department-index="${i}"><strong>${esc(d.name)}</strong><small>${esc(d.aggregate?`${d.division} / 하위 ${d.children.length}개 부서 업무 모아보기`:[d.division,...d.path.slice(0,-1)].join(' / '))}</small></div>`).join(''):'<p class="department-empty">일치하는 부서가 없습니다.</p>';
     $('department-results').hidden=false;
     $('department-search').setAttribute('aria-expanded','true');
     $('department-search-status').textContent=departmentResults.length?`${departmentResults.length}개 부서 · ↑↓ 이동, Enter 선택`:'검색 결과가 없습니다. 다른 부서명이나 본부명을 입력하세요.';
@@ -50,18 +52,23 @@
     if(match) selectDepartment(match.id);
   }
   function selectDepartment(id, dutyId) {
-    const department = D.departments.find(d=>d.id===id);
+    const department = departmentChoices.find(d=>d.id===id);
     if (!department) return;
     state.department=department;
     closeDepartmentSearch();
     state.duty=department.duties.find(d=>d.id===dutyId) || department.duties.find(d=>d.links.length) || department.duties[0];
     state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';
-    $('department-path').textContent=department.division+' / '+department.path.join(' / ');
+    $('department-path').textContent=department.division+' / '+department.path.join(' / ')+(department.aggregate?` · 하위 ${department.children.length}개 부서 업무`:'');
     $('duty-count').textContent=department.duties.length;
     renderDuties();resetZoom();render();showDuty();saveState();
   }
   function renderDuties() {
-    $('duties').innerHTML=state.department.duties.map(d=>`<button class="duty ${state.duty.id===d.id?'active':''}" data-duty="${esc(d.id)}" aria-pressed="${state.duty.id===d.id}"><span class="duty-number">${esc(d.number.padStart(2,'0'))}</span><span>${esc(d.title)}${d.shared?'<span class="shared">지역부서 공통업무</span>':''}<span class="review-status ${d.links.length?'has-review':''}">${d.review.status==='stale'?'원문 변경 · 재검토 필요':d.links.length?(d.review.direct_mapping_status==='not_established'?'관련·공통 연결 ':'내용 연결 ')+d.links.length+'종':d.review.status==='no_direct_basis'?'직접 관계 미확정':'미검토'}</span></span></button>`).join('');
+    let previousOwner=null;
+    $('duties').innerHTML=state.department.duties.map(d=>{
+      const owner=d.owner_department,heading=owner && owner.id!==previousOwner?`<h2 class="duty-group-label">${esc(owner.name)}</h2>`:'';
+      previousOwner=owner?.id;
+      return `${heading}<button class="duty ${state.duty.id===d.id?'active':''}" data-duty="${esc(d.id)}" aria-pressed="${state.duty.id===d.id}" ${owner?`aria-label="${esc(owner.name)} · ${esc(d.number)} ${esc(d.title)}"`:''}><span class="duty-number">${esc(d.number.padStart(2,'0'))}</span><span>${esc(d.title)}${d.shared?'<span class="shared">지역부서 공통업무</span>':''}<span class="review-status ${d.links.length?'has-review':''}">${d.review.status==='stale'?'원문 변경 · 재검토 필요':d.links.length?(d.review.direct_mapping_status==='not_established'?'관련·공통 연결 ':'내용 연결 ')+d.links.length+'종':d.review.status==='no_direct_basis'?'직접 관계 미확정':'미검토'}</span></span></button>`;
+    }).join('');
   }
   function graphData() {
     const filter=$('priority-filter').value;
@@ -90,7 +97,7 @@
   function render() {
     const g=graphData();state.graph=g;
     $('map-title').textContent=state.focus || state.duty.title;
-    $('map-subtitle').textContent=state.focus?'이 규정이 참조하는 규정과, 이 규정을 참조하는 규정':`${state.department.name} · ${state.duty.shared?'공통업무':'분장업무'} ${state.duty.number}에서 시작한 규정 지도`;
+    $('map-subtitle').textContent=state.focus?'이 규정이 참조하는 규정과, 이 규정을 참조하는 규정':`${state.department.aggregate?state.department.name+' / ':''}${dutyOwner().name} · ${state.duty.shared?'공통업무':'분장업무'} ${state.duty.number}에서 시작한 규정 지도`;
     $('show-reviewed').disabled=!!state.focus;
     const explicit=g.edges.filter(e=>e.kind==='explicit').length;
     const refSummary=(state.selected||state.focus)?` · 선택 규정 참조 ${explicit}개 표시`:'';
@@ -153,7 +160,7 @@
       }
       const titleLines=lines(title,p.w>=230?17:p.w<200?13:15);
       titleLines.forEach((l,i)=>group.append(svg('text',{x:15,y:(duty||state.focus?50:34)+i*17,class:'title'},l)));
-      if(titleLines.length<3) group.append(svg('text',{x:15,y:p.h-13,class:'meta'},duty?state.department.name:(state.duty.links.find(l=>l.source===id)?.role || `참조 연결 ${adjacent(id).length}개`)));
+      if(titleLines.length<3) group.append(svg('text',{x:15,y:p.h-13,class:'meta'},duty?dutyOwner().name:(state.duty.links.find(l=>l.source===id)?.role || `참조 연결 ${adjacent(id).length}개`)));
       group.append(svg('title',{},duty?title:`${title} · ${prio.label}\n${prio.reason}`));
       const activate=()=>{if(duty){state.selected=null;showDuty();render();}else selectRegulation(id);};
       group.addEventListener('click',activate);group.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();activate();}});viewport.append(group);
@@ -174,7 +181,7 @@
   function showDuty() {
     const d=state.duty,r=d.review;
     document.querySelector('.inspector').scrollTop=0;
-    $('detail').innerHTML=`<h3>${esc(d.title)}</h3><p class="detail-description">${esc(r.scope)}</p>${r.status==='stale'?`<div class="notice">원문이 검토 당시와 달라 ${r.stale_links}개 연결을 숨겼습니다. 재검토 후에 다시 표시합니다.</div>`:''}${d.links.length?'<p class="selection-prompt">규정을 선택하면 연결 이유·적용 조건·근거 조문을 확인할 수 있습니다.</p>':`<div class="notice">${r.status==='no_direct_basis'?'관련 내부 규정을 대조했으나 직접 연결할 근거가 부족합니다. 아래에 확인한 관계의 범위를 기록했습니다.':'미검토는 관련 규정이 없다는 뜻이 아닙니다. 검토하지 않은 연결을 추정해 표시하지 않습니다.'}</div>`}${r.searched_sources?.length?`<h4>확인한 관련 규정</h4><p class="detail-description">${r.searched_sources.map(esc).join('<br>')}</p>`:''}<h4>검토 범위</h4><p class="detail-description">${esc(r.reviewer || '내용 연결 미작성')}${r.reviewed_at?' · '+esc(r.reviewed_at):''}<br>${(r.gaps||[]).map(esc).join('<br>')}</p><details class="more-relations"><summary>업무분장 원문 확인</summary><div class="evidence-card"><div class="citation">${esc(D.meta.citation)}<br>${esc(state.department.id)} · ${esc(d.number)}번</div><p>${esc(d.text)}</p></div></details><div class="source-label">${esc(D.meta.organization_revision)}<br>부서 단위 분장업무이며 개인별 담당 지정은 아닙니다.</div>${D.meta.notices.length?'<button class="text-button" data-info>시행일 예외 확인 ↗</button>':''}`;
+    $('detail').innerHTML=`<h3>${esc(d.title)}</h3>${state.department.aggregate?`<p class="source-label">담당부서: ${esc(dutyOwner().name)} · 산하 부서 업무 모음</p>`:''}<p class="detail-description">${esc(r.scope)}</p>${r.status==='stale'?`<div class="notice">원문이 검토 당시와 달라 ${r.stale_links}개 연결을 숨겼습니다. 재검토 후에 다시 표시합니다.</div>`:''}${d.links.length?'<p class="selection-prompt">규정을 선택하면 연결 이유·적용 조건·근거 조문을 확인할 수 있습니다.</p>':`<div class="notice">${r.status==='no_direct_basis'?'관련 내부 규정을 대조했으나 직접 연결할 근거가 부족합니다. 아래에 확인한 관계의 범위를 기록했습니다.':'미검토는 관련 규정이 없다는 뜻이 아닙니다. 검토하지 않은 연결을 추정해 표시하지 않습니다.'}</div>`}${r.searched_sources?.length?`<h4>확인한 관련 규정</h4><p class="detail-description">${r.searched_sources.map(esc).join('<br>')}</p>`:''}<h4>검토 범위</h4><p class="detail-description">${esc(r.reviewer || '내용 연결 미작성')}${r.reviewed_at?' · '+esc(r.reviewed_at):''}<br>${(r.gaps||[]).map(esc).join('<br>')}</p><details class="more-relations"><summary>업무분장 원문 확인</summary><div class="evidence-card"><div class="citation">${esc(D.meta.citation)}<br>${esc(dutyOwner().id)} · ${esc(d.number)}번</div><p>${esc(d.text)}</p></div></details><div class="source-label">${esc(D.meta.organization_revision)}<br>부서 단위 분장업무이며 개인별 담당 지정은 아닙니다.</div>${D.meta.notices.length?'<button class="text-button" data-info>시행일 예외 확인 ↗</button>':''}`;
   }
   function revealDetail() {if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('.inspector').scrollIntoView({behavior:'smooth',block:'start'});}
   function selectRegulation(id) {state.selected=id;showRegulation(id);render();revealDetail();}
@@ -258,7 +265,7 @@
   $('review-coverage').textContent=`업무 연결 ${D.meta.reviews.reviewed_duties} · 관련·공통 관계 포함`;
   const initial=new URLSearchParams(location.hash.slice(1));
   const defaultDepartment=D.departments.find(d=>d.name==='동남아시아1팀')||D.departments[0];
-  const initialDepartment=D.departments.find(d=>d.id===initial.get('department'))||defaultDepartment;
+  const initialDepartment=departmentChoices.find(d=>d.id===initial.get('department'))||defaultDepartment;
   const initialDuty=initial.get('duty')||initialDepartment.duties.find(d=>d.title.includes('국별협력사업 기획'))?.id;
   selectDepartment(initialDepartment.id,initialDuty);
   if(regs.has(initial.get('regulation')))expand(initial.get('regulation'));

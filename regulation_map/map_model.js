@@ -52,7 +52,27 @@
       return {department,index,rank};
     }).filter(x=>Number.isFinite(x.rank)).sort((a,b)=>a.rank-b.rank||a.index-b.index).map(x=>x.department);
   }
-  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage,departmentMatches};
+  function organizationalChoices(departments) {
+    const parents=new Map(),existing=new Set(departments.map(d=>d.id));
+    for(const department of departments) {
+      const path=department.path || department.id.split(' / ');
+      for(let depth=1;depth<path.length;depth++) {
+        const parentPath=path.slice(0,depth),id=parentPath.join(' / ');
+        if(existing.has(id))continue;
+        if(!parents.has(id))parents.set(id,{id,name:parentPath.at(-1),path:parentPath,
+          division:department.division,aggregate:true,children:[],duties:[]});
+        const parent=parents.get(id);
+        parent.children.push({id:department.id,name:department.name});
+        parent.duties.push(...department.duties.map(duty=>({...duty,
+          id:`${department.id}::${duty.id}`,
+          owner_department:{id:department.id,name:department.name,path},original_duty_id:duty.id})));
+      }
+    }
+    // These are navigation groupings only: the original duties, evidence and
+    // review counts remain owned by the leaf departments.
+    return [...parents.values(),...departments];
+  }
+  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage,departmentMatches,organizationalChoices};
   if(typeof module!=='undefined' && module.exports) module.exports=api;
   else root.MapPriority=api;
 })(typeof window!=='undefined'?window:this);
