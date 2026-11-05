@@ -180,6 +180,28 @@ def build_relations(articles, sources):
     return list(edges.values())
 
 
+ALIO_FILE_URL = "https://www.alio.go.kr/download/rulefiledown.json?fileNo={}"
+
+
+def official_source(entry, list_url):
+    """Point every extracted text back to its ALIO publication and file.
+
+    Only values recorded by the ALIO sync manifest are used; a missing value is
+    left empty rather than guessed.
+    """
+    entry = entry or {}
+    file_no = str(entry.get("file_no") or "")
+    return {
+        "publisher": "ALIO 공공기관 경영정보 공개시스템",
+        "page_url": entry.get("page_url") or "",
+        "list_url": list_url or "",
+        "file_url": ALIO_FILE_URL.format(file_no) if file_no.isdigit() else "",
+        "file_no": file_no,
+        "revision": entry.get("revision") or "",
+        "collected_at": entry.get("collected_at") or "",
+    }
+
+
 def build():
     articles = []
     paths = []
@@ -202,9 +224,12 @@ def build():
     catalog = json.loads((OUT / "content_reviews.json").read_text(encoding="utf-8"))
     source_texts = {ks.parse_md(p, p.stem.split("_", 1)[0])[0][0].source: p.read_text(encoding="utf-8") for p in paths}
     review_stats = apply_reviews(departments, articles, source_texts, catalog, relations)
+    manifest = json.loads((ks.DATA_DIR.parent / "sources.json").read_text(encoding="utf-8"))
+    official = {s["name"]: s for s in manifest["sources"]}
     for name, source in sources.items():
         source["document"] = {"sections": document_sections(source_texts[name]),
                               "format": "repository_markdown_extraction"}
+        source["official"] = official_source(official.get(name), manifest.get("list_url"))
     supplement = org_text.split("부칙<", 1)[-1].split("## [별표", 1)[0]
     notices = [line.strip() for line in supplement.splitlines() if "다만" in line]
     fingerprint = hashlib.sha256()

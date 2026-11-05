@@ -34,6 +34,7 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -45,6 +46,7 @@ MD_CACHE = CACHE_DIR / "md_raw"
 SOURCES_PATH = DATA_DIR / "sources.json"
 
 BASE = "https://www.alio.go.kr"
+KST = timezone(timedelta(hours=9))
 APBA_ID = "C0146"                 # 한국국제협력단
 REPORT_ROOT = "21110"            # 규정/사규
 LIST_REFERER = f"{BASE}/item/itemOrganList.do?apbaId={APBA_ID}&reportFormRootNo={REPORT_ROOT}"
@@ -226,6 +228,7 @@ def resolve_current_files(items: list[dict]) -> list[dict]:
             "revision": (it.get("stDate") or "").replace(".", "."),  # 제·개정일 (YYYY.MM.DD)
             "idx": it.get("idx"),
             "ext": os.path.splitext(file_name)[1].lower().lstrip("."),
+            "page_url": url,
         })
         time.sleep(0.2)
     return resolved
@@ -421,6 +424,8 @@ def write_extracts_and_sources(
 
     sources: list[dict] = []
     used_names: dict[str, int] = {}
+    previous_by_name = {s.get("name"): s for s in previous_alio}
+    today = datetime.now(KST).strftime("%Y-%m-%d")
     with tempfile.TemporaryDirectory(prefix="alio-sync-", dir=DATA_DIR) as tmp:
         stage_dir = Path(tmp)
         for r in resolved:
@@ -435,14 +440,27 @@ def write_extracts_and_sources(
             used_names[base] = n + 1
             fname = f"{base}.md" if n == 0 else f"{base} ({n}).md"
             (stage_dir / fname).write_text(norm, encoding="utf-8")
-            sources.append({
+            before = previous_by_name.get(r["title"], {})
+            previous_file = EXTRACT_DIR / before["file"] if before.get("file") else None
+            unchanged = (
+                previous_file is not None and previous_file.is_file()
+                and previous_file.read_text(encoding="utf-8") == norm
+            )
+            entry = {
                 "name": r["title"],
                 "type": r["type"],
                 "file": fname,
                 "revision": r["revision"],
                 "file_no": r["file_no"],
                 "origin": "alio",
-            })
+                # 이 판본의 추출본을 저장소에 처음 반영한 날(KST). 내용이 같으면
+                # 매주 확인해도 날짜를 유지해 불필요한 매니페스트 변경을 막는다.
+                "collected_at": (before.get("collected_at") if unchanged else None) or today,
+            }
+            page_url = r.get("page_url") or before.get("page_url")
+            if page_url:
+                entry["page_url"] = page_url
+            sources.append(entry)
 
         if len(sources) < minimum:
             raise RuntimeError(

@@ -72,10 +72,25 @@
     if(!sections.length)$('reader-body').append(make('p','일치하는 내용이 없습니다. 검색어나 구분을 변경하세요.'));
     $('reader-body').scrollTop=0;$('reader-toc').scrollTop=0;
   }
+  // Official ALIO publication for the extracted text. Only alio.go.kr URLs that
+  // the build recorded are linked; nothing is guessed when a value is missing.
+  const ALIO=/^https:\/\/www\.alio\.go\.kr\//;
+  function renderOfficial(regulation) {
+    const o=regulation.official||{},box=$('reader-official');box.replaceChildren();
+    const link=(href,label)=>{const a=make('a',label);a.href=href;a.target='_blank';a.rel='noopener noreferrer';return a;};
+    const page=ALIO.test(o.page_url||'')?o.page_url:'',list=ALIO.test(o.list_url||'')?o.list_url:'',file=ALIO.test(o.file_url||'')?o.file_url:'';
+    box.append(make('strong','공식 원문 확인'));
+    if(page)box.append(link(page,'ALIO 공식 게시 페이지 ↗'));
+    else if(list)box.append(link(list,'ALIO KOICA 규정 목록 ↗'));
+    if(file)box.append(link(file,'공식 원본 파일 받기 ↗'));
+    if(!page && !list && !file)box.append(make('span','링크 정보 없음 · ALIO에서 규정명으로 확인하세요'));
+    box.append(make('span',`판본 ${o.revision||regulation.revision} · 저장소 수집 ${o.collected_at||'기록 없음'}`));
+  }
   function open(source,article) {
     const regulation=window.REGULATION_MAP?.regulations.find(r=>r.id===source);
     if(!regulation?.document)return;
     current=regulation;$('reader-title').textContent=source;$('reader-meta').textContent=`${regulation.category} · ${regulation.revision} · 저장소 수록 판본`;
+    renderOfficial(regulation);
     $('reader-kind').value='all';$('reader-query').value='';render();
     if(!$('regulation-reader').open)$('regulation-reader').showModal();
     if(article){const section=regulation.document.sections.find(s=>s.kind==='main' && s.label.replace(/\s/g,'').startsWith(article.replace(/\s/g,'')+'('));if(section)$('reader-'+section.id)?.scrollIntoView({block:'start'});}

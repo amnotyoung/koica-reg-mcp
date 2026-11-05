@@ -244,6 +244,24 @@ class IncrementalSyncTests(unittest.TestCase):
         self.assertEqual(personal.read_text(), "유지")
         self.assertEqual(json.loads(self.manifest.read_text())["count"], 3)
 
+    def test_collection_date_and_page_follow_content_changes(self):
+        manifest = json.loads(self.manifest.read_text())
+        for source in manifest["sources"]:
+            source["collected_at"] = "2026-01-02"
+            source["page_url"] = "https://www.alio.go.kr/item/old"
+        self.manifest.write_text(json.dumps(manifest, ensure_ascii=False))
+        (self.raw / "2.md").write_text("변경된 본문", encoding="utf-8")
+        self.resolved[1]["page_url"] = "https://www.alio.go.kr/item/new"
+
+        alio_sync.write_extracts_and_sources(self.resolved)
+
+        by_name = {s["name"]: s for s in json.loads(self.manifest.read_text())["sources"]}
+        self.assertEqual(by_name["인사"]["collected_at"], "2026-01-02")
+        self.assertEqual(by_name["인사"]["page_url"], "https://www.alio.go.kr/item/old")
+        self.assertNotEqual(by_name["보수"]["collected_at"], "2026-01-02")
+        self.assertRegex(by_name["보수"]["collected_at"], r"^\d{4}-\d{2}-\d{2}$")
+        self.assertEqual(by_name["보수"]["page_url"], "https://www.alio.go.kr/item/new")
+
     def test_type_change_removes_only_superseded_filename(self):
         self.resolved[0]["type"] = "지침"
 

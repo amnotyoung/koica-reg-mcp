@@ -4,7 +4,7 @@ import json
 from copy import deepcopy
 
 import koica_search as ks
-from regulation_map.build import ORG, ROOT, build_relations, parse_departments
+from regulation_map.build import ORG, ROOT, build_relations, official_source, parse_departments
 from regulation_map.reviews import apply_reviews, digest
 
 
@@ -66,6 +66,22 @@ class ExplicitRelationTests(unittest.TestCase):
         edge = build_relations(articles, {a.source for a in articles})[0]
         self.assertEqual(edge["evidence"][0]["target_article"], "")
         self.assertEqual(edge["kind"], "explicit")
+
+
+class OfficialSourceTests(unittest.TestCase):
+    def test_every_manifest_regulation_links_to_its_alio_page_and_file(self):
+        manifest = json.loads((ROOT / "data" / "sources.json").read_text(encoding="utf-8"))
+        for entry in manifest["sources"]:
+            official = official_source(entry, manifest["list_url"])
+            self.assertTrue(official["page_url"].startswith("https://www.alio.go.kr/item/itemBoard"), entry["name"])
+            self.assertEqual(official["file_url"], f"https://www.alio.go.kr/download/rulefiledown.json?fileNo={entry['file_no']}")
+            self.assertRegex(official["collected_at"], r"^\d{4}-\d{2}-\d{2}$", entry["name"])
+            self.assertEqual(official["revision"], entry["revision"])
+
+    def test_missing_manifest_values_are_left_empty_not_guessed(self):
+        official = official_source(None, "https://www.alio.go.kr/list")
+        self.assertEqual((official["page_url"], official["file_url"], official["collected_at"]), ("", "", ""))
+        self.assertEqual(official["list_url"], "https://www.alio.go.kr/list")
 
 
 class ContentReviewTests(unittest.TestCase):
