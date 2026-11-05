@@ -47,3 +47,10 @@ AGENTS.md
 
 # Host dependencies must never enter the image
 **/node_modules/
+
+# 규정 지도(GitHub Pages)는 MCP 서버 이미지에 넣지 않는다.
+# 지도 코드와 지도 테스트는 regulation-map-pages.yml이 따로 검증·배포한다.
+regulation_map/
+tests/test_regulation_map.py
+tests/test_regulation_documents.py
+tests/test_map_model.cjs
