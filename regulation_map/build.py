@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import koica_search as ks
 from regulation_map.reviews import apply_reviews
+from regulation_map.documents import document_sections
 
 ORG = "직제규정 시행세칙"
 OUT = Path(__file__).parent
@@ -201,6 +202,9 @@ def build():
     catalog = json.loads((OUT / "content_reviews.json").read_text(encoding="utf-8"))
     source_texts = {ks.parse_md(p, p.stem.split("_", 1)[0])[0][0].source: p.read_text(encoding="utf-8") for p in paths}
     review_stats = apply_reviews(departments, articles, source_texts, catalog, relations)
+    for name, source in sources.items():
+        source["document"] = {"sections": document_sections(source_texts[name]),
+                              "format": "repository_markdown_extraction"}
     supplement = org_text.split("부칙<", 1)[-1].split("## [별표", 1)[0]
     notices = [line.strip() for line in supplement.splitlines() if "다만" in line]
     fingerprint = hashlib.sha256()
