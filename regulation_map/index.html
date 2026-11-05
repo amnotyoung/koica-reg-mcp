@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>KOICA 규정 지도 — 업무에서 시작하는 연결</title>
   <link rel="stylesheet" href="styles.css">
-  <script defer src="data.js"></script><script defer src="app.js"></script>
+  <script defer src="data.js"></script><script defer src="map_model.js"></script><script defer src="app.js"></script>
 </head>
 <body>
   <header class="masthead">
@@ -33,6 +33,12 @@
         <div class="reg-search"><span aria-hidden="true">⌕</span><label for="regulation-search" class="sr-only">전체 규정에서 찾기</label><input id="regulation-search" type="search" placeholder="규정 이름으로도 탐색할 수 있어요" autocomplete="off"><div id="search-results" class="search-results" hidden></div></div>
         <button id="view-toggle" class="outline-button" aria-pressed="false">목록으로 보기</button>
       </div>
+      <div id="reading-start" class="reading-start"></div>
+      <div class="priority-controls">
+        <div class="priority-legend"><span class="priority-badge core">1 먼저 확인</span><span class="priority-badge supporting">2 함께 확인</span><span class="priority-badge conditional">3 해당할 때</span></div>
+        <label for="priority-filter" class="sr-only">확인 순서로 보기</label>
+        <select id="priority-filter"><option value="all">전체 관계</option><option value="core">먼저 확인만</option><option value="supporting">함께 확인</option><option value="conditional">해당할 때</option><option value="unassessed">순서 미평가</option></select>
+      </div>
       <section class="map-shell" aria-label="규정 관계 탐색">
         <div class="map-toolbar"><div class="legend"><span><i class="line explicit"></i>명시적 참조 →</span><span><i class="line reviewed"></i>업무 내용 연결</span></div><label class="filter"><input id="show-reviewed" type="checkbox" checked>업무 연결</label></div>
         <div id="map-summary" class="map-summary" aria-live="polite"></div>
@@ -40,7 +46,7 @@
         <div id="list-view" class="list-view" hidden></div>
         <div class="map-bottom"><span id="graph-hint">노드를 선택하면 연결 이유를 볼 수 있어요</span><div class="zoom"><button id="zoom-out" aria-label="축소">−</button><button id="zoom-reset" aria-label="지도 배율 초기화">100%</button><button id="zoom-in" aria-label="확대">＋</button></div></div>
       </section>
-      <div class="map-caption"><span>READ THE CONNECTIONS</span><p>초록선은 내용을 읽고 작성한 업무 연결, 화살표는 규정 간 참조입니다.<br>연결이 없다고 관련 규정이 없는 것은 아닙니다.</p></div>
+      <div class="map-caption"><span>READ THE CONNECTIONS</span><p>가까운 큰 노드·굵은 선부터 확인하세요. 점선은 특정 상황의 연결입니다.<br>업무별 읽기 순서이며 법적 효력의 우열을 뜻하지 않습니다.</p></div>
     </main>
     <aside class="inspector" aria-label="선택한 관계와 근거">
       <div class="section-eyebrow">03 / 연결의 근거</div>
