@@ -5,6 +5,10 @@
 [![MCP](https://img.shields.io/badge/MCP-streamable--http-blue)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## 업무 중심 규정 지도 프로토타입
+
+부서별 업무분장을 출발점으로 규정 간 관계를 시각적으로 탐색하는 로컬 웹 화면을 제공합니다. 업무분장과 근거 조문을 읽고 작성한 역할·이유·적용조건을 보여주며, 미검토 업무는 자동 연결하지 않습니다. 규정 간 자동 추출 참조와 내용검토 관계도 구분합니다. 실행 방법과 검토 범위는 [규정 지도 안내](regulation_map/README.md)를 참고하세요.
+
 ## 💬 텔레그램에서 바로 질문하기
 
 MCP 클라이언트를 설정하지 않아도 텔레그램에서 [`@koica_reg_bot`](https://t.me/koica_reg_bot)에게 KOICA 규정을 자연어로 질문할 수 있습니다. 개인 대화에서는 바로 질문하고, 그룹에서는 봇을 멘션해 질문하세요.

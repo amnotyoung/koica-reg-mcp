@@ -49,3 +49,6 @@ data/_cache/
 
 # Local, locked document converter installation
 node_modules/
+
+# Regenerable local regulation map snapshot
+regulation_map/data.js
