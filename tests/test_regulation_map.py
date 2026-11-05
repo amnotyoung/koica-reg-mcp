@@ -69,6 +69,22 @@ class ExplicitRelationTests(unittest.TestCase):
 
 
 class ContentReviewTests(unittest.TestCase):
+    def test_reassessed_duties_keep_common_procedures_distinct_from_direct_authority(self):
+        catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
+        reassessed = [r for r in catalog["duty_reviews"] if r.get("direct_mapping_status") == "not_established"]
+        self.assertEqual(len(reassessed), 7)
+        for review in reassessed:
+            self.assertTrue(review["link_ids"])
+            self.assertNotEqual(review.get("outcome"), "no_direct_basis")
+            for key in review["link_ids"]:
+                self.assertIn(catalog["links"][key]["relation_basis"],
+                              {"direct_component", "related_principle", "common_procedure"})
+                self.assertNotEqual(review["priorities"][key]["level"], "core")
+        wfk = next(r for r in reassessed if r["department"].endswith("해외봉사총괄팀"))
+        self.assertNotIn("기관 간 약정 체결 및 관리 업무 지침", [catalog["links"][key]["source"] for key in wfk["link_ids"]])
+        kodabiz = next(r for r in reassessed if r["department"].endswith("동반성장팀"))
+        self.assertNotIn("기업성장응답센터 운영지침", [catalog["links"][key]["source"] for key in kodabiz["link_ids"]])
+
     def setUp(self):
         self.articles = [article("회계규정", "자금의 출납을 관리한다.")]
         self.texts = {ORG: "업무분장 원문", "회계규정": "회계규정 원문"}

@@ -1336,6 +1336,16 @@
         "제2조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "상품권 구매·사용 및 관리에 관한 운영지침": {
+      "sha256": "7da65552a44459dca74920d3a1d73afd6ab1e190f51d1a9b11fe33424f25b4d4",
+      "revision": "2023.07.10 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제9조"
+      ],
+      "scope": "상품권의 정의 및 사회공헌·포상 사용 시 관리대장 조문 전문."
     }
   },
   "links": {
@@ -6164,6 +6174,322 @@
         }
       ],
       "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "community_vouchers": {
+      "source": "상품권 구매·사용 및 관리에 관한 운영지침",
+      "relation_basis": "direct_component",
+      "role": "사회공헌 상품권 사용",
+      "rationale": "제9조가 사회공헌활동에 상품권을 사용하는 경우의 증빙 관리를 명시하므로, 사회공헌 업무의 구체적인 한 부분과 직접 연결된다.",
+      "condition": "상품권을 구매·배부하는 사회공헌활동일 때의 연결이다. 사회공헌 대상 선정이나 기부 자체의 승인 근거를 뜻하지 않는다.",
+      "evidence": [
+        {
+          "source": "상품권 구매·사용 및 관리에 관한 운영지침",
+          "article": "제9조",
+          "title": "관리대장",
+          "revision": "2023.07.10 개정",
+          "quote": "사회공헌활동 등 사용용도를 특정하게 지급할 경우 관련 증빙서류를 첨부하여 관리한다.",
+          "body_sha256": "9e18ed9b23ac9a82c1c8f26c428e13033d70779a52189158391422a61e4fa2ee"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "community_expenditure": {
+      "source": "회계규정",
+      "relation_basis": "common_procedure",
+      "role": "사회공헌 지출 처리",
+      "rationale": "사회공헌활동에 예산을 집행하는 부분은 배정예산 범위의 지출원인행위와 지출결의 절차에 연결된다.",
+      "condition": "지출을 수반할 때의 공통 절차이며, 이 조문만으로 특정 지원·기부의 허용 여부를 판단하지 않는다.",
+      "evidence": [
+        {
+          "source": "회계규정",
+          "article": "제41조",
+          "title": "지출원인행위",
+          "revision": "2024.12.13 개정",
+          "quote": "지출원인행위는 배정된 예산의 범위 내에서 하여야 한다.",
+          "body_sha256": "b19e06bef97bba4e8a56d48226b9fb10cf3e5fa4991cde8ea4df10ada6fca08d"
+        },
+        {
+          "source": "회계규정",
+          "article": "제38조",
+          "title": "지출의 원칙",
+          "revision": "2024.12.13 개정",
+          "quote": "지출은 지출결의서에 따라서 지출한다.",
+          "body_sha256": "27c95b6bc452e67a188dc77c05986f0204c2ef3097323d5011e6d9205ea26b4a"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "kodabiz_procurement_context": {
+      "source": "대외무상협력사업에 관한 조달 및 계약규정",
+      "relation_basis": "related_principle",
+      "role": "기업 조달참여·정보지원",
+      "rationale": "원조조달에 참여할 기업의 등록·관리와 국내외 조달유관기관 정보 교환이라는 관련 업무 영역으로 연결한다. KODABIZ의 설치 근거로 분류하지 않는다.",
+      "condition": "센터 활동이 원조조달 참여·정보지원에 해당하는 경우에 참고하는 관련 규정이다. 기업성장응답센터나 국제개발협력센터와 같은 조직이라고 가정하지 않는다.",
+      "evidence": [
+        {
+          "source": "대외무상협력사업에 관한 조달 및 계약규정",
+          "article": "제5조",
+          "title": "조달협력업체의 등록ㆍ운영",
+          "revision": "2026.07.02 개정",
+          "quote": "조달협력업체로 등록하고 관리할 수 있다.",
+          "body_sha256": "672d5942f84930160509ffe1596094bfd7c641ddb28727551cdeadf78ade4596"
+        },
+        {
+          "source": "대외무상협력사업에 관한 조달 및 계약규정",
+          "article": "제5조",
+          "title": "조달협력업체의 등록ㆍ운영",
+          "revision": "2026.07.02 개정",
+          "quote": "국내외 조달유관기관과 조달 및 계약관련 정보를 교환하거나 공유할 수 있다.",
+          "body_sha256": "672d5942f84930160509ffe1596094bfd7c641ddb28727551cdeadf78ade4596"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "center_operating_contract": {
+      "source": "회계규정",
+      "relation_basis": "common_procedure",
+      "role": "센터 운영계약 처리",
+      "rationale": "센터 운영을 위해 계약을 체결하는 행위는 기관운영 계약과 사업수행 계약의 적용 경로를 구분하는 회계규정에 연결된다.",
+      "condition": "실제 운영계약이 있는 경우의 공통 절차다. 센터의 설립·권한·전용 운영체계를 이 조문에서 도출하지 않는다.",
+      "evidence": [
+        {
+          "source": "회계규정",
+          "article": "제42조",
+          "title": "적용대상 및 준용규정",
+          "revision": "2024.12.13 개정",
+          "quote": "협력단의 기관운영과 관련하여 체결하는 계약",
+          "body_sha256": "9dab873bc7659dd3ed1b1171d75db8d813415ac35afa2a3f1c0214545c84fe28"
+        },
+        {
+          "source": "회계규정",
+          "article": "제42조",
+          "title": "적용대상 및 준용규정",
+          "revision": "2024.12.13 개정",
+          "quote": "사업수행과 관련한 조달 및 계약은 별도의 규정",
+          "body_sha256": "9dab873bc7659dd3ed1b1171d75db8d813415ac35afa2a3f1c0214545c84fe28"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "wfk_institutional_mandate": {
+      "source": "한국국제협력단 정관",
+      "relation_basis": "related_principle",
+      "role": "해외봉사단 파견의 사업범위",
+      "rationale": "파견대상국·파견협정 업무를 기관이 수행하는 해외봉사단 파견사업이라는 상위 사업범위에 연결한다.",
+      "condition": "사업범위에 관한 연결이며, 국가 간 협정의 협상·체결 권한이나 비구속 MOU의 적용 여부를 확정하지 않는다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 정관",
+          "article": "제5조",
+          "title": "사업",
+          "revision": "2026.08.21 개정",
+          "quote": "해외봉사단 파견 사업",
+          "body_sha256": "8aa0cb863b726220f567b2d4e66ccaa437d042b898e434a3efca2a0ecea59d12"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "wfk_legal_review": {
+      "source": "소송·법률자문처리지침",
+      "relation_basis": "common_procedure",
+      "role": "협정 문안 법률자문",
+      "rationale": "파견협정 문안의 법률 검토를 소관부서가 법무부서에 요청하는 경우의 내부 자문 경로로 연결한다.",
+      "condition": "법률자문을 요청할 때 적용하는 공통 절차다. 국가 간 협정을 기관 간 MOU와 동일시하거나 체결권한을 부여하는 근거는 아니다.",
+      "evidence": [
+        {
+          "source": "소송·법률자문처리지침",
+          "article": "제17조",
+          "title": "법률자문",
+          "revision": "2026.02.20 개정",
+          "quote": "법률자문 의뢰서를 작성하여 법률자문 의뢰를 요청할 수 있다.",
+          "body_sha256": "14772def9def43afbe3d10b6287d574e2111c2918422eacf22b8610c611061d5"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "award_vouchers": {
+      "source": "상품권 구매·사용 및 관리에 관한 운영지침",
+      "relation_basis": "direct_component",
+      "role": "포상 상품권 처리",
+      "rationale": "내·외부인 포상을 위해 구매·사용하는 상품권을 지침이 명시하므로, 시상 업무에서 상품권을 사용하는 경우의 처리에 연결한다.",
+      "condition": "상품권을 포상 수단으로 사용할 때만 해당한다. 대한민국 해외봉사상의 선정·추천 요건을 일반 이사장 포상과 같다고 보지 않는다.",
+      "evidence": [
+        {
+          "source": "상품권 구매·사용 및 관리에 관한 운영지침",
+          "article": "제2조",
+          "title": "정의",
+          "revision": "2023.07.10 개정",
+          "quote": "내․외부인에 대한 포상",
+          "body_sha256": "01d8923e1902b68582b8fc952bc1f414fed8225c4398d408e31272db16e7202d"
+        },
+        {
+          "source": "상품권 구매·사용 및 관리에 관한 운영지침",
+          "article": "제9조",
+          "title": "관리대장",
+          "revision": "2023.07.10 개정",
+          "quote": "수령인이 자필 서명 날인하여야 하며",
+          "body_sha256": "9e18ed9b23ac9a82c1c8f26c428e13033d70779a52189158391422a61e4fa2ee"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "award_committee_procedure": {
+      "source": "심의·의결위원회 운영규정",
+      "relation_basis": "common_procedure",
+      "role": "포상 심의위원회 공통절차",
+      "rationale": "포상 업무를 위해 협력단 소관의 심의·의결 합의제 기관을 운영하는 경우 그 공통 운영 경로로 연결한다.",
+      "condition": "실제로 이 규정의 위원회에 해당할 때의 조건부 연결이다. 특정 포상위원회의 설치·구성을 확인했다는 뜻은 아니며 특별규정·적용 제외를 보존한다.",
+      "evidence": [
+        {
+          "source": "심의·의결위원회 운영규정",
+          "article": "제2조",
+          "title": "정의",
+          "revision": "2025.07.16 개정",
+          "quote": "협력단”이라 한다)의 소관 사무에 관하여 자문에 응하거나 조정, 협의, 심의 또는 의결",
+          "body_sha256": "72cb43196c9124ff6d4db5add4354a2eebb55dbe3895201d69c5cc2640137fe2"
+        },
+        {
+          "source": "심의·의결위원회 운영규정",
+          "article": "제3조",
+          "title": "적용범위",
+          "revision": "2025.07.16 개정",
+          "quote": "심의·의결·의사결정 기능이 없는 위원회 등의 경우 이 규정의 적용을 제외할 수 있다.",
+          "body_sha256": "a6ee2328fc423af47fd436c58b46d0ee8803e437581adceaf1d04e4640fe4350"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "employment_strategy_context": {
+      "source": "한국국제협력단 정관",
+      "relation_basis": "related_principle",
+      "role": "일자리 계획과 경영목표",
+      "rationale": "전사 일자리 계획을 기관의 사업내용·경영환경을 반영한 중장기 경영목표와 연계하는 상위 계획 체계로 연결한다.",
+      "condition": "경영목표와의 관계를 보여주는 연결이다. 일자리 창출 지표·로드맵의 구체적인 방법이 이 조문에 있다고 해석하지 않는다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 정관",
+          "article": "제6조",
+          "title": "경영목표의 수립",
+          "revision": "2026.08.21 개정",
+          "quote": "중장기 경영목표를 수립하여야 한다.",
+          "body_sha256": "3bf5c2c2cb7a0f1615a096b19b68a6f7a885ffe4aa33ce819dc356e0c2023e63"
+        },
+        {
+          "source": "한국국제협력단 정관",
+          "article": "제6조",
+          "title": "경영목표의 수립",
+          "revision": "2026.08.21 개정",
+          "quote": "사업내용과 경영환경",
+          "body_sha256": "3bf5c2c2cb7a0f1615a096b19b68a6f7a885ffe4aa33ce819dc356e0c2023e63"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "employment_rights_context": {
+      "source": "한국국제협력단 인권경영규정",
+      "relation_basis": "related_principle",
+      "role": "일자리의 노동환경 원칙",
+      "rationale": "일자리 계획 중 근로환경의 질과 일·생활 균형을 다루는 부분은 노동 인권 보호 원칙에 연결된다.",
+      "condition": "고용환경에 관한 관련 원칙이며, 일자리 수 확대나 정부 정책의 세부 이행 절차를 직접 규정한 것은 아니다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제9조",
+          "title": "노동 인권 보호",
+          "revision": "2024.09.02 개정",
+          "quote": "모성보호 및 일·생활 균형 등 국제노동기준에 따른 우호적 노동환경",
+          "body_sha256": "d44a310b75ca0a31d669a4ee744beb0cb016aeceac585972570f540097c60106"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "service_catalog_data": {
+      "source": "공공데이터 관리 지침",
+      "relation_basis": "common_procedure",
+      "role": "서비스 목록 데이터 관리",
+      "rationale": "부서가 생성·관리하는 서비스 목록 데이터의 담당 지정·품질관리·갱신 부분을 소관 데이터 관리 책임에 연결한다.",
+      "condition": "기관이 생성·취득한 데이터로서 관리하는 부분에 한정한다. 공공서비스 목록을 공공데이터 개방 목록과 같은 제도로 보지 않는다.",
+      "evidence": [
+        {
+          "source": "공공데이터 관리 지침",
+          "article": "제3조",
+          "title": "적용범위",
+          "revision": "2026.09.09 개정",
+          "quote": "기존에 보유하고 있거나 신규로 생성 또는 취득하는 모든 데이터의 관리 업무",
+          "body_sha256": "04610d3f3ad8fea0e7df795e6b78a191f292e751307a363afe045cc26c4c8cd3"
+        },
+        {
+          "source": "공공데이터 관리 지침",
+          "article": "제10조",
+          "title": "데이터 소관부서의 역할",
+          "revision": "2026.09.09 개정",
+          "quote": "그 밖에 품질관리 및 사후관리 등 소관 데이터 관리에 관한 업무",
+          "body_sha256": "82cb70a6b3ae345f8eb6c592f49ed5aec4dcda52a09d7ab7c88c614c1ad029f9"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "service_catalog_publication": {
+      "source": "정보공개 운영규정",
+      "relation_basis": "common_procedure",
+      "role": "서비스 정보의 공개",
+      "rationale": "서비스 정보를 대외에 공개하는 행위는 공개대상 정보의 원문공개와 비공개 정보 제외 기준에 연결된다.",
+      "condition": "서비스 정보를 공개하는 경우의 공통 원칙이다. 서비스 목록 등록제도 자체의 근거로 분류하지 않는다.",
+      "evidence": [
+        {
+          "source": "정보공개 운영규정",
+          "article": "제8조",
+          "title": "공개대상 정보의 원문공개",
+          "revision": "2025.06.12 개정",
+          "quote": "공개대상으로 분류된 정보를",
+          "body_sha256": "da6eb41132374261d8f6b5960ad5f1987e7bf769f7176e5a3992ef6a6ba784fe"
+        },
+        {
+          "source": "정보공개 운영규정",
+          "article": "제8조",
+          "title": "공개대상 정보의 원문공개",
+          "revision": "2025.06.12 개정",
+          "quote": "공개 문서에 개인정보 등 비공개 대상정보를 포함하여서는 아니된다.",
+          "body_sha256": "da6eb41132374261d8f6b5960ad5f1987e7bf769f7176e5a3992ef6a6ba784fe"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "ambassador_publicity_context": {
+      "source": "한국국제협력단 정관",
+      "relation_basis": "related_principle",
+      "role": "기관 홍보의 사업범위",
+      "rationale": "홍보대사 활용을 검토하는 업무를 기관 사업에 따른 홍보와 부대사업이라는 상위 사업범위에 연결한다.",
+      "condition": "기관 홍보 활동의 관련 근거이며, 홍보대사 위촉·임기·해촉의 전용 기준을 뜻하지 않는다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 정관",
+          "article": "제5조",
+          "title": "사업",
+          "revision": "2026.08.21 개정",
+          "quote": "교육 훈련·홍보와 그 부대사업",
+          "body_sha256": "8aa0cb863b726220f567b2d4e66ccaa437d042b898e434a3efca2a0ecea59d12"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
+    },
+    "ambassador_content_rights": {
+      "source": "공공저작물 저작권 관리 지침",
+      "relation_basis": "common_procedure",
+      "role": "홍보 콘텐츠 권리 처리",
+      "rationale": "홍보대사와 사진·영상 등 공공저작물을 제작·공동창작하는 계약을 체결할 때 권리 귀속을 명시하는 절차로 연결한다.",
+      "condition": "해당 콘텐츠 제작·활용 행위가 있을 때의 연결이다. 자문위원 위촉규정을 홍보대사에게 적용하거나 초상권 허락을 확보했다고 보지 않는다.",
+      "evidence": [
+        {
+          "source": "공공저작물 저작권 관리 지침",
+          "article": "제6조",
+          "title": "저작권 등 권리처리",
+          "revision": "2019.09.18 개정",
+          "quote": "창작을 위한 의뢰계약서 또는 공동창작을 위한 계약서에 저작권 등의 귀속관계에 대해 명확하게 기재하여야 한다.",
+          "body_sha256": "2a03f6b06e8e564edd3ffc52da04bfcbd023d1643d132d6a933a5c27ddad237f"
+        }
+      ],
+      "review_method": "제공된 규정의 내용을 읽고 업무의 관련 원칙·공통 처리절차·조건부 세부행위와 연결한 AI 해석. 업무 전체의 전용 근거나 기관의 공식 적용 판정은 아님."
     }
   },
   "duty_reviews": [
@@ -15933,126 +16259,183 @@
       "department": "안전·경영실 / 운영지원팀",
       "duty_id": "d10",
       "duty_sha256": "a247c58308ab578cb4f98496228f111cc29da4229317a217affc12b67584b5da",
-      "link_ids": [],
-      "scope": "지역사회 사회공헌활동의 선정·집행·기부·후원 절차를 직접 정한 근거는 확인한 자료에서 찾지 못했습니다.",
+      "link_ids": [
+        "community_expenditure",
+        "community_vouchers"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "사회공헌 추진계획·기부/후원 집행기준·협력약정이 필요합니다. 상품권 관리나 IBS의 기업 CSR 조항을 기관 사회공헌 전체의 기준으로 연결하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "한국국제협력단 인권경영규정",
-        "자산관리규정",
-        "기관 간 약정 체결 및 관리 업무 지침"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "community_expenditure": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "지출을 수반할 때의 공통 절차이며, 이 조문만으로 특정 지원·기부의 허용 여부를 판단하지 않는다."
+        },
+        "community_vouchers": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "상품권을 구매·배부하는 사회공헌활동일 때의 연결이다. 사회공헌 대상 선정이나 기부 자체의 승인 근거를 뜻하지 않는다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     },
     {
       "department": "조달실 / 동반성장팀",
       "duty_id": "d6",
       "duty_sha256": "5c9c0510bf3ceb351d6b6e6d22899b5d9bee06c38adaeee196f9391621335700",
-      "link_ids": [],
-      "scope": "KODABIZ라는 조직·프로그램의 운영근거와 역할을 직접 확인하지 못했습니다.",
+      "link_ids": [
+        "kodabiz_procurement_context",
+        "center_operating_contract"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "KODABIZ 설치·운영계획, 위탁계약·사업안내서가 필요합니다. 다른 기업지원센터를 같은 기관으로 취급하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "기업성장응답센터 운영지침",
-        "국제개발협력센터사업 운영지침",
-        "대외무상협력사업에 관한 조달 및 계약규정"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "kodabiz_procurement_context": {
+          "level": "conditional",
+          "order": 1,
+          "reason": "센터 활동이 원조조달 참여·정보지원에 해당하는 경우에 참고하는 관련 규정이다. 기업성장응답센터나 국제개발협력센터와 같은 조직이라고 가정하지 않는다."
+        },
+        "center_operating_contract": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "실제 운영계약이 있는 경우의 공통 절차다. 센터의 설립·권한·전용 운영체계를 이 조문에서 도출하지 않는다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     },
     {
       "department": "해외봉사사업실 / 해외봉사총괄팀",
       "duty_id": "d3",
       "duty_sha256": "67b78869edafce649af61d71111ba9207d1a9a4b1f8a7a5cafbb7d95693dbbaf",
-      "link_ids": [],
-      "scope": "단원의 파견 절차와 국가 간 WFK 파견협정의 협상·체결 절차는 구별됩니다. 후자의 직접 근거는 확인하지 못했습니다.",
+      "link_ids": [
+        "wfk_institutional_mandate",
+        "wfk_legal_review"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "정부해외봉사단 통합운영 규정, 국가별 협정·약정과 외교부 협의절차가 필요합니다. 비구속 기관 간 MOU 규정을 국가 간 협정에 그대로 적용하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "해외봉사단파견 규정",
-        "기관위탁형 해외봉사단 파견사업 규정",
-        "기관 간 약정 체결 및 관리 업무 지침"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "wfk_institutional_mandate": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "사업범위에 관한 연결이며, 국가 간 협정의 협상·체결 권한이나 비구속 MOU의 적용 여부를 확정하지 않는다."
+        },
+        "wfk_legal_review": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "법률자문을 요청할 때 적용하는 공통 절차다. 국가 간 협정을 기관 간 MOU와 동일시하거나 체결권한을 부여하는 근거는 아니다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     },
     {
       "department": "해외봉사사업실 / 해외봉사관리팀",
       "duty_id": "d7",
       "duty_sha256": "ce092cd3bde1c06fe962a3a3d9d5656d1d57881a7472cf89202fc721e14d4fef",
-      "link_ids": [],
-      "scope": "대한민국 해외봉사상 자체의 수상자 심사·추천·포상 운영근거는 확인하지 못했습니다.",
+      "link_ids": [
+        "award_committee_procedure",
+        "award_vouchers"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "해당 포상 운영계획·공고·포상지침이 필요합니다. 협력단 직원·외부인사에 대한 일반 이사장 포상과 같은 제도로 단정하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "해외봉사단파견 규정",
-        "인사규정"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "award_committee_procedure": {
+          "level": "conditional",
+          "order": 1,
+          "reason": "실제로 이 규정의 위원회에 해당할 때의 조건부 연결이다. 특정 포상위원회의 설치·구성을 확인했다는 뜻은 아니며 특별규정·적용 제외를 보존한다."
+        },
+        "award_vouchers": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "상품권을 포상 수단으로 사용할 때만 해당한다. 대한민국 해외봉사상의 선정·추천 요건을 일반 이사장 포상과 같다고 보지 않는다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     },
     {
       "department": "ESG경영실 / ESG·소통팀",
       "duty_id": "d5",
       "duty_sha256": "f02cd86a2f1e484b2c6e8fcf2b340140482d23aec5d25c1726cd8ca82a1c8dbb",
-      "link_ids": [],
-      "scope": "전사 일자리로드맵 및 정부 일자리정책 대응의 실행기준을 직접 확인하지 못했습니다.",
+      "link_ids": [
+        "employment_strategy_context",
+        "employment_rights_context"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "정부 일자리정책 지침, 기관 일자리 기본계획·성과지표가 필요합니다. 일반 채용·노동권 규정을 일자리 창출계획의 직접 근거로 대체하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "한국국제협력단 정관",
-        "인사규정",
-        "한국국제협력단 인권경영규정"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "employment_strategy_context": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "경영목표와의 관계를 보여주는 연결이다. 일자리 창출 지표·로드맵의 구체적인 방법이 이 조문에 있다고 해석하지 않는다."
+        },
+        "employment_rights_context": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "고용환경에 관한 관련 원칙이며, 일자리 수 확대나 정부 정책의 세부 이행 절차를 직접 규정한 것은 아니다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     },
     {
       "department": "ESG경영실 / ESG·소통팀",
       "duty_id": "d13",
       "duty_sha256": "307e4adce14830649c8afe63af9fc24e44ee3336ff6b2fa9321230584b8d7fe9",
-      "link_ids": [],
-      "scope": "공공서비스 목록의 등록·갱신·공표 체계에 대한 직접 근거는 확인하지 못했습니다.",
+      "link_ids": [
+        "service_catalog_data",
+        "service_catalog_publication"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "서비스 목록관리 시스템·등록 지침과 기관 담당절차가 필요합니다. 정보목록·공공데이터 목록을 공공서비스 목록과 동일시하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "정보공개 운영규정",
-        "공공데이터 관리 지침",
-        "민원 및 고객의소리 사무처리지침"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "service_catalog_data": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "기관이 생성·취득한 데이터로서 관리하는 부분에 한정한다. 공공서비스 목록을 공공데이터 개방 목록과 같은 제도로 보지 않는다."
+        },
+        "service_catalog_publication": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "서비스 정보를 공개하는 경우의 공통 원칙이다. 서비스 목록 등록제도 자체의 근거로 분류하지 않는다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     },
     {
       "department": "홍보실",
       "duty_id": "d8",
       "duty_sha256": "621da844539615095a6945c1fa0217e55aff2ca8d0524db3a7afbc6bc5fe9e81",
-      "link_ids": [],
-      "scope": "홍보대사의 위촉·임기·해촉·활동관리 요건을 직접 정한 근거는 확인하지 못했습니다.",
+      "link_ids": [
+        "ambassador_publicity_context",
+        "ambassador_content_rights"
+      ],
+      "scope": "제공된 규정 안에서 관련 원칙·공통 처리 절차와 조건부 세부행위를 연결했습니다. 업무 전체의 전용 규정을 확정한 연결은 아닙니다.",
       "gaps": [
-        "홍보대사 운영계획·위촉계약·관리지침이 필요합니다. 자문위원 위촉규정을 홍보대사에게 자동 적용하지 않았습니다."
+        "직접 업무 근거로 확정한 범위와 관련 원칙·공통 절차를 구분하여 읽어야 합니다. 추가 자료 제출을 규정 지도 이용의 전제로 두지 않습니다."
       ],
-      "priorities": {},
-      "outcome": "no_direct_basis",
-      "searched_sources": [
-        "상임고문 및 자문위원에 관한 규정",
-        "간행물 발간 및 활용에 관한 지침",
-        "소송·법률자문처리지침"
-      ],
-      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+      "priorities": {
+        "ambassador_publicity_context": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "기관 홍보 활동의 관련 근거이며, 홍보대사 위촉·임기·해촉의 전용 기준을 뜻하지 않는다."
+        },
+        "ambassador_content_rights": {
+          "level": "conditional",
+          "order": 2,
+          "reason": "해당 콘텐츠 제작·활용 행위가 있을 때의 연결이다. 자문위원 위촉규정을 홍보대사에게 적용하거나 초상권 허락을 확보했다고 보지 않는다."
+        }
+      },
+      "direct_mapping_status": "not_established"
     }
   ],
   "relation_reviews": [
@@ -16116,13 +16499,22 @@
   "citation_verification": {
     "checked_at": "2026-11-05",
     "service": "KOICA regulation MCP verify_citation",
-    "unique_citations": 313,
-    "result": "313 ok",
-    "scope": "인용 실재성 확인이며 관계 해석·최신성 승인 아님"
+    "unique_citations": 317,
+    "result": "317 ok",
+    "scope": "기존 313개 및 추가 4개 조문 인용의 실재성 확인. 관계 해석·최신성 승인은 아님"
   },
   "priority_policy": {
     "reviewed_at": "2026-11-05",
     "basis": "업무분장과 검토 조문의 역할·범위에 따른 업무별 탐색 순서",
     "note": "법적 효력·준수 의무의 우열이나 유사도 점수가 아니다. 조건부 규정은 해당 상황에서 중요할 수 있다."
+  },
+  "mapping_policy": {
+    "basis": "제공된 규정 범위 내 업무 관계 탐색",
+    "relation_types": [
+      "direct_component",
+      "related_principle",
+      "common_procedure"
+    ],
+    "note": "직접 근거를 확정하지 못한 것과 사용자가 자료를 제공하지 않은 것은 다르다. 집행절차의 완결성은 지도 연결의 필수조건이 아니다."
   }
 }

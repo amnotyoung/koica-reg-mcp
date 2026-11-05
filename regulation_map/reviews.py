@@ -30,6 +30,8 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
         for field in ("source", "role", "rationale", "condition", "evidence"):
             if not link.get(field):
                 raise ValueError(f"Content review missing {field}")
+        if link.get("relation_basis") not in (None, "direct_component", "related_principle", "common_procedure"):
+            raise ValueError("Unknown relation basis")
         dependencies = {link["source"]} | {e["source"] for e in link["evidence"]}
         if not any(e["source"] == link["source"] for e in link["evidence"]):
             raise ValueError("Target regulation needs its own content evidence")
@@ -97,7 +99,8 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
         task["review"] = {"status": "stale" if stale_count or not fresh_task else "partial" if links else "no_direct_basis",
                           "scope": review["scope"], "gaps": review["gaps"],
                           "reviewed_at": catalog["reviewed_at"], "reviewer": catalog["reviewer"],
-                          "stale_links": stale_count, "searched_sources": review.get("searched_sources", [])}
+                          "stale_links": stale_count, "searched_sources": review.get("searched_sources", []),
+                          "direct_mapping_status": review.get("direct_mapping_status")}
     edge_lookup = {(e["from"], e["to"]): e for e in relations}
     for edge in relations:
         edge.pop("content_review", None)
@@ -112,6 +115,7 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
     return {"reviewed_duties": sum(bool(t["links"]) for t in tasks.values()),
             "assessed_duties": sum(t["review"]["status"] != "unreviewed" for t in tasks.values()),
             "evidence_gap_duties": sum(t["review"]["status"] == "no_direct_basis" for t in tasks.values()),
+            "limited_mapping_duties": sum(t["review"].get("direct_mapping_status") == "not_established" for t in tasks.values()),
             "unreviewed_duties": sum(t["review"]["status"] == "unreviewed" for t in tasks.values()),
             "stale_duties": sum(t["review"]["status"] == "stale" for t in tasks.values()),
             "orphaned_reviews": orphaned,
