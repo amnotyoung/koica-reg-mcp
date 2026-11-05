@@ -34,6 +34,28 @@ assert.equal(parent.duties[1].original_duty_id,'d1');
 assert.equal(parent.duties[1].links,leaves[1].duties[0].links);
 assert.equal(M.departmentMatches(choices,'정보보안팀')[0].id,leaves[2].id);
 assert.equal(JSON.stringify(leaves),original);
+const overview=M.departmentSelection(parent);
+assert.equal(overview.id,'@overview');
+assert.equal(overview.coverage.total,3);
+assert.equal(overview.links.length,3);
+assert.equal(M.departmentSelection(leaves[0]).overview,true);
+assert.equal(M.departmentSelection(parent,parent.duties[1].id).owner_department.name,'데이터팀');
+const sharedEvidence={source:'공통규정',article:'제1조',quote:'근거',body_sha256:'hash'};
+const repeated={id:'실',name:'실',duties:[
+  {id:'a',number:'1',title:'직접 업무',owner_department:{id:'실 / A팀',name:'A팀'},review:{status:'partial'},links:[{...make('공통규정','core',1),condition:'A일 때',evidence:[sharedEvidence]}]},
+  {id:'b',number:'1',title:'조건부 업무',owner_department:{id:'실 / B팀',name:'B팀'},review:{status:'partial'},links:[{...make('공통규정','conditional',2),condition:'B일 때만',evidence:[sharedEvidence]}]},
+  {id:'c',number:'2',title:'미검토 업무',review:{status:'unreviewed'},links:[]}
+]};
+const snapshot=JSON.stringify(repeated),combined=M.departmentOverview(repeated);
+assert.equal(combined.links.length,1);
+assert.equal(combined.links[0].team_count,2);
+assert.equal(combined.links[0].evidence.length,1);
+assert.equal(combined.links[0].priority.level,'core');
+assert.deepEqual(combined.links[0].associations.map(a=>a.link.condition),['A일 때','B일 때만']);
+assert.equal(combined.links[0].associations[1].link.priority.level,'conditional');
+assert.equal(combined.coverage.unreviewed,1);
+assert.equal(JSON.stringify(repeated),snapshot);
+assert.equal(M.departmentOverview({id:'빈팀',name:'빈팀',duties:[]}).links.length,0);
 const nested=M.organizationalChoices([{id:'처 / 실 / 팀',name:'팀',division:'본부',path:['처','실','팀'],duties:leaves[0].duties}]);
 assert.deepEqual(nested.map(d=>d.id),['처','처 / 실','처 / 실 / 팀']);
 const relations=[{from:'기본',to:'실행'},{from:'실행',to:'조건부'},{from:'기본',to:'밖'}];

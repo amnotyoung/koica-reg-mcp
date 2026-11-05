@@ -72,7 +72,42 @@
     // review counts remain owned by the leaf departments.
     return [...parents.values(),...departments];
   }
-  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage,departmentMatches,organizationalChoices};
+  function departmentOverview(department) {
+    const bySource=new Map();
+    const coverage={total:department.duties.length,linked:0,stale:0,unreviewed:0};
+    for(const duty of department.duties) {
+      if(duty.links.length)coverage.linked++;
+      if(duty.review?.status==='stale')coverage.stale++;
+      if(duty.review?.status==='unreviewed')coverage.unreviewed++;
+      const owner=duty.owner_department || department;
+      for(const link of duty.links) {
+        if(!bySource.has(link.source))bySource.set(link.source,{source:link.source,associations:[],evidence:[]});
+        const merged=bySource.get(link.source);
+        merged.associations.push({department_id:owner.id,department_name:owner.name,
+          duty_id:duty.id,original_duty_id:duty.original_duty_id || duty.id,
+          duty_title:duty.title,number:duty.number,review:duty.review,link});
+        for(const evidence of link.evidence || []) {
+          if(!merged.evidence.some(e=>e.source===evidence.source && e.article===evidence.article && e.quote===evidence.quote && e.body_sha256===evidence.body_sha256))merged.evidence.push(evidence);
+        }
+      }
+    }
+    const links=[...bySource.values()].map(merged=>{
+      const best=[...merged.associations].sort((a,b)=>levels[a.link.priority.level].rank-levels[b.link.priority.level].rank || a.link.priority.order-b.link.priority.order)[0].link.priority;
+      const teamCount=new Set(merged.associations.map(a=>a.department_id)).size;
+      return {...merged,team_count:teamCount,role:`${teamCount}개 부서 · ${merged.associations.length}개 업무`,
+        priority:{level:best.level,label:levels[best.level].label,order:best.order,
+          reason:`연결된 업무별 판단 중 가장 높은 단계인 '${levels[best.level].label}'로 배치했습니다. 적용 조건은 각 업무에서 확인할 수 있습니다.`}};
+    });
+    links.sort((a,b)=>levels[a.priority.level].rank-levels[b.priority.level].rank || a.source.localeCompare(b.source,'ko'));
+    return {id:'@overview',overview:true,title:`${department.name} 전체 규정 지도`,number:'전체',links,coverage,
+      review:{status:coverage.stale?'stale':coverage.linked?'partial':'unreviewed'}};
+  }
+  function departmentSelection(department, dutyId) {
+    // Old deep links still open the requested task; a fresh department selection
+    // always opens the complete department, including leaf teams.
+    return department.duties.find(d=>d.id===dutyId) || departmentOverview(department);
+  }
+  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage,departmentMatches,organizationalChoices,departmentOverview,departmentSelection};
   if(typeof module!=='undefined' && module.exports) module.exports=api;
   else root.MapPriority=api;
 })(typeof window!=='undefined'?window:this);
