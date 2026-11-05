@@ -113,7 +113,8 @@
         "제36조",
         "제37조",
         "제38조",
-        "제41조"
+        "제41조",
+        "제42조"
       ],
       "scope": "목적·적용범위 및 해당 본칙 조문 전문. 별표·서식과 외부 법령은 미검토."
     },
@@ -935,6 +936,121 @@
         "제17조",
         "제20조",
         "제22조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "글로벌협력의사 파견사업 규정": {
+      "sha256": "56873992a02737a9df77eae86600aa4c3fe85969092df6e2281135e2560b4c32",
+      "revision": "2026.01.02 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조",
+        "제15조",
+        "제16조",
+        "제21조",
+        "제29조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "월드프렌즈자문단파견사업 규정 시행세칙": {
+      "sha256": "8962464009e400df237c95eb71da8b2a31877cd291f80dfa5cd9f01a0c0b38ec",
+      "revision": "2025.02.25 개정",
+      "read_articles": [
+        "제1조",
+        "제1조의2",
+        "제2조의2",
+        "제3조의3"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "ODA 교육사업 규정": {
+      "sha256": "38e00e782fc8064d6427e5d51ba9789f7cd034236d565343779e476200559363",
+      "revision": "2025.02.26 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제4조",
+        "제5조",
+        "제6조",
+        "제7조",
+        "제19조",
+        "제20조",
+        "제26조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "월드프렌즈자문단파견사업 규정": {
+      "sha256": "0ea89e626f539c571ebbe0cb8aa77b73adc23dd13d93f1feb7fe3053bfa28754",
+      "revision": "2025.02.25 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제5조",
+        "제6조",
+        "제7조",
+        "제11조",
+        "제11조의3",
+        "제12조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "해외봉사단파견 규정": {
+      "sha256": "748f7d9ac73b515bc8e922be172a19465ecef836912b9d7ebed1b298a6d8a01e",
+      "revision": "2025.06.27 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제2조의3",
+        "제4조",
+        "제6조",
+        "제8조",
+        "제9조",
+        "제12조",
+        "제13조",
+        "제18조",
+        "제21조",
+        "제22조",
+        "제24조",
+        "제29조",
+        "제31조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "개발협력인재 양성 사업 규정": {
+      "sha256": "5c29da7ba790b9c8ad916dce5e3687ec93c16a6182bbe1f3b38a99b7fcde2086",
+      "revision": "2025.02.25 개정",
+      "read_articles": [
+        "제1조",
+        "제2조의2",
+        "제3조",
+        "제4조",
+        "제6조",
+        "제8조",
+        "제10조",
+        "제13조",
+        "제19조",
+        "제21조",
+        "제23조",
+        "제24조",
+        "제16조",
+        "제17조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "기관위탁형 해외봉사단 파견사업 규정": {
+      "sha256": "cebc98bbcf53c413eea97aef611669d3d41336ebccd7711908eb8f9c669350f8",
+      "revision": "2025.02.25 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제4조",
+        "제5조",
+        "제6조",
+        "제12조",
+        "제14조",
+        "제20조",
+        "제24조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
     }
@@ -4290,6 +4406,599 @@
           "revision": "2026.02.24 개정",
           "quote": "연수생 동창회(KOICA Club)의 결성 및 활동 지원",
           "body_sha256": "f0ca48fd5df9e01283095bd77f27444c99a5851734fe17d2daf4ec48a7d007f3"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "volunteers": {
+      "source": "해외봉사단파견 규정",
+      "role": "KOICA 봉사단 운영",
+      "rationale": "개인·프로젝트 봉사단의 모집·파견·복무·활동지원에 관한 기본 경로를 연결한다.",
+      "condition": "협력단이 파견하는 봉사단원 대상이다. 타 WFK 시행기관의 통합운영 규정 전체를 대신하지 않는다.",
+      "evidence": [
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.06.27 개정",
+          "quote": "협력단”이라 한다)이 파견하는 해외봉사단원",
+          "body_sha256": "ca04d89b9369c865bd1e5344e4365416b5f48ddac596cac2fa8dc44ea167c380"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제4조",
+          "title": "모집 및 선발",
+          "revision": "2025.06.27 개정",
+          "quote": "봉사단원은 공개모집한다.",
+          "body_sha256": "6268badba4a8cc61f1d4c6747810ea7321826a933ac414a1cb1928b7b4f6309b"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제18조",
+          "title": "복무 관리 및 제재조치",
+          "revision": "2025.06.27 개정",
+          "quote": "봉사단원의 복무 관리 관련 사항",
+          "body_sha256": "208c963da049c2019884ba937d94978367fa7549f0863d07094b62c32ac1c2e8"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "volunteer_education": {
+      "source": "해외봉사단파견 규정",
+      "role": "봉사단 교육·출국",
+      "rationale": "봉사단 국내교육 이수, 계약 후 출국·파견과 현지적응교육을 연결한다.",
+      "condition": "KOICA 봉사단 교육 부분이며 자문관·KMCO·의사에게 그대로 적용하지 않는다.",
+      "evidence": [
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제6조",
+          "title": "국내교육",
+          "revision": "2025.06.27 개정",
+          "quote": "파견에 필요한 소정의 국내교육과정을 이수",
+          "body_sha256": "f7151c3ca37541fb5d2dfe2d6a7fdac1a6adf5d9d91809d5c9d79193180589dd"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제8조",
+          "title": "파견",
+          "revision": "2025.06.27 개정",
+          "quote": "필요한 출국수속을 거쳐 해당국가에 파견한다.",
+          "body_sha256": "2f9c4564b2aab960b06fa7e34a7fdab3b9a73b7fb3c991da9afd178d785f1cdc"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제9조",
+          "title": "현지적응교육",
+          "revision": "2025.06.27 개정",
+          "quote": "파견국 현지 적응력 향상",
+          "body_sha256": "2358bfbaa90c237890de8cfda63818f7e4bc07e5966f423d9a68784f4899866e"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "volunteer_results": {
+      "source": "해외봉사단파견 규정",
+      "role": "봉사활동 성과",
+      "rationale": "활동보고·현지활동 점검·개인 역량 및 성과평가를 연결한다.",
+      "condition": "개인별 봉사활동과 성과관리의 범위다. 기관 경영평가 지표는 별도다.",
+      "evidence": [
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제12조",
+          "title": "활동보고",
+          "revision": "2025.06.27 개정",
+          "quote": "봉사활동 내역, 성과 및 안전상황",
+          "body_sha256": "3bc3753b55b8a0bc819e4be74a15a206ae4a3193544eec3ef9cf2005e7724014"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제13조",
+          "title": "활동평가",
+          "revision": "2025.06.27 개정",
+          "quote": "봉사단원 개인별 역량",
+          "body_sha256": "7280deed9841c35e02be709e166356bfd10d61b1437928e807c10bc01287f66f"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "volunteer_support": {
+      "source": "해외봉사단파견 규정",
+      "role": "봉사 경비·안전",
+      "rationale": "항공료·현지생활비 등 지원경비, 활동비·물품과 신변안전 조치를 연결한다.",
+      "condition": "금액·지원대상·공제 및 특별요건은 세칙·별표를 확인한다. 자문관과 동일 경비기준으로 취급하지 않는다.",
+      "evidence": [
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제21조",
+          "title": "지원경비",
+          "revision": "2025.06.27 개정",
+          "quote": "세부 지급기준은 따로 정한다.",
+          "body_sha256": "7084b420a2e33e1b6a5f1681fcca67d032d82fb1e64253d78a444fae015a4a0e"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제22조",
+          "title": "활동지원",
+          "revision": "2025.06.27 개정",
+          "quote": "사업비 또는 물품 등을 예산의 범위에서 지원",
+          "body_sha256": "a50cfe169f9f0f969ff0717b25ce800910281f110682501dfbffc7a758e7746b"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제24조",
+          "title": "안전관리",
+          "revision": "2025.06.27 개정",
+          "quote": "긴급대피를 위한 보험 가입",
+          "body_sha256": "dd6e77dbf01f550510369812be8c0926dd0662cceacefd6afe0a4d3d821eccd2"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "volunteer_aftercare": {
+      "source": "해외봉사단파견 규정",
+      "role": "귀국인재 경력·창업",
+      "rationale": "귀국자의 국내정착·활동지원과 취창업 교육·컨설팅·인큐베이팅·장학금 지원을 연결한다.",
+      "condition": "자격을 갖춘 귀국 봉사단원 대상이다. 개별 STEP-UP·리턴 프로그램 선정 요건은 별도 확인한다.",
+      "evidence": [
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제29조",
+          "title": "귀국단원 지원",
+          "revision": "2025.06.27 개정",
+          "quote": "귀국한 봉사단원의 국내정착 및 국내활동",
+          "body_sha256": "ff2bbbd5c7b0a33688b5f7d0781a8919ec9e2a790755fe671fd4343603f62991"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제31조",
+          "title": "사후관리",
+          "revision": "2025.06.27 개정",
+          "quote": "취창업 컨설팅, 창업 인큐베이팅 등 지원",
+          "body_sha256": "d697bc3dd86fd9fbc0a68de09c3d6ff20a992bbec34c0c4c40dc25b1a0d8c390"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "advisors": {
+      "source": "월드프렌즈자문단파견사업 규정",
+      "role": "월드프렌즈 자문관",
+      "rationale": "자문관의 모집·선발·파견계약과 경비·안전·활동보고를 연결한다.",
+      "condition": "해당 자문관에 적용한다. 봉사단원이나 국내 직원 인사규정을 혼용하지 않는다.",
+      "evidence": [
+        {
+          "source": "월드프렌즈자문단파견사업 규정",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.02.25 개정",
+          "quote": "월드프렌즈자문관",
+          "body_sha256": "fe578a13c26bb64005906e538a2a93660161869cbee074860c6849bfe9898ca6"
+        },
+        {
+          "source": "월드프렌즈자문단파견사업 규정",
+          "article": "제7조",
+          "title": "파견",
+          "revision": "2025.02.25 개정",
+          "quote": "자문관 파견에 관한 계약을 체결",
+          "body_sha256": "f2f7b6e153e61cf33041fc6956b67fbe60d08238e28cdea0575bfc8761024251"
+        },
+        {
+          "source": "월드프렌즈자문단파견사업 규정",
+          "article": "제12조",
+          "title": "업무성과관리",
+          "revision": "2025.02.25 개정",
+          "quote": "반기마다 활동보고서를 제출",
+          "body_sha256": "a453340e1593a2d12a9d01c47eda5ca1d72e28acdd448889c5814cce39a6a927"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "advisor_training": {
+      "source": "월드프렌즈자문단파견사업 규정 시행세칙",
+      "role": "자문관 수요·교육",
+      "rationale": "자문관 수요심사와 국내교육·교육지원의 실행 경로를 연결한다.",
+      "condition": "해당 자문관 대상이며 수요점수·교육수료기준은 별표 및 준용 기준을 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "월드프렌즈자문단파견사업 규정 시행세칙",
+          "article": "제2조의2",
+          "title": "수요심사",
+          "revision": "2025.02.25 개정",
+          "quote": "자문관 모집수요는",
+          "body_sha256": "eeb677d3582fdcf877851165de83df65fd798dda30a5950a6eefdbfa6442e291"
+        },
+        {
+          "source": "월드프렌즈자문단파견사업 규정 시행세칙",
+          "article": "제3조의3",
+          "title": "국내교육",
+          "revision": "2025.02.25 개정",
+          "quote": "국내교육을 실시할 수 있다.",
+          "body_sha256": "2641c743d90c4e19c9a7e16fc9b0914f920f827372479df5784e3893a62f110d"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "outsourced_volunteers": {
+      "source": "기관위탁형 해외봉사단 파견사업 규정",
+      "role": "기관위탁 봉사사업",
+      "rationale": "수요발굴·수행기관 선정·단원 교육·복무·사후관리의 위탁 범위를 연결한다.",
+      "condition": "수행기관 위탁사업에 적용한다. UNV대학생봉사단 교육 및 국제기구 파견 복무에는 특별규정을 확인한다.",
+      "evidence": [
+        {
+          "source": "기관위탁형 해외봉사단 파견사업 규정",
+          "article": "제4조",
+          "title": "업무위탁 범위",
+          "revision": "2025.02.25 개정",
+          "quote": "봉사단원 활동 수요 발굴",
+          "body_sha256": "b9e83f10c4f2c8c94b6dd027c2e872ec09831228cae796029de409576a404a30"
+        },
+        {
+          "source": "기관위탁형 해외봉사단 파견사업 규정",
+          "article": "제6조",
+          "title": "사업수행기관 선정 방식",
+          "revision": "2025.02.25 개정",
+          "quote": "입찰, 공모 또는 협약의 방법",
+          "body_sha256": "2144d6c62ae21d02d388d24e06e1cf1f28df3cc2bd813f3bfa595b1bc933df77"
+        },
+        {
+          "source": "기관위탁형 해외봉사단 파견사업 규정",
+          "article": "제14조",
+          "title": "파견 전 교육",
+          "revision": "2025.02.25 개정",
+          "quote": "UNV대학생봉사단에 대한 파견 전 교육은 사업수행기관의 자체 규정",
+          "body_sha256": "ed9ab1087950c28ed3b6e94aa77581600676f593cd3f5413cbc1c6fd7c765641"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "talent": {
+      "source": "개발협력인재 양성 사업 규정",
+      "role": "코디네이터·KMCO·YP",
+      "rationale": "사업별 모집·선발·계약·지도감독·활동지원과 평가·교육의 공통 경로를 연결한다.",
+      "condition": "코디네이터·KMCO·ODA YP 대상이며 세부 경비·복무·계약기간은 사업별 하위지침을 확인한다.",
+      "evidence": [
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제2조의2",
+          "title": "개발협력인재의 구분",
+          "revision": "2025.02.25 개정",
+          "quote": "코디네이터는 협력단 해외사무소에서",
+          "body_sha256": "2d7c1cbffefc4a24b6da90f25771b0311747e9dd5bf3ad66c139bb8e1bb4e5e1"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제6조",
+          "title": "모집 및 선발",
+          "revision": "2025.02.25 개정",
+          "quote": "사업별 하위 지침에서 별도로 정한다.",
+          "body_sha256": "3bf79f1932b49dae27f0845bc19e53f630825eec6024ee2c74ef232ef1c54ab3"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제8조",
+          "title": "계약 및 약정 체결",
+          "revision": "2025.02.25 개정",
+          "quote": "개발협력인재로 선발된 자 및 파견대상기관",
+          "body_sha256": "71a3c2072aa7193be60a1438b892010d29b851fa88858b57a1a97e96d4e95fd6"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "talent_development": {
+      "source": "개발협력인재 양성 사업 규정",
+      "role": "인재 평가·교육·사후",
+      "rationale": "개발협력인재 및 파견기관의 평가, 직무교육·역량강화와 취창업 정보 제공을 연결한다.",
+      "condition": "프로그램별 특성에 따라 실시하며 세부 MBO·평가등급·과정 기준은 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제10조",
+          "title": "평가",
+          "revision": "2025.02.25 개정",
+          "quote": "개발협력인재 및 파견대상기관에 대한 평가",
+          "body_sha256": "1830c21a13dfd7ce90bdda4330eee4a7b40af8a56155276dbe360b038d0bd812"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제23조",
+          "title": "교육",
+          "revision": "2025.02.25 개정",
+          "quote": "역량 강화 및 직무수행에 필요한 교육",
+          "body_sha256": "e3e5e671e15b551142129994f877d93344f5c7b5929cab39423484f208cb74af"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제24조",
+          "title": "사후관리 및 취업현황조사",
+          "revision": "2025.02.25 개정",
+          "quote": "취업 및 창업과 관련한 교육, 정보",
+          "body_sha256": "d22593a729c56f816a480e15517065bd5c040fb56711940363fe72e3a8133997"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "talent_service": {
+      "source": "개발협력인재 양성 사업 규정",
+      "role": "인재 활동·복무",
+      "rationale": "파견인재 지도감독·휴가·일시귀국·활동경비·안전의 공통 경로를 연결한다.",
+      "condition": "사업별 파견대상기관·계약·하위지침의 기준이 필요하며 협력단 직원과 동일한 복무조건을 단정하지 않는다.",
+      "evidence": [
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제13조",
+          "title": "지도감독",
+          "revision": "2025.02.25 개정",
+          "quote": "파견대상기관의 지도 감독",
+          "body_sha256": "79f5f605c1cad83e096be5de119060960b9a409ca7fac04f48eebf2d2520d300"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제16조",
+          "title": "휴가",
+          "revision": "2025.02.25 개정",
+          "quote": "협력단 또는 파견대상기관에서 정한 바에 따라",
+          "body_sha256": "8d0f3776830df91c7ced6a45b0f2f6a816a9bc78bb7c9373482159efa80c1b20"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제19조",
+          "title": "경비지급",
+          "revision": "2025.02.25 개정",
+          "quote": "활동에 필요한 경비를 지급",
+          "body_sha256": "62bab1f00048cc332a969100a488d4c62ad50a7329ef459bd5c284c517c8746b"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "medical_volunteers": {
+      "source": "글로벌협력의사 파견사업 규정",
+      "role": "글로벌협력의사",
+      "rationale": "의사 파견계약·수행과업·국내교육·활동평가 및 지급경비의 별도 경로를 연결한다.",
+      "condition": "글로벌협력의사 대상이다. 개발협력인재 공통규정만으로 의사 계약·경비를 확정하지 않는다.",
+      "evidence": [
+        {
+          "source": "글로벌협력의사 파견사업 규정",
+          "article": "제2조",
+          "title": "정의",
+          "revision": "2026.01.02 개정",
+          "quote": "글로벌협력의사 파견에 관한 계약",
+          "body_sha256": "274675a985b505cff21a32c1f3ab1bc5002263dff5cec1d27ab7c4c9e25bf65d"
+        },
+        {
+          "source": "글로벌협력의사 파견사업 규정",
+          "article": "제15조",
+          "title": "국내교육",
+          "revision": "2026.01.02 개정",
+          "quote": "소정의 국내교육과정을 반드시 이수",
+          "body_sha256": "4c636a289630a2016d61de1bc37a4d06890037e10b4d899fd117f8808ceef890"
+        },
+        {
+          "source": "글로벌협력의사 파견사업 규정",
+          "article": "제21조",
+          "title": "활동평가",
+          "revision": "2026.01.02 개정",
+          "quote": "평가결과를 계약연장, 경비지급 등 계약관리",
+          "body_sha256": "0fd95a380bddd1b4b09005dd08a6775e862e0885d6ef5ec40b25acdf00f811bf"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "oda_education": {
+      "source": "ODA 교육사업 규정",
+      "role": "대국민 ODA 교육",
+      "rationale": "국민 이해증진·전문인력 양성·진로 관련 ODA 교육, 연간 계획과 다양한 운영방식을 연결한다.",
+      "condition": "대국민 ODA 교육 부분에 적용한다. 봉사단 직무교육·초청연수·직원 교육의 특별기준과 구별한다.",
+      "evidence": [
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제5조",
+          "title": "ODA 교육과정",
+          "revision": "2025.02.26 개정",
+          "quote": "국제개발협력과 ODA에 대한 국민의 이해증진",
+          "body_sha256": "1001ebff81a585e0e43c2328a833f52216b13068d29da8eb4d46f1b7977b6b14"
+        },
+        {
+          "source": "ODA 교육사업 규정",
+          "article": "제7조",
+          "title": "연간 교육계획",
+          "revision": "2025.02.26 개정",
+          "quote": "연간 교육계획을 수립한다.",
+          "body_sha256": "eee132178e5571073629f9e0824751e747ea690e92a439020d8d00798b588bac"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "general_contract": {
+      "source": "회계규정",
+      "role": "기관운영 계약",
+      "rationale": "기관 운영계약과 대외 사업수행 조달의 적용 경로를 구분한다.",
+      "condition": "기관운영 계약에는 공기업·준정부기관 계약사무규칙을 확인한다. 사업수행 계약은 별도 조달 규정으로 분기한다.",
+      "evidence": [
+        {
+          "source": "회계규정",
+          "article": "제42조",
+          "title": "적용대상 및 준용규정",
+          "revision": "2024.12.13 개정",
+          "quote": "협력단의 기관운영과 관련하여 체결하는 계약",
+          "body_sha256": "9dab873bc7659dd3ed1b1171d75db8d813415ac35afa2a3f1c0214545c84fe28"
+        },
+        {
+          "source": "회계규정",
+          "article": "제42조",
+          "title": "적용대상 및 준용규정",
+          "revision": "2024.12.13 개정",
+          "quote": "사업수행과 관련한 조달 및 계약은 별도의 규정",
+          "body_sha256": "9dab873bc7659dd3ed1b1171d75db8d813415ac35afa2a3f1c0214545c84fe28"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "budgeting__budget_accounting": {
+      "source": "회계규정",
+      "role": "예산편성·확정 / 예산·회계",
+      "rationale": "출연금 예산요구와 이사회·외교부 승인에 따른 예산 확정을 예산편성 업무에 연결한다. 총사업비 기준과 별도로, 예산 전용·이월과 실제 지출의 회계 처리 경로를 제공한다. 사업규정 제18조가 예산 전용·이월을 회계규정으로 연결한다.",
+      "condition": "협력단 공통 예산편성의 기본 경로만 검토했다. 성인지 예산·인건비·정부 예산심의 상세 기준은 미검토다. 예산 전용·이월 또는 지출 처리가 필요한 경우. 전용 승인에는 예산총칙, 이월에는 해당 요건·승인 절차를 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "회계규정",
+          "article": "제11조",
+          "title": "예산요구서의 제출",
+          "revision": "2024.12.13 개정",
+          "quote": "다음 연도 출연금예산요구서(안)을 외교부장관에게 제출하여야 한다.",
+          "body_sha256": "c09268edbd09439503280f76b2c0739139d9ca0d7173e51f8a01b65237d62381"
+        },
+        {
+          "source": "회계규정",
+          "article": "제12조",
+          "title": "예산의 확정",
+          "revision": "2024.12.13 개정",
+          "quote": "예산은 이사회 의결을 거쳐 외교부장관의 승인을 받음으로써 확정된다.",
+          "body_sha256": "b4d56e010a9842a3c74b44dbe3b05e97ea20bce42c234a37fea23daaa8855160"
+        },
+        {
+          "source": "국별협력사업 규정",
+          "article": "제18조",
+          "title": "예산관리",
+          "revision": "2026.08.13 개정",
+          "quote": "「회계규정」에 따라 예산의 전용 또는 이월을 실시할 수 있다.",
+          "body_sha256": "738cd686e056158bbd08d939989d2e467a28db72addd799587e8ed17a7c2b57d"
+        },
+        {
+          "source": "회계규정",
+          "article": "제19조",
+          "title": "예산의 전용",
+          "revision": "2024.12.13 개정",
+          "quote": "예산관리자에게 전용을 요구하여야 한다.",
+          "body_sha256": "d959d56f7eab3e589b3050ec2ffc5b5fb8eb07c6d870d91dfa3fb09e21bafe6d"
+        },
+        {
+          "source": "회계규정",
+          "article": "제21조",
+          "title": "예산의 이월",
+          "revision": "2024.12.13 개정",
+          "quote": "예산은 다음 연도에 이월하여 사용할 수 없다.",
+          "body_sha256": "7be1e814271564d98835bc55417fdae636ef4e44b32079ef3ef6ecabbb1cf0ae"
+        },
+        {
+          "source": "회계규정",
+          "article": "제38조",
+          "title": "지출의 원칙",
+          "revision": "2024.12.13 개정",
+          "quote": "지출은 지출결의서에 따라서 지출한다.",
+          "body_sha256": "27c95b6bc452e67a188dc77c05986f0204c2ef3097323d5011e6d9205ea26b4a"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 읽고 작성한 해석. 기관의 공식 적용 판정은 아님."
+    },
+    "volunteers__volunteer_support": {
+      "source": "해외봉사단파견 규정",
+      "role": "KOICA 봉사단 운영 / 봉사 경비·안전",
+      "rationale": "개인·프로젝트 봉사단의 모집·파견·복무·활동지원에 관한 기본 경로를 연결한다. 항공료·현지생활비 등 지원경비, 활동비·물품과 신변안전 조치를 연결한다.",
+      "condition": "협력단이 파견하는 봉사단원 대상이다. 타 WFK 시행기관의 통합운영 규정 전체를 대신하지 않는다. 금액·지원대상·공제 및 특별요건은 세칙·별표를 확인한다. 자문관과 동일 경비기준으로 취급하지 않는다.",
+      "evidence": [
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제2조",
+          "title": "적용범위",
+          "revision": "2025.06.27 개정",
+          "quote": "협력단”이라 한다)이 파견하는 해외봉사단원",
+          "body_sha256": "ca04d89b9369c865bd1e5344e4365416b5f48ddac596cac2fa8dc44ea167c380"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제4조",
+          "title": "모집 및 선발",
+          "revision": "2025.06.27 개정",
+          "quote": "봉사단원은 공개모집한다.",
+          "body_sha256": "6268badba4a8cc61f1d4c6747810ea7321826a933ac414a1cb1928b7b4f6309b"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제18조",
+          "title": "복무 관리 및 제재조치",
+          "revision": "2025.06.27 개정",
+          "quote": "봉사단원의 복무 관리 관련 사항",
+          "body_sha256": "208c963da049c2019884ba937d94978367fa7549f0863d07094b62c32ac1c2e8"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제21조",
+          "title": "지원경비",
+          "revision": "2025.06.27 개정",
+          "quote": "세부 지급기준은 따로 정한다.",
+          "body_sha256": "7084b420a2e33e1b6a5f1681fcca67d032d82fb1e64253d78a444fae015a4a0e"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제22조",
+          "title": "활동지원",
+          "revision": "2025.06.27 개정",
+          "quote": "사업비 또는 물품 등을 예산의 범위에서 지원",
+          "body_sha256": "a50cfe169f9f0f969ff0717b25ce800910281f110682501dfbffc7a758e7746b"
+        },
+        {
+          "source": "해외봉사단파견 규정",
+          "article": "제24조",
+          "title": "안전관리",
+          "revision": "2025.06.27 개정",
+          "quote": "긴급대피를 위한 보험 가입",
+          "body_sha256": "dd6e77dbf01f550510369812be8c0926dd0662cceacefd6afe0a4d3d821eccd2"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "talent__talent_development": {
+      "source": "개발협력인재 양성 사업 규정",
+      "role": "코디네이터·KMCO·YP / 인재 평가·교육·사후",
+      "rationale": "사업별 모집·선발·계약·지도감독·활동지원과 평가·교육의 공통 경로를 연결한다. 개발협력인재 및 파견기관의 평가, 직무교육·역량강화와 취창업 정보 제공을 연결한다.",
+      "condition": "코디네이터·KMCO·ODA YP 대상이며 세부 경비·복무·계약기간은 사업별 하위지침을 확인한다. 프로그램별 특성에 따라 실시하며 세부 MBO·평가등급·과정 기준은 추가 확인한다.",
+      "evidence": [
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제2조의2",
+          "title": "개발협력인재의 구분",
+          "revision": "2025.02.25 개정",
+          "quote": "코디네이터는 협력단 해외사무소에서",
+          "body_sha256": "2d7c1cbffefc4a24b6da90f25771b0311747e9dd5bf3ad66c139bb8e1bb4e5e1"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제6조",
+          "title": "모집 및 선발",
+          "revision": "2025.02.25 개정",
+          "quote": "사업별 하위 지침에서 별도로 정한다.",
+          "body_sha256": "3bf79f1932b49dae27f0845bc19e53f630825eec6024ee2c74ef232ef1c54ab3"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제8조",
+          "title": "계약 및 약정 체결",
+          "revision": "2025.02.25 개정",
+          "quote": "개발협력인재로 선발된 자 및 파견대상기관",
+          "body_sha256": "71a3c2072aa7193be60a1438b892010d29b851fa88858b57a1a97e96d4e95fd6"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제10조",
+          "title": "평가",
+          "revision": "2025.02.25 개정",
+          "quote": "개발협력인재 및 파견대상기관에 대한 평가",
+          "body_sha256": "1830c21a13dfd7ce90bdda4330eee4a7b40af8a56155276dbe360b038d0bd812"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제23조",
+          "title": "교육",
+          "revision": "2025.02.25 개정",
+          "quote": "역량 강화 및 직무수행에 필요한 교육",
+          "body_sha256": "e3e5e671e15b551142129994f877d93344f5c7b5929cab39423484f208cb74af"
+        },
+        {
+          "source": "개발협력인재 양성 사업 규정",
+          "article": "제24조",
+          "title": "사후관리 및 취업현황조사",
+          "revision": "2025.02.25 개정",
+          "quote": "취업 및 창업과 관련한 교육, 정보",
+          "body_sha256": "d22593a729c56f816a480e15517065bd5c040fb56711940363fe72e3a8133997"
         }
       ],
       "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
@@ -10958,6 +11667,1225 @@
           "level": "supporting",
           "order": 3,
           "reason": "해당 업무 중 데이터 시스템을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d1",
+      "duty_sha256": "abe70793b164465f919c52c7288362b3db39beea54fa0e7bc1228039396859b3",
+      "link_ids": [
+        "budgeting__budget_accounting",
+        "volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 예산편성·확정, 예산·회계, KOICA 봉사단 운영 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "budgeting__budget_accounting": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 예산편성·확정 / 예산·회계 부분을 직접 확인하는 출발점입니다."
+        },
+        "volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 KOICA 봉사단 운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d2",
+      "duty_sha256": "a3467d6aad7676c7a676e6208adddb6711da67f2d8357216e82a93e5139193b6",
+      "link_ids": [
+        "volunteers",
+        "outsourced_volunteers",
+        "committee"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 기관위탁 봉사사업, 위원회 공통 운영 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "KOICA 담당 부분만 연결했습니다. 타 WFK 시행기관 통합운영과 국가 간 파견협정·기본 로드맵은 별도 외부 근거가 필요합니다."
+      ],
+      "priorities": {
+        "volunteers": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 KOICA 봉사단 운영을 수행하는 경우 함께 확인합니다."
+        },
+        "outsourced_volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관위탁 봉사사업을 수행하는 경우 함께 확인합니다."
+        },
+        "committee": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 위원회 공통 운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d4",
+      "duty_sha256": "f991b1c809cb5cf759dc1fa789342735f277d934a65a0062bc890958ac4a5cfc",
+      "link_ids": [
+        "volunteers",
+        "strategy"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 전략→사업발굴 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "KOICA 담당 부분만 연결했습니다. 타 WFK 시행기관 통합운영과 국가 간 파견협정·기본 로드맵은 별도 외부 근거가 필요합니다."
+      ],
+      "priorities": {
+        "volunteers": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 KOICA 봉사단 운영을 수행하는 경우 함께 확인합니다."
+        },
+        "strategy": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 전략→사업발굴을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d5",
+      "duty_sha256": "f5ff3db6563af6c7fe353d1345bcecf31ac46cacd3ba66a77419fbb255b7cfb0",
+      "link_ids": [
+        "mou"
+      ],
+      "scope": "분장업무에서 대상 인력별 기관 간 협력약정 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "KOICA 담당 부분만 연결했습니다. 타 WFK 시행기관 통합운영과 국가 간 파견협정·기본 로드맵은 별도 외부 근거가 필요합니다."
+      ],
+      "priorities": {
+        "mou": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d6",
+      "duty_sha256": "80a0b68de6ea93e8a5899dcb76b5813bf4b0a38cda8a32b64bfdf06caa9d0e80",
+      "link_ids": [
+        "mou",
+        "research_share"
+      ],
+      "scope": "분장업무에서 대상 인력별 기관 간 협력약정, 연구 지식공유 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "KOICA 담당 부분만 연결했습니다. 타 WFK 시행기관 통합운영과 국가 간 파견협정·기본 로드맵은 별도 외부 근거가 필요합니다."
+      ],
+      "priorities": {
+        "mou": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        },
+        "research_share": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 연구 지식공유을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d7",
+      "duty_sha256": "27a3d5eabab49f1322b344ba50e7462734ad8c2bc9830714256601045a48db43",
+      "link_ids": [
+        "volunteer_aftercare",
+        "talent_development"
+      ],
+      "scope": "분장업무에서 대상 인력별 귀국인재 경력·창업, 인재 평가·교육·사후 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_aftercare": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 귀국인재 경력·창업 부분을 직접 확인하는 출발점입니다."
+        },
+        "talent_development": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 인재 평가·교육·사후을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d8",
+      "duty_sha256": "ee26ad40eb6a98d7bb1678bc9ce6c924a4535ef38b21419cbcbc04eb091d6f6e",
+      "link_ids": [
+        "evaluation",
+        "management_performance"
+      ],
+      "scope": "분장업무에서 대상 인력별 성과·평가, 경영목표·실적보고 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "evaluation": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 성과·평가 부분을 직접 확인하는 출발점입니다."
+        },
+        "management_performance": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d9",
+      "duty_sha256": "91e04037c167de80710477c238ba45e4497aec534803258f73cd4aaaaab55b9c",
+      "link_ids": [
+        "security_documents",
+        "office_docs"
+      ],
+      "scope": "분장업무에서 대상 인력별 기밀·비상연락, 문서수발·관인 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "security_documents": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기밀·비상연락을 수행하는 경우 함께 확인합니다."
+        },
+        "office_docs": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 문서수발·관인을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d10",
+      "duty_sha256": "68f15a1d6de88ca2c4a610fa125dc6ae7c3dbb633f36747d8d1a2f0c81282156",
+      "link_ids": [
+        "rules",
+        "volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 내규 제·개정, KOICA 봉사단 운영 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "rules": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내규 제·개정 부분을 직접 확인하는 출발점입니다."
+        },
+        "volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 KOICA 봉사단 운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d11",
+      "duty_sha256": "afd39d51448bf1abf7c5647ff843a4f5947f65a2be980ad093cd1b9d11decf90",
+      "link_ids": [
+        "research",
+        "web_security"
+      ],
+      "scope": "분장업무에서 대상 인력별 개발협력 연구, 홈페이지 게시 보안 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "research": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 개발협력 연구 부분을 직접 확인하는 출발점입니다."
+        },
+        "web_security": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 홈페이지 게시 보안을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d12",
+      "duty_sha256": "12093fdb86b8c1b8748b2ef13941c7d0a2db2ce4c529bea91c28536739386316",
+      "link_ids": [
+        "data_owner"
+      ],
+      "scope": "분장업무에서 대상 인력별 소관 데이터 관리 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d13",
+      "duty_sha256": "02193d9d6b145a02b0f109f92f2e061f620b8c82b94d49403c091932e0a25ba3",
+      "link_ids": [
+        "management_performance",
+        "volunteer_results"
+      ],
+      "scope": "분장업무에서 대상 인력별 경영목표·실적보고, 봉사활동 성과 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "management_performance": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 경영목표·실적보고 부분을 직접 확인하는 출발점입니다."
+        },
+        "volunteer_results": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 봉사활동 성과을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d14",
+      "duty_sha256": "51a76e669a0ed7dac732998dce49d55230ddd08c9af2fbf0b15f588eb92b2ede",
+      "link_ids": [
+        "data_owner",
+        "privacy",
+        "it_build"
+      ],
+      "scope": "분장업무에서 대상 인력별 소관 데이터 관리, 개인정보 처리·권한, 시스템 구축·운영 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        },
+        "privacy": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 개인정보 처리·권한을 수행하는 경우 함께 확인합니다."
+        },
+        "it_build": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 시스템 구축·운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d15",
+      "duty_sha256": "7e80b3cc7f52af418dd7cbeb5af7ef02610d69d33785a9064e50b22f425019ec",
+      "link_ids": [
+        "subsidiary"
+      ],
+      "scope": "분장업무에서 대상 인력별 출자회사 과업·평가 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "subsidiary": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 출자회사 과업·평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d16",
+      "duty_sha256": "70b453e7f746b5e9cf12f0b2109219a93aeaccd45acfdc2c9815e844ae3fc5da",
+      "link_ids": [
+        "coordination"
+      ],
+      "scope": "분장업무에서 대상 인력별 부서 간 업무조정 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "coordination": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 부서 간 업무조정 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사모집팀",
+      "duty_id": "d1",
+      "duty_sha256": "254eaa3e4a0c8a78f61c50e462df95c442f306e2937549264f7777d40f539e77",
+      "link_ids": [
+        "volunteers",
+        "advisors",
+        "outsourced_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 월드프렌즈 자문관, 기관위탁 봉사사업 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 KOICA 봉사단 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        },
+        "outsourced_volunteers": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 기관위탁 봉사사업을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사모집팀",
+      "duty_id": "d2",
+      "duty_sha256": "2154940ac3dc7e1d1445fbed3bc8e7876c4dd467397df4efbf6ec678a1759113",
+      "link_ids": [
+        "outsourced_volunteers",
+        "advisor_training"
+      ],
+      "scope": "분장업무에서 대상 인력별 기관위탁 봉사사업, 자문관 수요·교육 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "outsourced_volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관위탁 봉사사업 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisor_training": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 자문관 수요·교육을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사모집팀",
+      "duty_id": "d3",
+      "duty_sha256": "113d55492227a7fe0d377dacc9257d12284734ffe72478cd258f93976674a140",
+      "link_ids": [
+        "volunteers",
+        "advisors"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 월드프렌즈 자문관 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 KOICA 봉사단 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사모집팀",
+      "duty_id": "d4",
+      "duty_sha256": "75272fea04578216e90ff54244ee1767b780a9554d94e9de197ea4abaecc58a0",
+      "link_ids": [
+        "outsourced_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 기관위탁 봉사사업 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "outsourced_volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관위탁 봉사사업 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사모집팀",
+      "duty_id": "d5",
+      "duty_sha256": "c4e7b5472b61e629b211bae0ae535419be9e74bc37e3a836340844cacc2821ea",
+      "link_ids": [
+        "volunteers",
+        "data_owner",
+        "privacy"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 소관 데이터 관리, 개인정보 처리·권한 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 KOICA 봉사단 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "data_owner": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        },
+        "privacy": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 개인정보 처리·권한을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d1",
+      "duty_sha256": "3e3f678b4c45f672607257c63a48364077be28d0d9f9498717755560783ef985",
+      "link_ids": [
+        "volunteers__volunteer_support",
+        "advisors"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 월드프렌즈 자문관, 봉사 경비·안전 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteers__volunteer_support": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 KOICA 봉사단 운영 / 봉사 경비·안전 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d2",
+      "duty_sha256": "9fd0a3b1abb894046c693504be75726610d1c2298e225d2b6d2a745458f14880",
+      "link_ids": [
+        "volunteer_results",
+        "advisors"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사활동 성과, 월드프렌즈 자문관 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사활동 성과 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d3",
+      "duty_sha256": "f086f14e8e91a718c1de4494ea018047485116d426132796cbc4ed3126cf778d",
+      "link_ids": [
+        "volunteer_support",
+        "advisors",
+        "budget_accounting"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사 경비·안전, 월드프렌즈 자문관, 예산·회계 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_support": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사 경비·안전 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        },
+        "budget_accounting": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 예산·회계을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d4",
+      "duty_sha256": "07caa806e35f0ec0ccaa1d26cbc9acb651a37fbeb642fa9a72d62ea4c57e58d6",
+      "link_ids": [
+        "volunteers",
+        "evaluation"
+      ],
+      "scope": "분장업무에서 대상 인력별 KOICA 봉사단 운영, 성과·평가 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 KOICA 봉사단 운영 부분을 직접 확인하는 출발점입니다."
+        },
+        "evaluation": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 성과·평가을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d5",
+      "duty_sha256": "c9bc5ef645b3e66e4ec8abdf7ad458ac33dd85dfb469410b72859f413b61d975",
+      "link_ids": [
+        "volunteer_support",
+        "advisors",
+        "safety"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사 경비·안전, 월드프렌즈 자문관, 안전보건 계획·대응 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_support": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사 경비·안전 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        },
+        "safety": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 안전보건 계획·대응을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d6",
+      "duty_sha256": "6df8e029baac97a6137d2c57864537d5213bf7aa8cd5a3c19d8788ff53658094",
+      "link_ids": [
+        "volunteer_aftercare",
+        "advisors"
+      ],
+      "scope": "분장업무에서 대상 인력별 귀국인재 경력·창업, 월드프렌즈 자문관 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_aftercare": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 귀국인재 경력·창업 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d8",
+      "duty_sha256": "3d12b26374a0e1bda5c5273a6f3d6fb6aedcfce4c1349a864ae3fdb556efab7b",
+      "link_ids": [
+        "volunteer_aftercare"
+      ],
+      "scope": "분장업무에서 대상 인력별 귀국인재 경력·창업 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_aftercare": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 귀국인재 경력·창업 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d9",
+      "duty_sha256": "45a254d3dda89ce852f74fde6545dfc7a6ca429ae4180ce7eaaad44152506b60",
+      "link_ids": [
+        "volunteer_results",
+        "data_owner"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사활동 성과, 소관 데이터 관리 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_results": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사활동 성과 부분을 직접 확인하는 출발점입니다."
+        },
+        "data_owner": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d1",
+      "duty_sha256": "4fbcbabdf4e1c4daa3ca4bfae92120b95a1558a169058edf4cd6c8a7e0bc5bbf",
+      "link_ids": [
+        "volunteer_education",
+        "advisor_training",
+        "talent_development",
+        "medical_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사단 교육·출국, 자문관 수요·교육, 인재 평가·교육·사후, 글로벌협력의사 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사단 교육·출국 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisor_training": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 자문관 수요·교육을 수행하는 경우 함께 확인합니다."
+        },
+        "talent_development": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 인재 평가·교육·사후을 수행하는 경우 함께 확인합니다."
+        },
+        "medical_volunteers": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d2",
+      "duty_sha256": "24d9579ae19f10ffcd50d1437d5e141c4ac1cf5f2ee35b95e20abfc955123b4a",
+      "link_ids": [
+        "volunteer_education",
+        "it_build"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사단 교육·출국, 시스템 구축·운영 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사단 교육·출국 부분을 직접 확인하는 출발점입니다."
+        },
+        "it_build": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 시스템 구축·운영을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d3",
+      "duty_sha256": "9ec880d264f4bb863d193b492810d7f2d2b532bb83a655f9ca6c26cd7929ae7b",
+      "link_ids": [
+        "volunteer_education",
+        "advisors",
+        "talent_service",
+        "medical_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사단 교육·출국, 월드프렌즈 자문관, 인재 활동·복무, 글로벌협력의사 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사단 교육·출국 부분을 직접 확인하는 출발점입니다."
+        },
+        "advisors": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 월드프렌즈 자문관을 수행하는 경우 함께 확인합니다."
+        },
+        "talent_service": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 인재 활동·복무을 수행하는 경우 함께 확인합니다."
+        },
+        "medical_volunteers": {
+          "level": "supporting",
+          "order": 4,
+          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d4",
+      "duty_sha256": "0a1e4581d59890a7bf580b91a516a4bb9f069f55406bf92a14ff92eb03e3f4a5",
+      "link_ids": [
+        "talent_development",
+        "outsourced_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 인재 평가·교육·사후, 기관위탁 봉사사업 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent_development": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인재 평가·교육·사후 부분을 직접 확인하는 출발점입니다."
+        },
+        "outsourced_volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관위탁 봉사사업을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d5",
+      "duty_sha256": "0199105386b6e670e41e6a30a8a77fd5d012f991f4f4a67c423bae424ce0b2f9",
+      "link_ids": [
+        "volunteer_education",
+        "outsourced_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사단 교육·출국, 기관위탁 봉사사업 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사단 교육·출국 부분을 직접 확인하는 출발점입니다."
+        },
+        "outsourced_volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관위탁 봉사사업을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d6",
+      "duty_sha256": "779e16e98f48761269d8eb58c64e4f0844d23d2717aacf5270483165ea56306b",
+      "link_ids": [
+        "volunteer_education"
+      ],
+      "scope": "분장업무에서 대상 인력별 봉사단 교육·출국 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 봉사단 교육·출국 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d7",
+      "duty_sha256": "8ec6428c9978bec8a0473d7e9be84cd02791f06be99dd6ff508010c9471afff1",
+      "link_ids": [
+        "volunteer_aftercare",
+        "talent_development"
+      ],
+      "scope": "분장업무에서 대상 인력별 귀국인재 경력·창업, 인재 평가·교육·사후 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "volunteer_aftercare": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 귀국인재 경력·창업 부분을 직접 확인하는 출발점입니다."
+        },
+        "talent_development": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 인재 평가·교육·사후을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d8",
+      "duty_sha256": "fee56f7c7d0a583e173385b4b3bc6d7052b125ba4f12e9a3a4137d8d28aa0530",
+      "link_ids": [
+        "oda_education",
+        "web_security"
+      ],
+      "scope": "분장업무에서 대상 인력별 대국민 ODA 교육, 홈페이지 게시 보안 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 대국민 ODA 교육 부분을 직접 확인하는 출발점입니다."
+        },
+        "web_security": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 홈페이지 게시 보안을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d9",
+      "duty_sha256": "5e429f99b921604c50315589292da1a555991eaa8c79cd5af2b0b7a06b2ca40f",
+      "link_ids": [
+        "oda_education",
+        "mou"
+      ],
+      "scope": "분장업무에서 대상 인력별 대국민 ODA 교육, 기관 간 협력약정 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "oda_education": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 대국민 ODA 교육 부분을 직접 확인하는 출발점입니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d10",
+      "duty_sha256": "d96fb67f5b57ea95f63bc4b80488f44aa45ddbadd492e5c9478f69e60939bfb3",
+      "link_ids": [
+        "asset",
+        "safety"
+      ],
+      "scope": "분장업무에서 대상 인력별 자산·시설 관리, 안전보건 계획·대응 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "asset": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 자산·시설 관리 부분을 직접 확인하는 출발점입니다."
+        },
+        "safety": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 안전보건 계획·대응을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "해외봉사사업실 / 글로벌인재교육원",
+      "duty_id": "d11",
+      "duty_sha256": "039099ae13c54409cee0c62089f2f37cc34ce8cacd0b71c45e3efb26a3e9bbef",
+      "link_ids": [
+        "general_contract",
+        "procurement"
+      ],
+      "scope": "분장업무에서 대상 인력별 기관운영 계약, 조달·계약 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "general_contract": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관운영 계약 부분을 직접 확인하는 출발점입니다."
+        },
+        "procurement": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 조달·계약을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d1",
+      "duty_sha256": "dc2e629d7779f7983165ac0cbc953446e1396eb55510953cc1578f2c0a22247e",
+      "link_ids": [
+        "talent",
+        "medical_volunteers",
+        "rules"
+      ],
+      "scope": "분장업무에서 대상 인력별 코디네이터·KMCO·YP, 글로벌협력의사, 내규 제·개정 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 코디네이터·KMCO·YP 부분을 직접 확인하는 출발점입니다."
+        },
+        "medical_volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d2",
+      "duty_sha256": "aaeeefb59169356ae7f196c88a2e0ad0ff784c42918cd66874cdd550a03380d5",
+      "link_ids": [
+        "talent",
+        "medical_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 코디네이터·KMCO·YP, 글로벌협력의사 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 코디네이터·KMCO·YP 부분을 직접 확인하는 출발점입니다."
+        },
+        "medical_volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d3",
+      "duty_sha256": "7ec14358a600c244fc41a39f04e29a33bd52de743beb0d736b886d98ef7335cd",
+      "link_ids": [
+        "talent__talent_development"
+      ],
+      "scope": "분장업무에서 대상 인력별 코디네이터·KMCO·YP, 인재 평가·교육·사후 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent__talent_development": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 코디네이터·KMCO·YP / 인재 평가·교육·사후 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d4",
+      "duty_sha256": "9ab72d1f2a72d60dbc2da45a0690c2d050c51e3138d9e0f66030f99a94e345ee",
+      "link_ids": [
+        "outsourced_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 기관위탁 봉사사업 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "outsourced_volunteers": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관위탁 봉사사업 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d5",
+      "duty_sha256": "bd28f8f2e770fd4f4ff459da80e5d044e041d7e5a9e11f46b4e7f265ba7cd0bc",
+      "link_ids": [
+        "talent_service",
+        "medical_volunteers"
+      ],
+      "scope": "분장업무에서 대상 인력별 인재 활동·복무, 글로벌협력의사 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent_service": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인재 활동·복무 부분을 직접 확인하는 출발점입니다."
+        },
+        "medical_volunteers": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 글로벌협력의사을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d6",
+      "duty_sha256": "4a9aff80d51541555430a78a6bd5f219316d5527bcc8af1600157bcac1533e48",
+      "link_ids": [
+        "talent_service"
+      ],
+      "scope": "분장업무에서 대상 인력별 인재 활동·복무 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent_service": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인재 활동·복무 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d7",
+      "duty_sha256": "8af68285d7dc9f3552a992e277612795b03757d7b8cac46eff6a571df1c6c498",
+      "link_ids": [
+        "talent_development"
+      ],
+      "scope": "분장업무에서 대상 인력별 인재 평가·교육·사후 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent_development": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인재 평가·교육·사후 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d8",
+      "duty_sha256": "f825ffd38c6563e64b9f52af62a2f624c20736aff095febe478df7034136237c",
+      "link_ids": [
+        "talent_development"
+      ],
+      "scope": "분장업무에서 대상 인력별 인재 평가·교육·사후 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent_development": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인재 평가·교육·사후 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d9",
+      "duty_sha256": "08981ddeaf768c628c0f249d150c32965a89c8908d15d61a6e649272acdbc450",
+      "link_ids": [
+        "talent_development"
+      ],
+      "scope": "분장업무에서 대상 인력별 인재 평가·교육·사후 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "talent_development": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인재 평가·교육·사후 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "개발협력인재사업실",
+      "duty_id": "d10",
+      "duty_sha256": "d6902c7e4d8762c7e5cd7b9abd5c4f399e9345e80fc25f2d2fc789623feeef21",
+      "link_ids": [
+        "data_owner",
+        "privacy",
+        "management_disclosure"
+      ],
+      "scope": "분장업무에서 대상 인력별 소관 데이터 관리, 개인정보 처리·권한, 경영공시 경로를 구분하여 검토했습니다.",
+      "gaps": [
+        "대상별 하위지침·계약·지원금액·교육과정 및 운영 매뉴얼은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 소관 데이터 관리 부분을 직접 확인하는 출발점입니다."
+        },
+        "privacy": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 개인정보 처리·권한을 수행하는 경우 함께 확인합니다."
+        },
+        "management_disclosure": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 경영공시을 수행하는 경우 함께 확인합니다."
         }
       }
     }
