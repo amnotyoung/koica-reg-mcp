@@ -75,6 +75,13 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
             continue
         fresh_task = (digest(task["text"]) == review["duty_sha256"] and
                       hashes.get(catalog["organization_source"]) == snapshots[catalog["organization_source"]]["sha256"])
+        if not review["link_ids"]:
+            searched = review.get("searched_sources", [])
+            if review.get("outcome") != "no_direct_basis" or not searched or not review.get("gaps"):
+                raise ValueError("Empty review needs an explicit evidence gap and search scope")
+            if any(s not in snapshots for s in searched):
+                raise ValueError("Gap review source lacks a reading snapshot")
+            fresh_task = fresh_task and all(hashes.get(s) == snapshots[s]["sha256"] for s in searched)
         links = []
         for link_id in review["link_ids"]:
             if fresh_task and valid_links[link_id]:
@@ -87,10 +94,10 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
             raise ValueError("Duplicate target regulation in duty review")
         task["links"] = links
         stale_count = len(review["link_ids"]) - len(links)
-        task["review"] = {"status": "stale" if stale_count else "partial",
+        task["review"] = {"status": "stale" if stale_count or not fresh_task else "partial" if links else "no_direct_basis",
                           "scope": review["scope"], "gaps": review["gaps"],
                           "reviewed_at": catalog["reviewed_at"], "reviewer": catalog["reviewer"],
-                          "stale_links": stale_count}
+                          "stale_links": stale_count, "searched_sources": review.get("searched_sources", [])}
     edge_lookup = {(e["from"], e["to"]): e for e in relations}
     for edge in relations:
         edge.pop("content_review", None)
@@ -103,6 +110,8 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
                                       "evidence": deepcopy(link["evidence"]), "reviewed_at": catalog["reviewed_at"]}
             annotated += 1
     return {"reviewed_duties": sum(bool(t["links"]) for t in tasks.values()),
+            "assessed_duties": sum(t["review"]["status"] != "unreviewed" for t in tasks.values()),
+            "evidence_gap_duties": sum(t["review"]["status"] == "no_direct_basis" for t in tasks.values()),
             "unreviewed_duties": sum(t["review"]["status"] == "unreviewed" for t in tasks.values()),
             "stale_duties": sum(t["review"]["status"] == "stale" for t in tasks.values()),
             "orphaned_reviews": orphaned,

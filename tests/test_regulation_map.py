@@ -113,6 +113,16 @@ class ContentReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Invalid review evidence"):
             self.apply()
 
+    def test_evidence_gap_is_distinct_from_unreviewed_and_becomes_stale(self):
+        review = self.catalog["duty_reviews"][0]
+        review.update(link_ids=[], priorities={}, outcome="no_direct_basis", searched_sources=["회계규정"])
+        stats = self.apply()
+        self.assertEqual(stats["evidence_gap_duties"], 1)
+        self.assertEqual(stats["assessed_duties"], 1)
+        self.assertEqual(stats["unreviewed_duties"], 1)
+        self.texts["회계규정"] += " 개정"
+        self.assertEqual(self.apply()["stale_duties"], 1)
+
     def test_article_outside_reading_scope_is_rejected(self):
         self.catalog["source_snapshots"]["회계규정"]["read_articles"] = []
         with self.assertRaisesRegex(ValueError, "outside the recorded reading scope"):
@@ -142,7 +152,9 @@ class ContentReviewTests(unittest.TestCase):
         stats = apply_reviews(departments, articles, texts, catalog, relations)
         self.assertEqual(stats["stale_duties"], 0)
         self.assertEqual(stats["orphaned_reviews"], 0)
-        self.assertEqual(stats["reviewed_duties"], len(catalog["duty_reviews"]))
+        self.assertEqual(stats["assessed_duties"], len(catalog["duty_reviews"]))
+        self.assertEqual(stats["reviewed_duties"], sum(bool(r["link_ids"]) for r in catalog["duty_reviews"]))
+        self.assertEqual(stats["unreviewed_duties"], 0)
         self.assertEqual(stats["reviewed_relations"], len(catalog["relation_reviews"]))
         d = next(d for d in departments if d["name"] == "동남아시아1팀")
         task = next(t for t in d["duties"] if t["title"] == "국별협력사업 기획 및 관리")

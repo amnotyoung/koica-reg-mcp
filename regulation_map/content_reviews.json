@@ -1173,6 +1173,169 @@
         "제24조"
       ],
       "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "공공저작물 저작권 관리 지침": {
+      "sha256": "2e8c32e2bb50a0bd24791d709668220d90849a39ee0e2cfc91f6cd1c7854af3a",
+      "revision": "2019.09.18 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제6조",
+        "제9조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "정보공개 운영규정": {
+      "sha256": "7e06e450afe48e529c7461fad1395cccda6ae26a0889d5597556cb667dfd718e",
+      "revision": "2025.06.12 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제5조",
+        "제7조",
+        "제8조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "임직원 윤리실천규정": {
+      "sha256": "4f8cddcb199869bc1efa101de3d0d5e166ecc47279d7fdd5c2ea5425972208fb",
+      "revision": "2024.10.02 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제13조",
+        "제14조",
+        "제16조",
+        "제47조",
+        "제55조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "소송·법률자문처리지침": {
+      "sha256": "ecf53665ed8a31c6a6f17acd57e87693ad354d8b8eb2e47f397643de029b62ab",
+      "revision": "2026.02.20 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제4조",
+        "제17조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "청렴옴부즈만 운영지침": {
+      "sha256": "ab19ced87279274de98e8cf7123f56173248cc3db0f35604b1b7e049e8681b9e",
+      "revision": "2021.10.18 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제6조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "감사규정": {
+      "sha256": "f14ac8e33b595d1a14ef8fcbe1c870e7ba4af653924e6cb6f61ce20b8fea7bbd",
+      "revision": "2020.05.22 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조",
+        "제7조",
+        "제14조",
+        "제27조",
+        "제29조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "부패신고 처리 및 신고자 보호 등에 관한 운영지침": {
+      "sha256": "e0b0b7c60b1ff8376c12bbf8dedf63c932efac00b09670367dfd1e4e38c0acee",
+      "revision": "2026.10.12 개정",
+      "read_articles": [
+        "제1조",
+        "제5조",
+        "제6조",
+        "제12조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "윤리준법위원회 운영지침": {
+      "sha256": "cd52afdc3219b8bcdf7ec4374469cfb08d0dc623d95b59bd25f5ccb623bded83",
+      "revision": "2023.07.10 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제3조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "민원 및 고객의소리 사무처리지침": {
+      "sha256": "1616b2788ee6479ce70250a562bddd7cbb0abaf737f688d20907cc5668a0994c",
+      "revision": "2024.06.11 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제5조",
+        "제6조",
+        "제7조",
+        "제30조",
+        "제31조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "감사규정 시행세칙": {
+      "sha256": "d3299123d2ae29095a14e594843a8ed30925a28f1368b03a649007a5604401b5",
+      "revision": "2023.09.22 개정",
+      "read_articles": [
+        "제1조",
+        "제25조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "내부통제규정": {
+      "sha256": "788823a1de40b5c2af32e7507584343a00d77042e958a1dd81b5ca0419842c72",
+      "revision": "2025.12.19 개정",
+      "read_articles": [
+        "제1조",
+        "제3조",
+        "제8조",
+        "제10조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "한국국제협력단 인권경영규정": {
+      "sha256": "5759d91d60ff82179b8a08c26e86f50781f40aceba75cafb7e4fe26d9d71fc9d",
+      "revision": "2024.09.02 개정",
+      "read_articles": [
+        "제1조",
+        "제2조",
+        "제9조",
+        "제10조",
+        "제13조",
+        "제14조",
+        "제15조",
+        "제18조",
+        "제20조",
+        "제34조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "회계감사인 선임위원회 운영규정": {
+      "sha256": "3676400da1192600f6a01afa906c3b61d756d9e7de664b0652c9db16e7796c6d",
+      "revision": "2025.12.30 개정",
+      "read_articles": [
+        "제1조",
+        "제4조",
+        "제5조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
+    },
+    "한국국제협력단 공직자의 이해충돌 방지제도 운영지침": {
+      "sha256": "c92a1b455cb47ba5e432f6885d421aebaf100e9605afbf570d4b3690743a6351",
+      "revision": "2024.11.13 개정",
+      "read_articles": [
+        "제1조",
+        "제2조"
+      ],
+      "scope": "목적·적용범위 및 연결 판단에 사용한 조문 전문. 미검토 별표·외부 법령은 연결 조건에 따로 표시."
     }
   },
   "links": {
@@ -5574,6 +5737,430 @@
           "revision": "2025.02.26 개정",
           "quote": "별도 기관에 위탁하여 실시할 수 있다.",
           "body_sha256": "49ed6ea66425a1b4cb15fe508f7f8840d56979605252ff1fa5d37de26f27e1ff"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "human_rights": {
+      "source": "한국국제협력단 인권경영규정",
+      "role": "인권경영·구제",
+      "rationale": "정기 인권계획과 전담부서, 협력기관·임직원의 인권보호 및 구제제도를 연결한다.",
+      "condition": "구제 세부절차는 별도 매뉴얼을 확인한다. ESG 전체 환경·재무 평가체계를 대체하지 않는다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제18조",
+          "title": "인권경영이행계획 수립",
+          "revision": "2024.09.02 개정",
+          "quote": "인권경영을 효과적으로 추진하기 위하여 정기적인 계획",
+          "body_sha256": "301bc8e690ea0ad7d271ce20e57b0b2a5d1754ef11116348a3ee8ae8e16a4f68"
+        },
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제20조",
+          "title": "인권경영 주관부서",
+          "revision": "2024.09.02 개정",
+          "quote": "인권경영을 전담하는 주관부서",
+          "body_sha256": "99c81882010b4b609e84276eb1a33b40df512f9ceaa1dbc722d1e2f6b25a7ab9"
+        },
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제34조",
+          "title": "인권침해 구제제도",
+          "revision": "2024.09.02 개정",
+          "quote": "진정심의위원회 등 구제제도를 만들고",
+          "body_sha256": "35a580ae3ae83841e84c72031e9ef85690bc1b0d053f06be8ef79f37b0ad84ff"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "labor_rights": {
+      "source": "한국국제협력단 인권경영규정",
+      "role": "노동권·노사관계",
+      "rationale": "우호적 노동환경·노조활동과 단체교섭권 보장의 내부 원칙을 노무관리에 연결한다.",
+      "condition": "구체적인 교섭·단체협약 체결 절차와 노동법 해석은 단체협약·외부 법령을 확인한다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제9조",
+          "title": "노동 인권 보호",
+          "revision": "2024.09.02 개정",
+          "quote": "우호적 노동환경을 조성",
+          "body_sha256": "d44a310b75ca0a31d669a4ee744beb0cb016aeceac585972570f540097c60106"
+        },
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제10조",
+          "title": "노동3권 보장",
+          "revision": "2024.09.02 개정",
+          "quote": "노동자 대표를 통해 단체교섭권을 보장한다.",
+          "body_sha256": "58f21bab42fce5962602175a45ea9645723dce9b62b01cce1f9709483c20a978"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "environment_principle": {
+      "source": "한국국제협력단 인권경영규정",
+      "role": "환경권·자원 활용",
+      "rationale": "환경경영체계와 경영·사업 활동의 지속가능한 자원 활용 원칙을 연결한다.",
+      "condition": "청사 에너지절감 수치·배출량 산정·환경공모전 운영 절차는 직접 확인되지 않았다. 원칙 수준의 관련성이다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제14조",
+          "title": "환경권 보장",
+          "revision": "2024.09.02 개정",
+          "quote": "환경경영체제를 수립 및 유지",
+          "body_sha256": "1d83f79eada75dfe5c3196f9b1926432c492fd5858307c21f2ecd7aff3191d07"
+        },
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제14조",
+          "title": "환경권 보장",
+          "revision": "2024.09.02 개정",
+          "quote": "지속가능한 자원의 활용을 위해 노력한다.",
+          "body_sha256": "1d83f79eada75dfe5c3196f9b1926432c492fd5858307c21f2ecd7aff3191d07"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "fair_partnership": {
+      "source": "한국국제협력단 인권경영규정",
+      "role": "협력기관 공정거래",
+      "rationale": "협력기관의 공정한 참여와 투명한 거래를 상생협력의 내부 원칙으로 연결한다.",
+      "condition": "지역사회 사회공헌의 개별 사업비·기부·지원 절차까지 정하는 조문은 아니다.",
+      "evidence": [
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제15조",
+          "title": "협력기관과의 공정 거래",
+          "revision": "2024.09.02 개정",
+          "quote": "투명하고 공정한 거래를 수행",
+          "body_sha256": "34f725948021c9cc84796f02b2f639ffb8d7c8e741080546ddbafd8098b5afde"
+        },
+        {
+          "source": "한국국제협력단 인권경영규정",
+          "article": "제15조",
+          "title": "협력기관과의 공정 거래",
+          "revision": "2024.09.02 개정",
+          "quote": "공정한 절차를 통해 사업에 참여할 수 있도록",
+          "body_sha256": "34f725948021c9cc84796f02b2f639ffb8d7c8e741080546ddbafd8098b5afde"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "ethics": {
+      "source": "임직원 윤리실천규정",
+      "role": "윤리준법·상담",
+      "rationale": "임직원 윤리기준과 윤리실천담당관의 교육·상담·점검 역할을 연결한다.",
+      "condition": "청탁·금품 등 구체적 위반여부는 관련 조항과 외부 법령을 확인한다.",
+      "evidence": [
+        {
+          "source": "임직원 윤리실천규정",
+          "article": "제47조",
+          "title": "위반 여부에 대한 상담",
+          "revision": "2024.10.02 개정",
+          "quote": "윤리실천담당관과 상담한 후 처리",
+          "body_sha256": "cafd9d34ee2d70688ab612a0fe19b7a6c2a2a5097f7593768da0e8547382bdd6"
+        },
+        {
+          "source": "임직원 윤리실천규정",
+          "article": "제55조",
+          "title": "윤리실천담당관의 지정",
+          "revision": "2024.10.02 개정",
+          "quote": "윤리실천담당관은 윤리경영 소관 부서장",
+          "body_sha256": "ee67b51a8b86f4345ce9e3ce0332ae80658a3af87428b54c69fc6942cc82a721"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "internal_control": {
+      "source": "내부통제규정",
+      "role": "내부통제 운영·평가",
+      "rationale": "총괄·이행부서의 점검·시정·이행관리와 감사부서의 운영 적정성 평가를 구분한다.",
+      "condition": "모든 업무에 관한 내부통제 체계다. 개별 위험평가의 점수·부적합 판정은 별도 확인한다.",
+      "evidence": [
+        {
+          "source": "내부통제규정",
+          "article": "제8조",
+          "title": "총괄부서 및 이행부서",
+          "revision": "2025.12.19 개정",
+          "quote": "이행부서는 직제상 소관 업무 및 소관 조직에 대한 내부통제를 시행한다.",
+          "body_sha256": "e58680c6b1505b25b2f69786a2819a2b9020a8716e039a904141faa4850750d3"
+        },
+        {
+          "source": "내부통제규정",
+          "article": "제10조",
+          "title": "감사 담당부서",
+          "revision": "2025.12.19 개정",
+          "quote": "내부통제 제도의 운영의 적정성에 대해 평가",
+          "body_sha256": "6155dc1d906c9f766c3932dcfdc862324071a95cd8ba7b0f36075a490bb8a7d3"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "information_disclosure": {
+      "source": "정보공개 운영규정",
+      "role": "정보공개 총괄·처리",
+      "rationale": "정보공개 정책·평가·심의회 총괄과 소관부서 공개결정·사전공표·원문공개를 연결한다.",
+      "condition": "비공개 대상과 개인정보 제외를 반드시 함께 확인한다. 공공데이터 개방과 구별되는 제도다.",
+      "evidence": [
+        {
+          "source": "정보공개 운영규정",
+          "article": "제5조",
+          "title": "부서별 업무",
+          "revision": "2025.06.12 개정",
+          "quote": "협력단 정보공개업무 정책 및 제도 수립",
+          "body_sha256": "f2a6c4b88b535a5348e60a9868c2160bba3302cbce7aee78cd20cc4a5eb5a8e2"
+        },
+        {
+          "source": "정보공개 운영규정",
+          "article": "제8조",
+          "title": "공개대상 정보의 원문공개",
+          "revision": "2025.06.12 개정",
+          "quote": "공개 문서에 개인정보 등 비공개 대상정보를 포함하여서는 아니된다.",
+          "body_sha256": "da6eb41132374261d8f6b5960ad5f1987e7bf769f7176e5a3992ef6a6ba784fe"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "customer_service": {
+      "source": "민원 및 고객의소리 사무처리지침",
+      "role": "민원·고객의소리",
+      "rationale": "민원 접수·배부·점검과 고객만족담당관, 시스템·모니터링의 경로를 연결한다.",
+      "condition": "PCSI 조사 설계·점수 산식이나 전체 CS 전략의 상세 기준은 미수록·별도 확인 대상이다.",
+      "evidence": [
+        {
+          "source": "민원 및 고객의소리 사무처리지침",
+          "article": "제5조",
+          "title": "기본원칙",
+          "revision": "2024.06.11 개정",
+          "quote": "1명 이상의 고객만족담당관을 운영",
+          "body_sha256": "c57862fee03f071c4a28bca17325413b0efacbf0abb812ff5fc49d998e89dff6"
+        },
+        {
+          "source": "민원 및 고객의소리 사무처리지침",
+          "article": "제7조",
+          "title": "배부",
+          "revision": "2024.06.11 개정",
+          "quote": "처리부서를 지정하여 즉시 배부",
+          "body_sha256": "a0589d0f864e9a841508e5b24f257819a4d684e06a4e44182b1f775b2b1cde01"
+        },
+        {
+          "source": "민원 및 고객의소리 사무처리지침",
+          "article": "제31조",
+          "title": "모니터링",
+          "revision": "2024.06.11 개정",
+          "quote": "정기적 모니터링을 실시하고",
+          "body_sha256": "6a5a8ca2a40d93cf56f244da86e4fca9470c818b0a9348014b999978845fb174"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "copyright": {
+      "source": "공공저작물 저작권 관리 지침",
+      "role": "저작권·콘텐츠",
+      "rationale": "제작·공동창작 계약의 권리 귀속과 공공저작물 총괄 관리를 연결한다.",
+      "condition": "간행물·사진·영상 등의 권리 관리 부분이다. 제3자 권리·초상권·개인정보·이용허락은 건별 확인한다.",
+      "evidence": [
+        {
+          "source": "공공저작물 저작권 관리 지침",
+          "article": "제3조",
+          "title": "적용범위",
+          "revision": "2019.09.18 개정",
+          "quote": "간행물, 연구보고서, 산출물 등 공공저작물",
+          "body_sha256": "aad9e1a808b1920c1801e6505e4b73c148d91237a111640e89e8791156370dc9"
+        },
+        {
+          "source": "공공저작물 저작권 관리 지침",
+          "article": "제6조",
+          "title": "저작권 등 권리처리",
+          "revision": "2019.09.18 개정",
+          "quote": "저작권 등의 귀속관계에 대해 명확하게 기재",
+          "body_sha256": "2a03f6b06e8e564edd3ffc52da04bfcbd023d1643d132d6a933a5c27ddad237f"
+        },
+        {
+          "source": "공공저작물 저작권 관리 지침",
+          "article": "제9조",
+          "title": "관리부서 및 담당자 지정 등",
+          "revision": "2019.09.18 개정",
+          "quote": "공공저작물 관리업무를 총괄",
+          "body_sha256": "994d245da6ea773dd3e14ed1a303ebaff9e774023592886d144297eaf4fc9bac"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "legal": {
+      "source": "소송·법률자문처리지침",
+      "role": "송무·법률자문",
+      "rationale": "법무부서의 소송 수행과 소관부서의 자문 요청·검토·회신 경로를 연결한다.",
+      "condition": "기관 당사자 소송 및 법률자문 업무다. 국가 간 협정의 체결 권한이나 계약의 법적 유효성을 단정하지 않는다.",
+      "evidence": [
+        {
+          "source": "소송·법률자문처리지침",
+          "article": "제4조",
+          "title": "소송 및 법률자문업무의 수행",
+          "revision": "2026.02.20 개정",
+          "quote": "소송에 관한 업무는 원칙적으로 법무부서에서 수행",
+          "body_sha256": "aafcdfca9c55718bb1eb661b8f0612999b712bf087a69e3b0e3584b8f9e5c0d3"
+        },
+        {
+          "source": "소송·법률자문처리지침",
+          "article": "제17조",
+          "title": "법률자문",
+          "revision": "2026.02.20 개정",
+          "quote": "법률자문 의뢰서를 작성하여 법률자문 의뢰를 요청",
+          "body_sha256": "14772def9def43afbe3d10b6287d574e2111c2918422eacf22b8610c611061d5"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "audit": {
+      "source": "감사규정",
+      "role": "내·외부 감사",
+      "rationale": "업무·회계 감사, 외부감사 총괄과 진정·비위조사, 연간감사계획의 근거를 연결한다.",
+      "condition": "외부감사 총괄의 예외인 예비군·민방위·보안 감사에 주의한다. 감사원 심사평가 편람은 별도 확인한다.",
+      "evidence": [
+        {
+          "source": "감사규정",
+          "article": "제3조",
+          "title": "감사의 직무",
+          "revision": "2020.05.22 개정",
+          "quote": "진정 및 비위사항의 조사처리",
+          "body_sha256": "2a161f1c21790f848ab1501d7146dc9c50da7c4a8841eb7c7dd52dce830b4fd4"
+        },
+        {
+          "source": "감사규정",
+          "article": "제14조",
+          "title": "연간감사계획 수립 및 제출",
+          "revision": "2020.05.22 개정",
+          "quote": "당해연도의 감사계획을 수립",
+          "body_sha256": "5f2a9a969299f28c65b020afd871f97510fb6be28dea22ccd40e0a737fe53d86"
+        },
+        {
+          "source": "감사규정",
+          "article": "제27조",
+          "title": "외부감사",
+          "revision": "2020.05.22 개정",
+          "quote": "향토예비군, 민방위 및 보안에 관한 감사는 그러하지 아니하다.",
+          "body_sha256": "3111c34e984bdc1a5713d152107883d7274ec641546652853caee67b143fcc8d"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "audit_external": {
+      "source": "감사규정 시행세칙",
+      "role": "외부감사 수감보고",
+      "rationale": "외부감사·자료 제출요구·직원 출석요구의 감사실 통보 절차를 연결한다.",
+      "condition": "외부기관별 수검·평가 기준까지 포함하지 않는다.",
+      "evidence": [
+        {
+          "source": "감사규정 시행세칙",
+          "article": "제25조",
+          "title": "외부감사의 수감보고",
+          "revision": "2023.09.22 개정",
+          "quote": "수감내용을 감사실에 통보하여야 한다.",
+          "body_sha256": "e75c0a9b53d053566a74a70898b594390ae1d6dceafc32b2c52685848a965578"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "ombudsman": {
+      "source": "청렴옴부즈만 운영지침",
+      "role": "청렴옴부즈만",
+      "rationale": "조달 과정 감시·평가, 부패행위 시정권고와 제도개선의 옴부즈만 역할을 연결한다.",
+      "condition": "진행 중인 행정심판·소송·다른 국가기관 감사·조사는 직무 제외 조항을 확인한다.",
+      "evidence": [
+        {
+          "source": "청렴옴부즈만 운영지침",
+          "article": "제6조",
+          "title": "옴부즈만의 직무 및 권한",
+          "revision": "2021.10.18 개정",
+          "quote": "부패행위 관련 사항의 시정 권고",
+          "body_sha256": "9d40db060f9c57aebf483663533d7d715fbb88aabb96e16328c5440a0292fce2"
+        },
+        {
+          "source": "청렴옴부즈만 운영지침",
+          "article": "제6조",
+          "title": "옴부즈만의 직무 및 권한",
+          "revision": "2021.10.18 개정",
+          "quote": "다른 국가기관의 감사 또는 조사가 진행 중인 사항",
+          "body_sha256": "9d40db060f9c57aebf483663533d7d715fbb88aabb96e16328c5440a0292fce2"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "corruption_reports": {
+      "source": "부패신고 처리 및 신고자 보호 등에 관한 운영지침",
+      "role": "부패신고·보호",
+      "rationale": "신고 상담·접수·처리 책임관과 신고자 신분보호를 연결한다.",
+      "condition": "일반 민원·인권진정·공익신고는 각각의 적용 제도를 구분한다.",
+      "evidence": [
+        {
+          "source": "부패신고 처리 및 신고자 보호 등에 관한 운영지침",
+          "article": "제5조",
+          "title": "책임관의 지정",
+          "revision": "2026.10.12 개정",
+          "quote": "신고자 보호 등을 담당하는 책임관",
+          "body_sha256": "ee203ce60320a77707154e7fc72699088f5f00dbc78cdcbe91dc0bdf42510167"
+        },
+        {
+          "source": "부패신고 처리 및 신고자 보호 등에 관한 운영지침",
+          "article": "제12조",
+          "title": "신분비밀보장",
+          "revision": "2026.10.12 개정",
+          "quote": "신고자라는 사정을 알면서도",
+          "body_sha256": "42d9a0f012d4ed164b611eff9e92c322c7546a8b99bd0efb4b5c8b7db0e9809a"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "auditor_appointment": {
+      "source": "회계감사인 선임위원회 운영규정",
+      "role": "회계감사인 선정",
+      "rationale": "회계감사인 선임위원회의 구성·운영과 선정·변경 및 보수 기준 심의를 연결한다.",
+      "condition": "외부 회계감사인 선정 업무에 한정하며 자체감사 계획과 구분한다.",
+      "evidence": [
+        {
+          "source": "회계감사인 선임위원회 운영규정",
+          "article": "제5조",
+          "title": "직무",
+          "revision": "2025.12.30 개정",
+          "quote": "감사인의 선정 및 변경",
+          "body_sha256": "e9ff6045bccc1afdcc73409ac6347c8848ce9032fdb818f02f0fb70c86becabb"
+        },
+        {
+          "source": "회계감사인 선임위원회 운영규정",
+          "article": "제5조",
+          "title": "직무",
+          "revision": "2025.12.30 개정",
+          "quote": "감사 보수 및 시간 등 감사인 선정기준",
+          "body_sha256": "e9ff6045bccc1afdcc73409ac6347c8848ce9032fdb818f02f0fb70c86becabb"
+        }
+      ],
+      "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
+    },
+    "anti_corruption_review": {
+      "source": "내규관리규정",
+      "role": "내규 부패영향평가",
+      "rationale": "감사담당부서의 내규 부패영향평가 관장과 입안 부서 자율점검의 경로를 연결한다.",
+      "condition": "제6조와 제8조의 주무부서 표기가 일치하지 않는 부분은 법규·감사부서에 확인해야 하며 세부 담당을 단정하지 않는다.",
+      "evidence": [
+        {
+          "source": "내규관리규정",
+          "article": "제6조",
+          "title": "주무 부서 등",
+          "revision": "2025.02.17 개정",
+          "quote": "내규 제정 및 개정에 대한 부패영향평가는",
+          "body_sha256": "d7b5258b59200eeb75f66365fa20db85a11f08118645276fabe45a586cfbf6a0"
+        },
+        {
+          "source": "내규관리규정",
+          "article": "제8조",
+          "title": "부패영향평가",
+          "revision": "2025.02.17 개정",
+          "quote": "부패영향평가 자율점검표를 작성",
+          "body_sha256": "75cf5adf3b6cbb4dfd9427adfd21ecac29b930b87a5a04a4a824d062c693a403"
         }
       ],
       "review_method": "AI가 업무분장과 근거 조문 전문을 대조한 부분 검토. 기관의 공식 적용 판정은 아님."
@@ -14443,6 +15030,1029 @@
           "reason": "해당 업무 중 기관운영 계약을 수행하는 경우 함께 확인합니다."
         }
       }
+    },
+    {
+      "department": "인사실 / 인사지원팀",
+      "duty_id": "d1",
+      "duty_sha256": "b9eb35129265e462d8d2360aee19ad681681b908248f23d71e02a2086e1d88e6",
+      "link_ids": [
+        "labor_rights",
+        "legal"
+      ],
+      "scope": "업무분장 중 노동권·노사관계, 송무·법률자문 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "labor_rights": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 노동권·노사관계을 수행하는 경우 함께 확인합니다."
+        },
+        "legal": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 송무·법률자문을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "안전·경영실 / 운영지원팀",
+      "duty_id": "d4",
+      "duty_sha256": "8e6761259c54a91d4e3001320c5cf4593deacc61faf2512662647f315dcf9b4e",
+      "link_ids": [
+        "environment_principle"
+      ],
+      "scope": "업무분장 중 환경권·자원 활용 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "environment_principle": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 환경권·자원 활용을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "비서실",
+      "duty_id": "d1",
+      "duty_sha256": "bbca8726ee7668f004059f7f9fb91d596a8e7db7383a726367a0d44d0f3ae22d",
+      "link_ids": [
+        "security_documents",
+        "office_docs"
+      ],
+      "scope": "업무분장 중 기밀·비상연락, 문서수발·관인 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "security_documents": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기밀·비상연락을 수행하는 경우 함께 확인합니다."
+        },
+        "office_docs": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 문서수발·관인을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d1",
+      "duty_sha256": "530a567a88f1ad2e9880b7a7513387df746e2c4e6a236dba7f1bbca289b7f70b",
+      "link_ids": [
+        "human_rights",
+        "management_performance"
+      ],
+      "scope": "업무분장 중 인권경영·구제, 경영목표·실적보고 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "human_rights": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 인권경영·구제을 수행하는 경우 함께 확인합니다."
+        },
+        "management_performance": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 경영목표·실적보고을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d2",
+      "duty_sha256": "e5b3d7b265870d1c7dba095636ef8ca6156eb98e761d74234f2af125389b5152",
+      "link_ids": [
+        "human_rights"
+      ],
+      "scope": "업무분장 중 인권경영·구제 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "human_rights": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 인권경영·구제 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d3",
+      "duty_sha256": "b300751c4eff101f6bc28552808bd0111da2fabe01be7ae6a9e83cdc7adcd3e6",
+      "link_ids": [
+        "environment_principle"
+      ],
+      "scope": "업무분장 중 환경권·자원 활용 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "environment_principle": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 환경권·자원 활용을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d4",
+      "duty_sha256": "84fb9cfefa3fd0d2d8541e5cf6877772481039882ef53daf0c49d85d2cebae6c",
+      "link_ids": [
+        "fair_partnership",
+        "mou"
+      ],
+      "scope": "업무분장 중 협력기관 공정거래, 기관 간 협력약정 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "fair_partnership": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 협력기관 공정거래을 수행하는 경우 함께 확인합니다."
+        },
+        "mou": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관 간 협력약정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d6",
+      "duty_sha256": "63522cfb4d5bcc62feff605e2d2567ef341fdd9381a0477e6252aa0dd9b9befb",
+      "link_ids": [
+        "subsidiary"
+      ],
+      "scope": "업무분장 중 출자회사 과업·평가 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "subsidiary": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 출자회사 과업·평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d7",
+      "duty_sha256": "b2bd56b1f57e6c81c042aecabf868b78d627e9fae7e2fd2b1443ba0544512eae",
+      "link_ids": [
+        "proactive"
+      ],
+      "scope": "업무분장 중 적극행정·혁신 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "proactive": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 적극행정·혁신 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d8",
+      "duty_sha256": "19322d0e3d624623c95c68d73a6dbd1ee527a220c7343226abe0d97fba31acc1",
+      "link_ids": [
+        "committee",
+        "rules"
+      ],
+      "scope": "업무분장 중 위원회 공통 운영, 내규 제·개정 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "committee": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 위원회 공통 운영을 수행하는 경우 함께 확인합니다."
+        },
+        "rules": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내규 제·개정을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d9",
+      "duty_sha256": "dcf01edd046d01827985da5eb03bf581bd9b54413ec7bcd7a42e0d4413e41260",
+      "link_ids": [
+        "customer_service"
+      ],
+      "scope": "업무분장 중 민원·고객의소리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "customer_service": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 민원·고객의소리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d10",
+      "duty_sha256": "76a4eb0281a7725d737cd79bc2845754a8deec9a2dfe4950c415f8557742c759",
+      "link_ids": [
+        "customer_service"
+      ],
+      "scope": "업무분장 중 민원·고객의소리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "customer_service": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 민원·고객의소리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d11",
+      "duty_sha256": "c84c9122e8af674da757b2ce9ddf50a9c9b06072f5ed477b0344cf10d4cb3386",
+      "link_ids": [
+        "customer_service"
+      ],
+      "scope": "업무분장 중 민원·고객의소리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "customer_service": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 민원·고객의소리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d12",
+      "duty_sha256": "4d9dc8832a7430760c2ebbf188d9d19fd6785876ea17c706d4ed2b6c392baf30",
+      "link_ids": [
+        "information_disclosure"
+      ],
+      "scope": "업무분장 중 정보공개 총괄·처리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "information_disclosure": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 정보공개 총괄·처리 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / 윤리준법팀",
+      "duty_id": "d1",
+      "duty_sha256": "8e55953b6d9e0934271d991b2c14d0ff0264af6839784a1b947d64d3895edade",
+      "link_ids": [
+        "ethics",
+        "internal_control",
+        "human_rights"
+      ],
+      "scope": "업무분장 중 윤리준법·상담, 내부통제 운영·평가, 인권경영·구제 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "ethics": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 윤리준법·상담 부분을 직접 확인하는 출발점입니다."
+        },
+        "internal_control": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내부통제 운영·평가을 수행하는 경우 함께 확인합니다."
+        },
+        "human_rights": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 인권경영·구제을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / 윤리준법팀",
+      "duty_id": "d2",
+      "duty_sha256": "7b92b16aa0455ca4ffb71e23088974f4b99004a4627aa5f20983d6bda6b0306e",
+      "link_ids": [
+        "rules"
+      ],
+      "scope": "업무분장 중 내규 제·개정 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "rules": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내규 제·개정 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / 윤리준법팀",
+      "duty_id": "d3",
+      "duty_sha256": "5fa3b139674331c6579fd6eb76f35d4b9dc4f3d188a33ed25ffbadd0df6727de",
+      "link_ids": [
+        "legal"
+      ],
+      "scope": "업무분장 중 송무·법률자문 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "legal": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 송무·법률자문 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / 윤리준법팀",
+      "duty_id": "d4",
+      "duty_sha256": "1a1bd3f2d9e91cf6e672d896a9424e4bcb8eb94832d050235cdb35a93ebb06c8",
+      "link_ids": [
+        "mou",
+        "legal"
+      ],
+      "scope": "업무분장 중 기관 간 협력약정, 송무·법률자문 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "mou": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 기관 간 협력약정 부분을 직접 확인하는 출발점입니다."
+        },
+        "legal": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 송무·법률자문을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / 윤리준법팀",
+      "duty_id": "d5",
+      "duty_sha256": "17dc6ce09d80344dd64bc5706d378e9c99ad2e28649748923c4cf64ded31d1d2",
+      "link_ids": [
+        "office_docs",
+        "record_access"
+      ],
+      "scope": "업무분장 중 문서수발·관인, 기록물 접근·이관 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "office_docs": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 문서수발·관인 부분을 직접 확인하는 출발점입니다."
+        },
+        "record_access": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기록물 접근·이관을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "ESG경영실 / 윤리준법팀",
+      "duty_id": "d6",
+      "duty_sha256": "210b790efc631106aad8a43e4750053c7c15710545507a2cf3ebefedacfab8a5",
+      "link_ids": [
+        "copyright"
+      ],
+      "scope": "업무분장 중 저작권·콘텐츠 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "copyright": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 저작권·콘텐츠 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d1",
+      "duty_sha256": "e166b6dfa13741e8b6fce920207bee262c15160a6c2a38079e2b354a4197107e",
+      "link_ids": [
+        "publications"
+      ],
+      "scope": "업무분장 중 간행물·CI 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "publications": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 간행물·CI을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d2",
+      "duty_sha256": "de84240eda34264a0077528fb8fa5c348bf1aad7a2bf513e50a701ebc4c635cd",
+      "link_ids": [
+        "press_release",
+        "security_documents"
+      ],
+      "scope": "업무분장 중 언론 보도자료, 기밀·비상연락 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "press_release": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 언론 보도자료을 수행하는 경우 함께 확인합니다."
+        },
+        "security_documents": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기밀·비상연락을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d3",
+      "duty_sha256": "d52300091c023b42219f21468e438e5375de62f041a4f5dfc04dcfaae42164a4",
+      "link_ids": [
+        "data_owner"
+      ],
+      "scope": "업무분장 중 소관 데이터 관리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "data_owner": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d4",
+      "duty_sha256": "490e33b31180112ba71e6b4dd79fb3b0bc393c75d8d230edd25d62241b355b2a",
+      "link_ids": [
+        "web_security",
+        "copyright"
+      ],
+      "scope": "업무분장 중 홈페이지 게시 보안, 저작권·콘텐츠 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "web_security": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 홈페이지 게시 보안을 수행하는 경우 함께 확인합니다."
+        },
+        "copyright": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 저작권·콘텐츠을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d5",
+      "duty_sha256": "941892aed582ee40e7eecc94a1e627373951ad212a6e2700cefc680e41ce1df0",
+      "link_ids": [
+        "copyright",
+        "general_contract"
+      ],
+      "scope": "업무분장 중 저작권·콘텐츠, 기관운영 계약 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "copyright": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 저작권·콘텐츠을 수행하는 경우 함께 확인합니다."
+        },
+        "general_contract": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관운영 계약을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d6",
+      "duty_sha256": "a704512668debd93ae5162131589a8e7d9e54fd72b9f6541b672b6f44b1e83ae",
+      "link_ids": [
+        "publications"
+      ],
+      "scope": "업무분장 중 간행물·CI 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "publications": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 간행물·CI을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d7",
+      "duty_sha256": "8e2a571e4b928f661e9b3fe5ae1410dcfc656588af9e4a3bc1714c988beaa120",
+      "link_ids": [
+        "asset",
+        "general_contract"
+      ],
+      "scope": "업무분장 중 자산·시설 관리, 기관운영 계약 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "asset": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+        },
+        "general_contract": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관운영 계약을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d9",
+      "duty_sha256": "1c592076fe5657688d859ce40b5b662d4b4d67253671c799eece200e5cde7654",
+      "link_ids": [
+        "copyright",
+        "data_owner"
+      ],
+      "scope": "업무분장 중 저작권·콘텐츠, 소관 데이터 관리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "copyright": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 저작권·콘텐츠을 수행하는 경우 함께 확인합니다."
+        },
+        "data_owner": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 소관 데이터 관리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d10",
+      "duty_sha256": "fbc2933c9911c14dfb12e652c3c16f187383836347f1909811b12e357b454f7d",
+      "link_ids": [
+        "hr_training",
+        "oda_education"
+      ],
+      "scope": "업무분장 중 임직원 교육훈련, 대국민 ODA 교육 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "hr_training": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 임직원 교육훈련을 수행하는 경우 함께 확인합니다."
+        },
+        "oda_education": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 대국민 ODA 교육을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d11",
+      "duty_sha256": "13832c63761297cfbd5ee6305fa942463ea32334432352969a7d00dd9196d0e6",
+      "link_ids": [
+        "archive",
+        "general_contract",
+        "asset"
+      ],
+      "scope": "업무분장 중 기록관 운영, 기관운영 계약, 자산·시설 관리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "규정이 직접 다루는 콘텐츠·자료·자산·계약·교육 부분만 연결했습니다. 홍보계획·브랜드·전시관 운영의 전용 매뉴얼까지 검토한 것은 아닙니다."
+      ],
+      "priorities": {
+        "archive": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 기록관 운영을 수행하는 경우 함께 확인합니다."
+        },
+        "general_contract": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 기관운영 계약을 수행하는 경우 함께 확인합니다."
+        },
+        "asset": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 자산·시설 관리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d1",
+      "duty_sha256": "4a2a60ca56c4b0ad7d9639cd75bac0ad4440c015801433e2f99b11c96da88071",
+      "link_ids": [
+        "audit",
+        "proactive"
+      ],
+      "scope": "업무분장 중 내·외부 감사, 적극행정·혁신 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "audit": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내·외부 감사 부분을 직접 확인하는 출발점입니다."
+        },
+        "proactive": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 적극행정·혁신을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d2",
+      "duty_sha256": "67918f26fb91e62fd03b3dd2e3db2ee1a413575fb1722c0363470eabe4b36ca8",
+      "link_ids": [
+        "audit",
+        "audit_external"
+      ],
+      "scope": "업무분장 중 내·외부 감사, 외부감사 수감보고 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "audit": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내·외부 감사 부분을 직접 확인하는 출발점입니다."
+        },
+        "audit_external": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 외부감사 수감보고을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d3",
+      "duty_sha256": "0f0a041aadfdb49d3cb92ec2087ca284adc0dc6c1bb011146fbb9812297bdc17",
+      "link_ids": [
+        "audit",
+        "service"
+      ],
+      "scope": "업무분장 중 내·외부 감사, 복무·휴가·후생 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "audit": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내·외부 감사 부분을 직접 확인하는 출발점입니다."
+        },
+        "service": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 복무·휴가·후생을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d4",
+      "duty_sha256": "288ea54bfe285fb3827f3e86f046e5b20c80634d45bb1b506de21774ebc42de6",
+      "link_ids": [
+        "audit"
+      ],
+      "scope": "업무분장 중 내·외부 감사 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "audit": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 내·외부 감사을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d5",
+      "duty_sha256": "9ddeb0a614d41b5012961909ce88d6d1cc7e9f9d9c6117790871fcb23b2e5d4b",
+      "link_ids": [
+        "ombudsman",
+        "ethics"
+      ],
+      "scope": "업무분장 중 청렴옴부즈만, 윤리준법·상담 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "ombudsman": {
+          "level": "supporting",
+          "order": 1,
+          "reason": "해당 업무 중 청렴옴부즈만을 수행하는 경우 함께 확인합니다."
+        },
+        "ethics": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 윤리준법·상담을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d6",
+      "duty_sha256": "5e48c975ba762b40250510c4d40621714c6e5e4a6a4f6e3520cf8a4decc3865b",
+      "link_ids": [
+        "corruption_reports",
+        "audit",
+        "customer_service"
+      ],
+      "scope": "업무분장 중 부패신고·보호, 내·외부 감사, 민원·고객의소리 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "corruption_reports": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 부패신고·보호 부분을 직접 확인하는 출발점입니다."
+        },
+        "audit": {
+          "level": "supporting",
+          "order": 2,
+          "reason": "해당 업무 중 내·외부 감사을 수행하는 경우 함께 확인합니다."
+        },
+        "customer_service": {
+          "level": "supporting",
+          "order": 3,
+          "reason": "해당 업무 중 민원·고객의소리을 수행하는 경우 함께 확인합니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d7",
+      "duty_sha256": "165b6cf45f9b975d8d4a093bc8d88ecc7a30c08da4e02d94e105e4aba64e06a9",
+      "link_ids": [
+        "auditor_appointment"
+      ],
+      "scope": "업무분장 중 회계감사인 선정 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "auditor_appointment": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 회계감사인 선정 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d8",
+      "duty_sha256": "bec7f5e5bb5df8a7c2b02174bc3df55df7d7daf875aaf35fff59232660bd3414",
+      "link_ids": [
+        "anti_corruption_review"
+      ],
+      "scope": "업무분장 중 내규 부패영향평가 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "anti_corruption_review": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내규 부패영향평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d9",
+      "duty_sha256": "a415e1f802124cb54b1ccd1e9d78bbc7242943b443eea65dd016ae7fc1b2210c",
+      "link_ids": [
+        "internal_control"
+      ],
+      "scope": "업무분장 중 내부통제 운영·평가 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "internal_control": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내부통제 운영·평가 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "감사실",
+      "duty_id": "d10",
+      "duty_sha256": "a0d611a161a41d3f061cfdff33c08a9c5b72d845c9af977e087c609179af09ca",
+      "link_ids": [
+        "audit"
+      ],
+      "scope": "업무분장 중 내·외부 감사 관련 내부 근거의 부분 연결입니다.",
+      "gaps": [
+        "해당 업무의 구체적인 대외 평가편람·협약·집행 매뉴얼·외부 법령은 추가 확인해야 합니다."
+      ],
+      "priorities": {
+        "audit": {
+          "level": "core",
+          "order": 1,
+          "reason": "업무분장 중 내·외부 감사 부분을 직접 확인하는 출발점입니다."
+        }
+      }
+    },
+    {
+      "department": "안전·경영실 / 운영지원팀",
+      "duty_id": "d10",
+      "duty_sha256": "a247c58308ab578cb4f98496228f111cc29da4229317a217affc12b67584b5da",
+      "link_ids": [],
+      "scope": "지역사회 사회공헌활동의 선정·집행·기부·후원 절차를 직접 정한 근거는 확인한 자료에서 찾지 못했습니다.",
+      "gaps": [
+        "사회공헌 추진계획·기부/후원 집행기준·협력약정이 필요합니다. 상품권 관리나 IBS의 기업 CSR 조항을 기관 사회공헌 전체의 기준으로 연결하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "한국국제협력단 인권경영규정",
+        "자산관리규정",
+        "기관 간 약정 체결 및 관리 업무 지침"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+    },
+    {
+      "department": "조달실 / 동반성장팀",
+      "duty_id": "d6",
+      "duty_sha256": "5c9c0510bf3ceb351d6b6e6d22899b5d9bee06c38adaeee196f9391621335700",
+      "link_ids": [],
+      "scope": "KODABIZ라는 조직·프로그램의 운영근거와 역할을 직접 확인하지 못했습니다.",
+      "gaps": [
+        "KODABIZ 설치·운영계획, 위탁계약·사업안내서가 필요합니다. 다른 기업지원센터를 같은 기관으로 취급하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "기업성장응답센터 운영지침",
+        "국제개발협력센터사업 운영지침",
+        "대외무상협력사업에 관한 조달 및 계약규정"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사총괄팀",
+      "duty_id": "d3",
+      "duty_sha256": "67b78869edafce649af61d71111ba9207d1a9a4b1f8a7a5cafbb7d95693dbbaf",
+      "link_ids": [],
+      "scope": "단원의 파견 절차와 국가 간 WFK 파견협정의 협상·체결 절차는 구별됩니다. 후자의 직접 근거는 확인하지 못했습니다.",
+      "gaps": [
+        "정부해외봉사단 통합운영 규정, 국가별 협정·약정과 외교부 협의절차가 필요합니다. 비구속 기관 간 MOU 규정을 국가 간 협정에 그대로 적용하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "해외봉사단파견 규정",
+        "기관위탁형 해외봉사단 파견사업 규정",
+        "기관 간 약정 체결 및 관리 업무 지침"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+    },
+    {
+      "department": "해외봉사사업실 / 해외봉사관리팀",
+      "duty_id": "d7",
+      "duty_sha256": "ce092cd3bde1c06fe962a3a3d9d5656d1d57881a7472cf89202fc721e14d4fef",
+      "link_ids": [],
+      "scope": "대한민국 해외봉사상 자체의 수상자 심사·추천·포상 운영근거는 확인하지 못했습니다.",
+      "gaps": [
+        "해당 포상 운영계획·공고·포상지침이 필요합니다. 협력단 직원·외부인사에 대한 일반 이사장 포상과 같은 제도로 단정하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "해외봉사단파견 규정",
+        "인사규정"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d5",
+      "duty_sha256": "f02cd86a2f1e484b2c6e8fcf2b340140482d23aec5d25c1726cd8ca82a1c8dbb",
+      "link_ids": [],
+      "scope": "전사 일자리로드맵 및 정부 일자리정책 대응의 실행기준을 직접 확인하지 못했습니다.",
+      "gaps": [
+        "정부 일자리정책 지침, 기관 일자리 기본계획·성과지표가 필요합니다. 일반 채용·노동권 규정을 일자리 창출계획의 직접 근거로 대체하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "한국국제협력단 정관",
+        "인사규정",
+        "한국국제협력단 인권경영규정"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+    },
+    {
+      "department": "ESG경영실 / ESG·소통팀",
+      "duty_id": "d13",
+      "duty_sha256": "307e4adce14830649c8afe63af9fc24e44ee3336ff6b2fa9321230584b8d7fe9",
+      "link_ids": [],
+      "scope": "공공서비스 목록의 등록·갱신·공표 체계에 대한 직접 근거는 확인하지 못했습니다.",
+      "gaps": [
+        "서비스 목록관리 시스템·등록 지침과 기관 담당절차가 필요합니다. 정보목록·공공데이터 목록을 공공서비스 목록과 동일시하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "정보공개 운영규정",
+        "공공데이터 관리 지침",
+        "민원 및 고객의소리 사무처리지침"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
+    },
+    {
+      "department": "홍보실",
+      "duty_id": "d8",
+      "duty_sha256": "621da844539615095a6945c1fa0217e55aff2ca8d0524db3a7afbc6bc5fe9e81",
+      "link_ids": [],
+      "scope": "홍보대사의 위촉·임기·해촉·활동관리 요건을 직접 정한 근거는 확인하지 못했습니다.",
+      "gaps": [
+        "홍보대사 운영계획·위촉계약·관리지침이 필요합니다. 자문위원 위촉규정을 홍보대사에게 자동 적용하지 않았습니다."
+      ],
+      "priorities": {},
+      "outcome": "no_direct_basis",
+      "searched_sources": [
+        "상임고문 및 자문위원에 관한 규정",
+        "간행물 발간 및 활용에 관한 지침",
+        "소송·법률자문처리지침"
+      ],
+      "discovery_note": "전체 개별 규정의 본칙에서 업무 고유명칭을 탐색하고 관련 규정의 목적·적용범위 및 해당 조문을 대조한 결과. 내부 규정 자체의 부재를 확정하는 판단은 아님."
     }
   ],
   "relation_reviews": [
@@ -14506,8 +16116,8 @@
   "citation_verification": {
     "checked_at": "2026-11-05",
     "service": "KOICA regulation MCP verify_citation",
-    "unique_citations": 65,
-    "result": "65 ok",
+    "unique_citations": 313,
+    "result": "313 ok",
     "scope": "인용 실재성 확인이며 관계 해석·최신성 승인 아님"
   },
   "priority_policy": {
