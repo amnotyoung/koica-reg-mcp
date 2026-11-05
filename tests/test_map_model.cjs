@@ -56,6 +56,11 @@ assert.equal(combined.links[0].associations[1].link.priority.level,'conditional'
 assert.equal(combined.coverage.unreviewed,1);
 assert.equal(JSON.stringify(repeated),snapshot);
 assert.equal(M.departmentOverview({id:'빈팀',name:'빈팀',duties:[]}).links.length,0);
+const compact=M.dutyLayout(combined.links,['공통규정'],{overview:true});
+assert.equal(compact.positions.size,2);
+assert.equal(compact.width,1000);
+assert(compact.positions.get('공통규정').y>compact.positions.get('@duty').y);
+assert(compact.positions.get('공통규정').y-50>compact.bands[0].labelY);
 const nested=M.organizationalChoices([{id:'처 / 실 / 팀',name:'팀',division:'본부',path:['처','실','팀'],duties:leaves[0].duties}]);
 assert.deepEqual(nested.map(d=>d.id),['처','처 / 실','처 / 실 / 팀']);
 const relations=[{from:'기본',to:'실행'},{from:'실행',to:'조건부'},{from:'기본',to:'밖'}];

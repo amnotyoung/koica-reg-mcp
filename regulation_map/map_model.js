@@ -17,8 +17,18 @@
         return x.rank-y.rank || x.order-y.order || a.localeCompare(b,'ko');
       });
   }
-  function dutyLayout(links, ids) {
+  function dutyLayout(links, ids, {overview=false}={}) {
     const groups=['core','supporting','conditional'].map(level => ({level, ids:ids.filter(id=>priority(links,id).level===level)}));
+    if(overview) {
+      const height=Math.max(650,Math.max(...groups.map(g=>g.ids.length))*116+250);
+      const positions=new Map([['@duty',{x:165,y:80,w:260,h:112}]]);
+      const bands=groups.map((group,i)=>{
+        const x=165+i*330;
+        group.ids.forEach((id,j)=>positions.set(id,{x,y:260+j*116,w:246,h:100}));
+        return {x:x-150,width:300,level:group.level,count:group.ids.length,label:levels[group.level].label,labelY:185};
+      });
+      return {width:1000,height,positions,bands};
+    }
     const height=Math.max(720, Math.max(...groups.map(g=>g.ids.length))*116+170);
     const positions=new Map([['@duty',{x:145,y:height/2+30,w:226,h:112}]]);
     const bands=[];
