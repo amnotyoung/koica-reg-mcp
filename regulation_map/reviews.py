@@ -5,6 +5,10 @@ normal build only compares them and cannot refresh or bless a changed source.
 """
 from copy import deepcopy
 import hashlib
+import json
+from pathlib import Path
+
+from regulation_map.delegation_annex import row_digest
 
 PRIORITY_LEVELS = {
     "core": {"label": "먼저 확인", "rank": 1},
@@ -17,9 +21,60 @@ def digest(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def apply_reviews(departments, articles, source_texts, catalog, relations):
+def load_delegation(catalog, base):
+    """Read the extracted annex a catalog declares, or None when it declares none."""
+    declared = catalog.get("delegation_reference")
+    if declared is None:
+        return None
+    return json.loads((Path(base) / declared["file"]).read_text(encoding="utf-8"))
+
+
+def check_delegation(catalog, delegation):
+    """Verify the outdated delegation table before any duty may cite it."""
+    declared = catalog.get("delegation_reference")
+    if declared is None:
+        return {}
+    if delegation is None or declared.get("xlsx_sha256") != delegation["origin"]["xlsx_sha256"]:
+        raise ValueError("Delegation reference does not match the extracted annex")
+    for row_id, row in delegation["rows"].items():
+        if row_digest(row, delegation["remarks"].get(row.get("remark_id"), "")) != row["sha256"]:
+            raise ValueError(f"Delegation annex row changed after extraction: {row_id}")
+    return delegation["rows"]
+
+
+MATCH_LEVELS = {
+    "office": "사무소 몫 항목 있음",
+    "hq_only": "본사 몫 항목만 있음",
+    "related": "가까운 항목만 있음 · 대응 미확정",
+    "none": "대응 항목 없음",
+}
+
+
+def office_marked(row):
+    return any(a["role"] == "사무소장" for a in row["approvers"]) or row["drafter_mark"] in ("사", "본/사")
+
+
+def delegation_view(rows, ref):
+    note = (ref.get("note") or "").strip()
+    ids = ref.get("rows")
+    match = ref.get("match")
+    if not note or not isinstance(ids, list) or len(set(ids)) != len(ids) or any(i not in rows for i in ids):
+        raise ValueError("Invalid delegation reference")
+    has_office = any(office_marked(rows[i]) for i in ids)
+    if (match not in MATCH_LEVELS or (match == "none") != (not ids) or
+            (match == "office" and not has_office) or (match == "hq_only" and has_office)):
+        raise ValueError("Delegation match level does not fit its rows")
+    return {"match": match, "match_label": MATCH_LEVELS[match], "note": note,
+            "rows": [{"id": i, "work": rows[i]["work"], "unit": rows[i]["unit"],
+                      "detail": rows[i]["detail"], "sheet_row": rows[i]["sheet_row"],
+                      "approvers": rows[i]["approvers"], "drafter": rows[i]["drafter"],
+                      "remark_id": rows[i].get("remark_id")} for i in ids]}
+
+
+def apply_reviews(departments, articles, source_texts, catalog, relations, delegation=None):
     if catalog.get("schema_version") != 2:
         raise ValueError("Unsupported content review schema")
+    delegation_rows = check_delegation(catalog, delegation)
     by_article = {}
     for article in articles:
         by_article.setdefault((article.source, article.article), []).append(article)
@@ -101,6 +156,12 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
                           "reviewed_at": catalog["reviewed_at"], "reviewer": catalog["reviewer"],
                           "stale_links": stale_count, "searched_sources": review.get("searched_sources", []),
                           "direct_mapping_status": review.get("direct_mapping_status")}
+        if "delegation_reference" in review:
+            if not delegation_rows:
+                raise ValueError("Delegation reference needs the extracted annex")
+            view = delegation_view(delegation_rows, review["delegation_reference"])
+            if fresh_task:
+                task["delegation"] = view
     edge_lookup = {(e["from"], e["to"]): e for e in relations}
     for edge in relations:
         edge.pop("content_review", None)
@@ -112,7 +173,21 @@ def apply_reviews(departments, articles, source_texts, catalog, relations):
             edge["content_review"] = {"label": annotation["label"], "explanation": annotation["explanation"],
                                       "evidence": deepcopy(link["evidence"]), "reviewed_at": catalog["reviewed_at"]}
             annotated += 1
-    return {"reviewed_duties": sum(bool(t["links"]) for t in tasks.values()),
+    delegation_meta = None
+    if delegation_rows:
+        cited = [t["delegation"] for t in tasks.values() if "delegation" in t]
+        remark_ids = {r["remark_id"] for view in cited for r in view["rows"] if r["remark_id"]}
+        delegation_meta = {key: delegation[key] for key in ("source", "label", "revision", "caveat")}
+        delegation_meta.update({"page_url": delegation["origin"]["page_url"], "file_name": delegation["origin"]["file_name"],
+                                "member": delegation["origin"]["member"],
+                                "remarks": {k: delegation["remarks"][k] for k in sorted(remark_ids)},
+                                "policy": catalog["delegation_reference"]["policy"],
+                                "reviewed_at": catalog["delegation_reference"]["reviewed_at"],
+                                "referenced_duties": len(cited),
+                                "match_counts": {m: sum(v["match"] == m for v in cited) for m in MATCH_LEVELS},
+                                "match_labels": MATCH_LEVELS})
+    return {"delegation_reference": delegation_meta,
+            "reviewed_duties": sum(bool(t["links"]) for t in tasks.values()),
             "assessed_duties": sum(t["review"]["status"] != "unreviewed" for t in tasks.values()),
             "evidence_gap_duties": sum(t["review"]["status"] == "no_direct_basis" for t in tasks.values()),
             "limited_mapping_duties": sum(t["review"].get("direct_mapping_status") == "not_established" for t in tasks.values()),

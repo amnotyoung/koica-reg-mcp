@@ -8,7 +8,8 @@ from copy import deepcopy
 
 import koica_search as ks
 from regulation_map.build import ORG, ROOT, build_relations, official_source, parse_departments, parse_overseas_offices
-from regulation_map.reviews import apply_reviews, digest
+from regulation_map.reviews import apply_reviews, digest, load_delegation
+from regulation_map import delegation_annex
 from regulation_map.bundle import bundle
 
 
@@ -340,7 +341,8 @@ class ContentReviewTests(unittest.TestCase):
             texts[parsed[0].source] = p.read_text()
         departments = parse_departments(texts[ORG]) + parse_overseas_offices(texts[ORG])
         relations = build_relations(articles, texts)
-        stats = apply_reviews(departments, articles, texts, catalog, relations)
+        stats = apply_reviews(departments, articles, texts, catalog, relations,
+                              load_delegation(catalog, ROOT / "regulation_map"))
         self.assertEqual(stats["stale_duties"], 0)
         self.assertEqual(stats["orphaned_reviews"], 0)
         self.assertEqual(stats["assessed_duties"], len(catalog["duty_reviews"]))
@@ -359,6 +361,115 @@ class ContentReviewTests(unittest.TestCase):
         same_regulation = next(l for l in support_task["links"] if l["source"] == construction["source"])
         self.assertEqual(same_regulation["priority"]["level"], "core")
         self.assertNotIn("recommendations", task)
+
+
+class DelegationReferenceTests(unittest.TestCase):
+    """The 2024 annex is an outdated reference, so every use must stay traceable."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
+        cls.annex = load_delegation(cls.catalog, ROOT / "regulation_map")
+
+    def office_review(self, catalog, category="사업집행(프로젝트)", duty="d8"):
+        return next(r for r in catalog["duty_reviews"]
+                    if r["department"] == f"해외사무소 / {category}" and r["duty_id"] == duty)
+
+    def apply(self, catalog, annex):
+        org = (ROOT / "data" / "extracted" / f"시행세칙_{ORG}.md").read_text(encoding="utf-8")
+        offices = [d for d in parse_overseas_offices(org) if d["id"] == "해외사무소 / 사업집행(프로젝트)"]
+        small = deepcopy(catalog)
+        small["duty_reviews"] = [r for r in small["duty_reviews"] if r["department"] == offices[0]["id"]]
+        for r in small["duty_reviews"]:
+            r["link_ids"], r["priorities"] = [], {}
+            r.update(outcome="no_direct_basis", searched_sources=[ORG], gaps=r["gaps"] or ["test"])
+        small["source_snapshots"] = {ORG: {**small["source_snapshots"][ORG], "sha256": digest(org)}}
+        small["links"], small["relation_reviews"] = {}, []
+        apply_reviews(offices, [], {ORG: org}, small, [], annex)
+        return offices[0]
+
+    def test_extracted_annex_keeps_office_and_drafter_columns(self):
+        self.assertEqual(self.annex["revision"], "2024.02.13")
+        self.assertEqual(len(self.annex["rows"]), 1152)
+        cp = self.annex["rows"]["r398"]
+        self.assertEqual(cp["detail"], "국가지원계획(CP) 초안 / 연도별 수정본 제출")
+        self.assertEqual([a["role"] for a in cp["approvers"]], ["사무소장"])
+        self.assertEqual(cp["drafter"], "사무소")
+        self.assertIn("본/사로 설정된 업무", self.annex["remarks"][cp["remark_id"]])
+
+    def test_every_overseas_duty_states_a_reference_or_its_absence(self):
+        refs = [r for r in self.catalog["duty_reviews"] if "delegation_reference" in r]
+        self.assertEqual(len(refs), 68)
+        self.assertTrue(all(r["department"].startswith("해외사무소 / ") for r in refs))
+        counts = {}
+        for r in refs:
+            ref = r["delegation_reference"]
+            self.assertTrue(ref["note"].strip())
+            counts[ref["match"]] = counts.get(ref["match"], 0) + 1
+            if ref["match"] == "none":
+                self.assertIn("찾지 못했습니다", ref["note"])
+        self.assertEqual(counts, {"office": 31, "hq_only": 19, "related": 6, "none": 12})
+
+    def test_rechecked_classifications(self):
+        def ref(category, duty):
+            return self.office_review(self.catalog, category, duty)["delegation_reference"]
+        # Same HQ procedure exists, so these are not "none".
+        self.assertEqual(ref("기획", "d4")["rows"], ["r134", "r135"])
+        self.assertEqual(ref("기획", "d4")["match"], "hq_only")
+        self.assertEqual(ref("사업평가", "d3")["match"], "hq_only")
+        # "동료검토" appears in no regulation body, so PD review and TAG stay unconfirmed.
+        self.assertEqual(ref("사업집행(프로젝트)", "d3")["match"], "related")
+        self.assertIn("r980", ref("기획", "d5")["rows"])
+        self.assertEqual(ref("통합플랫폼", "d1")["match"], "none")
+        self.assertIn("r885", ref("사업집행(프로젝트)", "d8")["rows"])
+
+    def test_reference_is_attached_without_changing_links(self):
+        office = self.apply(self.catalog, self.annex)
+        duty = next(t for t in office["duties"] if t["id"] == "d8")
+        self.assertEqual(duty["delegation"]["rows"][0]["id"], "r437")
+        self.assertIn("50억 원 미만", duty["delegation"]["note"])
+        self.assertEqual(duty["delegation"]["match_label"], "사무소 몫 항목 있음")
+        self.assertEqual(duty["links"], [])
+
+    def test_tampered_or_unknown_rows_are_rejected(self):
+        annex = deepcopy(self.annex)
+        annex["rows"]["r437"]["approvers"] = [{"role": "본부장", "mark": "○"}]
+        with self.assertRaisesRegex(ValueError, "row changed"):
+            self.apply(self.catalog, annex)
+        catalog = deepcopy(self.catalog)
+        self.office_review(catalog)["delegation_reference"]["rows"].append("r99999")
+        with self.assertRaisesRegex(ValueError, "Invalid delegation reference"):
+            self.apply(catalog, self.annex)
+        catalog = deepcopy(self.catalog)
+        self.office_review(catalog)["delegation_reference"]["match"] = "hq_only"
+        with self.assertRaisesRegex(ValueError, "match level"):
+            self.apply(catalog, self.annex)
+        catalog = deepcopy(self.catalog)
+        self.office_review(catalog)["delegation_reference"]["note"] = " "
+        with self.assertRaisesRegex(ValueError, "Invalid delegation reference"):
+            self.apply(catalog, self.annex)
+        with self.assertRaisesRegex(ValueError, "does not match"):
+            self.apply(self.catalog, None)
+
+    def test_extractor_expands_merged_cells_and_checks_the_zip(self):
+        def sheet_xml(rows, merges):
+            cells = "".join(f'<row r="{r}">' + "".join(
+                f'<c r="{c}{r}" t="inlineStr"><is><t>{v}</t></is></c>' for c, v in cols.items()) + "</row>"
+                for r, cols in rows.items())
+            merged = "".join(f'<mergeCell ref="{m}"/>' for m in merges)
+            return (f'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+                    f'<sheetData>{cells}</sheetData><mergeCells>{merged}</mergeCells></worksheet>')
+        import io, zipfile
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            z.writestr("xl/worksheets/sheet1.xml", sheet_xml(
+                {1: {"A": "6. 사업실행", "B": "국별 협력사업", "C": "전략수립", "D": "CP 제출", "J": "○", "L": "사"},
+                 2: {"D": "CP 검토", "G": "○", "L": "본"}}, ["A1:A2", "B1:B2", "C1:C2"]))
+        rows = delegation_annex.read_sheet(buf.getvalue())
+        self.assertEqual(rows[1][:4], ["6. 사업실행", "국별 협력사업", "전략수립", "CP 검토"])
+        self.assertEqual(rows[1][6], "○")
+        with self.assertRaisesRegex(ValueError, "differs from the reviewed"):
+            delegation_annex.extract(b"not the ALIO file")
 
 
 if __name__ == "__main__":

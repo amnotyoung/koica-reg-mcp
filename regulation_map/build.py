@@ -16,7 +16,7 @@ import unicodedata
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import koica_search as ks
-from regulation_map.reviews import apply_reviews
+from regulation_map.reviews import apply_reviews, load_delegation
 from regulation_map.documents import document_sections
 
 ORG = "직제규정 시행세칙"
@@ -333,7 +333,8 @@ def build():
     relations = build_relations(articles, sources)
     catalog = json.loads((OUT / "content_reviews.json").read_text(encoding="utf-8"))
     source_texts = {ks.parse_md(p, p.stem.split("_", 1)[0])[0][0].source: p.read_text(encoding="utf-8") for p in paths}
-    review_stats = apply_reviews(departments, articles, source_texts, catalog, relations)
+    review_stats = apply_reviews(departments, articles, source_texts, catalog, relations,
+                                 load_delegation(catalog, OUT))
     manifest = json.loads((ks.DATA_DIR.parent / "sources.json").read_text(encoding="utf-8"))
     official = {s["name"]: s for s in manifest["sources"]}
     for name, source in sources.items():
