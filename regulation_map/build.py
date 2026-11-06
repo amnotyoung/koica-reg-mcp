@@ -141,6 +141,74 @@ def parse_departments(text):
     return departments
 
 
+OVERSEAS = "해외사무소"
+
+
+def split_overseas_duties(text):
+    """Annex 5 numbers sub-steps as 5-1 and wraps one item over several lines."""
+    starts = list(re.finditer(r"(?m)^\s*(\d+(?:-\d+)?)\.\s*", text))
+    if not starts:
+        raise ValueError("번호가 있는 해외사무소 업무를 찾지 못했습니다")
+    duties = []
+    for i, match in enumerate(starts):
+        body = text[match.end():starts[i + 1].start() if i + 1 < len(starts) else len(text)].strip()
+        lines = body.splitlines()
+        title = lines[0]
+        # A wrapped title continues on lines that are not "-" detail lines.
+        for line in lines[1:]:
+            if line.lstrip().startswith("-"):
+                break
+            title += " " + line.strip()
+        duties.append({"number": match.group(1), "title": re.sub(r"\s+", " ", title).strip(" ,"),
+                       "text": body, "shared": False})
+    return duties
+
+
+def parse_overseas_offices(text):
+    """Read the overseas-office column of annex 5 and the office names of annex 2-2.
+
+    Every overseas office has the same duties, so the column becomes one office
+    group with one child per annex 5 category. The head-office column of the same
+    row is kept only as context; it is already covered by annex 4.
+    """
+    match = re.search(r"^## \[별표\s*5\](.*?)(?=^## \[별표\s*6\])", text, re.M | re.S)
+    if not match:
+        raise ValueError("직제규정 시행세칙 별표 5/6 경계를 찾지 못했습니다")
+    offices = re.search(r"^## \[별표\s*2의\s*2\](.*?)(?=^## \[별표)", text, re.M | re.S)
+    names = re.findall(r"\|\s*\d+\s*\|\s*한국국제협력단\s*(\S+?사무소)\s*\|", offices.group(1)) if offices else []
+    if not names:
+        raise ValueError("직제규정 시행세칙 별표 2의 2 해외사무소 목록을 찾지 못했습니다")
+    tables = re.findall(r"<table>.*?</table>", match.group(1), re.S)
+    if len(tables) != 1:
+        raise ValueError("별표 5 업무분장 표는 하나여야 합니다")
+    parser = TableParser()
+    parser.feed(tables[0])
+    rows = list(parser.grid())
+    header = [compact(c["text"]) for c in rows[0]]
+    if header != ["구분", OVERSEAS, "본사"]:
+        raise ValueError(f"지원하지 않는 별표 5 구조: {header}")
+    groups = {}
+    for row in rows[1:]:
+        if len(row) != 3 or any(c is None for c in row):
+            raise ValueError("지원하지 않는 별표 5 행 구조")
+        category = compact(row[0]["text"])
+        if row[1] is row[2]:
+            # A note spanning both columns applies to the whole category.
+            groups[category]["notes"].append(re.sub(r"\s*\n\s*", " ", row[1]["text"]).strip())
+            continue
+        if category in groups:
+            raise ValueError(f"중복된 별표 5 구분: {category}")
+        duties = split_overseas_duties(row[1]["text"])
+        for i, duty in enumerate(duties):
+            duty["id"] = f"d{i + 1}"
+        groups[category] = {"id": f"{OVERSEAS} / {category}", "name": category, "path": [OVERSEAS, category],
+                            "division": OVERSEAS, "duties": duties, "notes": [],
+                            "citation": f"{ORG} [별표 5]",
+                            "counterpart": {"label": "같은 구분의 본사 분장업무", "text": row[2]["text"].strip()},
+                            "office_names": names}
+    return list(groups.values())
+
+
 ALIAS_DEFINITION = re.compile(r'[\s」』》〉"”]*\(이하\s*[“"\'‘]([^”"\'’]{2,15})[”"\'’]\s*(?:이)?라\s*한다\.?\)')
 # Words that make "규정 제N조" point at the citing text itself or at an unnamed rule.
 NOT_ALIAS_USE = re.compile(r"(?:^|[^가-힣])(?:이|본|동|같은|다른|각|해당|관련|타)\s*$")
@@ -257,7 +325,7 @@ def build():
     articles = list({(a.source, a.article, a.body): a for a in articles}.values())
     org_path = ks.DATA_DIR / f"시행세칙_{ORG}.md"
     org_text = org_path.read_text(encoding="utf-8")
-    departments = parse_departments(org_text)
+    departments = parse_departments(org_text) + parse_overseas_offices(org_text)
     sources = {}
     for a in articles:
         source = sources.setdefault(a.source, {"id": a.source, "category": a.category, "revision": a.revision, "articles": []})
@@ -281,7 +349,7 @@ def build():
     data = {"meta": {"organization_source": ORG, "organization_revision": sources[ORG]["revision"],
                      "citation": f"{ORG} [별표 4]", "notices": notices, "reviews": review_stats,
                      "corpus_sha256": fingerprint.hexdigest(),
-                     "scope": "저장소 공개 규정 스냅샷 · 본칙의 명시적 규정명 참조 · 별표 4 부서 업무분장",
+                     "scope": "저장소 공개 규정 스냅샷 · 본칙의 명시적 규정명 참조 · 별표 4 부서 업무분장 · 별표 5 해외사무소 업무분장",
                      "limits": "참조 추출은 완전하지 않습니다. 다른 규정에서 정의한 약칭·간접인용·별표 안의 참조는 포함하지 않습니다. 업무 연결은 근거 조문을 읽고 작성한 AI 내용검토이며 기관의 공식 적용 판정이 아닙니다. 미검토 업무를 자동으로 연결하지 않습니다."},
             "departments": departments, "regulations": list(sources.values()), "relations": relations}
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")

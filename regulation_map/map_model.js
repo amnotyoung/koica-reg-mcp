@@ -55,7 +55,8 @@
     const q=normalize(query.trim());
     return departments.map((department,index)=>{
       const name=normalize(department.name),path=normalize(department.id),division=normalize(department.division);
-      const rank=!q?0:name===q?0:name.startsWith(q)?1:name.includes(q)?2:path.includes(q)?3:division.includes(q)?4:Infinity;
+      const terms=(department.search_terms||[]).map(normalize);
+      const rank=!q?0:name===q?0:name.startsWith(q)?1:name.includes(q)?2:path.includes(q)?3:division.includes(q)?4:terms.some(t=>t.includes(q))?5:Infinity;
       return {department,index,rank};
     }).filter(x=>Number.isFinite(x.rank)).sort((a,b)=>a.rank-b.rank||a.index-b.index).map(x=>x.department);
   }
@@ -67,7 +68,9 @@
         const parentPath=path.slice(0,depth),id=parentPath.join(' / ');
         if(existing.has(id))continue;
         if(!parents.has(id))parents.set(id,{id,name:parentPath.at(-1),path:parentPath,
-          division:department.division,aggregate:true,children:[],duties:[]});
+          division:department.division,aggregate:true,children:[],duties:[],
+          // Office names (e.g. 베트남사무소) find the office group, not each category.
+          ...(depth===1 && department.office_names?{search_terms:department.office_names}:{})});
         const parent=parents.get(id);
         parent.children.push({id:department.id,name:department.name});
         parent.duties.push(...department.duties.map(duty=>({...duty,

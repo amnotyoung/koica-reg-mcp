@@ -7,7 +7,7 @@ import re
 from copy import deepcopy
 
 import koica_search as ks
-from regulation_map.build import ORG, ROOT, build_relations, official_source, parse_departments
+from regulation_map.build import ORG, ROOT, build_relations, official_source, parse_departments, parse_overseas_offices
 from regulation_map.reviews import apply_reviews, digest
 from regulation_map.bundle import bundle
 
@@ -45,6 +45,44 @@ class DepartmentExtractionTests(unittest.TestCase):
     def test_unsupported_input_fails_instead_of_silent_empty_map(self):
         with self.assertRaises(ValueError):
             parse_departments("# 직제규정 시행세칙\n업무분장 없음")
+
+
+class OverseasOfficeTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.groups = parse_overseas_offices(
+            (ROOT / "data" / "extracted" / f"시행세칙_{ORG}.md").read_text(encoding="utf-8"))
+        cls.by_name = {g["name"]: g for g in cls.groups}
+
+    def test_annex_5_office_column_becomes_one_office_with_categories(self):
+        self.assertEqual(list(self.by_name), ["기획", "사업집행(프로젝트)", "사업집행(국내초청연수)",
+                                              "사업집행(해외봉사단파견)", "사업집행(민관협력)", "사업집행(긴급구호)",
+                                              "사업집행(다자협력사업)", "사업평가", "통합플랫폼"])
+        self.assertEqual(sum(len(g["duties"]) for g in self.groups), 68)
+        for g in self.groups:
+            self.assertEqual(g["path"], ["해외사무소", g["name"]])
+            self.assertEqual(g["citation"], f"{ORG} [별표 5]")
+        # Head-office duties of the same row stay context, not office duties.
+        planning = self.by_name["기획"]
+        self.assertIn("중기지원전략(CPS) 수립", planning["counterpart"]["text"])
+        self.assertNotIn("중기지원전략", " ".join(d["text"] for d in planning["duties"]))
+
+    def test_sub_steps_and_wrapped_titles_are_kept(self):
+        project = self.by_name["사업집행(프로젝트)"]["duties"]
+        self.assertEqual([d["number"] for d in project][4:9], ["5-1", "5-2", "5-3", "5-4", "5-5"])
+        self.assertEqual(project[11]["title"], "전문가 활동지원 및 결과 보고, 활동성과 평가")
+        self.assertNotIn("5-1", project[3]["text"])
+
+    def test_notes_spanning_both_columns_apply_to_their_category(self):
+        self.assertIn("본부 승인", self.by_name["사업집행(해외봉사단파견)"]["notes"][0])
+        self.assertIn("해당사업 절차", self.by_name["사업집행(다자협력사업)"]["notes"][0])
+        self.assertFalse(self.by_name["기획"]["notes"])
+
+    def test_office_names_come_from_annex_2_2(self):
+        names = self.groups[0]["office_names"]
+        self.assertIn("베트남사무소", names)
+        self.assertEqual(len(names), len(set(names)))
+        self.assertGreaterEqual(len(names), 48)
 
 
 class ExplicitRelationTests(unittest.TestCase):
@@ -148,7 +186,8 @@ class BundleTests(unittest.TestCase):
 class ContentReviewTests(unittest.TestCase):
     def test_reassessed_duties_keep_common_procedures_distinct_from_direct_authority(self):
         catalog = json.loads((ROOT / "regulation_map/content_reviews.json").read_text())
-        reassessed = [r for r in catalog["duty_reviews"] if r.get("direct_mapping_status") == "not_established"]
+        reassessed = [r for r in catalog["duty_reviews"] if r.get("direct_mapping_status") == "not_established"
+                      and not r["department"].startswith("해외사무소 / ")]
         self.assertEqual(len(reassessed), 7)
         for review in reassessed:
             self.assertTrue(review["link_ids"])
@@ -299,7 +338,7 @@ class ContentReviewTests(unittest.TestCase):
             parsed, _ = ks.parse_md(p, p.stem.split("_", 1)[0])
             articles += [a for a in parsed if not a.is_supplementary]
             texts[parsed[0].source] = p.read_text()
-        departments = parse_departments(texts[ORG])
+        departments = parse_departments(texts[ORG]) + parse_overseas_offices(texts[ORG])
         relations = build_relations(articles, texts)
         stats = apply_reviews(departments, articles, texts, catalog, relations)
         self.assertEqual(stats["stale_duties"], 0)

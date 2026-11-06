@@ -34,6 +34,13 @@ assert.equal(parent.duties[1].original_duty_id,'d1');
 assert.equal(parent.duties[1].links,leaves[1].duties[0].links);
 assert.equal(M.departmentMatches(choices,'정보보안팀')[0].id,leaves[2].id);
 assert.equal(JSON.stringify(leaves),original);
+// Office names find the overseas-office group once, not each annex 5 category.
+const offices=['기획','사업평가'].map(name=>({id:'해외사무소 / '+name,name,path:['해외사무소',name],division:'해외사무소',
+  office_names:['베트남사무소','몽골사무소'],duties:[{id:'d1',number:'1',title:name,links:[],review:{status:'partial'}}]}));
+const officeChoices=M.organizationalChoices(offices);
+assert.deepEqual(M.departmentMatches(officeChoices,'베트남').map(d=>d.id),['해외사무소']);
+assert.equal(M.departmentMatches(officeChoices,'몽골사무소')[0].children.length,2);
+assert.equal(M.departmentMatches(officeChoices,'해외사무소')[0].id,'해외사무소');
 const overview=M.departmentSelection(parent);
 assert.equal(overview.id,'@overview');
 assert.equal(overview.coverage.total,3);
