@@ -1,6 +1,8 @@
 """Propose updates to the map's version-pinned external-law excerpts from law.go.kr."""
 import argparse
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor
+from itertools import islice
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
@@ -227,33 +229,43 @@ def sync(mapping, excerpts, resolve=current_edition):
                 errors.append(f"{title} {coord}: 법령 식별자 확인 필요")
             else:
                 grouped[names[title]].append((title, coord, old))
-    consecutive_failures = 0
-    for number, (title, items) in enumerate(grouped.items(), 1):
-        if number % 25 == 0:
-            print(f"공식 판본 확인 중 {number}/{len(grouped)}", flush=True)
+    def compare_one(title):
         record = mapping["laws"][title]
-        try:
-            edition = resolve(title, record)
-            document = lru_cache(maxsize=1)(edition.document)
-            pending = []
-            for key, coord, old in items:
-                result, reason = update_excerpt(old, title, coord, edition, document)
-                if result != old:
-                    pending.append((key, coord, result, reason))
-            # Only commit a document's proposals after every fetch for it succeeded.
-            for key, coord, result, reason in pending:
-                excerpts[key][coord] = result
-                changes.append((title, coord, reason))
-            if edition.admin and title_key(title) == title_key(edition.name):
-                if record.get("adminId") != edition.identity or record["adminSeq"] != edition.seq:
-                    record.update(adminId=edition.identity, adminSeq=edition.seq)
-                    changes.append((title, "", "행정규칙 식별자 갱신"))
-            consecutive_failures = 0
-        except (ValueError, KeyError, OSError, IndexError) as e:
-            errors.append(f"{title}: {e}")
-            consecutive_failures += 1
-            if consecutive_failures >= 4 and number < len(grouped):
-                errors.append(f"연속 조회 실패로 나머지 {len(grouped)-number}개 문서 대조 중단")
+        edition = resolve(title, record)
+        document = lru_cache(maxsize=1)(edition.document)
+        pending = []
+        for key, coord, old in grouped[title]:
+            result, reason = update_excerpt(old, title, coord, edition, document)
+            if result != old:
+                pending.append((key, coord, result, reason))
+        return edition, pending
+
+    # Bound both the load on the publication site and the work sent after an outage.
+    titles = iter(grouped)
+    completed = consecutive_failures = 0
+    with ThreadPoolExecutor(max_workers=3) as workers:
+        while batch := list(islice(titles, 3)):
+            futures = [(title, workers.submit(compare_one, title)) for title in batch]
+            for title, future in futures:
+                completed += 1
+                try:
+                    edition, pending = future.result()
+                except (ValueError, KeyError, OSError, IndexError) as e:
+                    errors.append(f"{title}: {e}")
+                    consecutive_failures += 1
+                    continue
+                consecutive_failures = 0
+                for key, coord, result, reason in pending:
+                    excerpts[key][coord] = result
+                    changes.append((title, coord, reason))
+                record = mapping["laws"][title]
+                if edition.admin and title_key(title) == title_key(edition.name):
+                    if record.get("adminId") != edition.identity or record["adminSeq"] != edition.seq:
+                        record.update(adminId=edition.identity, adminSeq=edition.seq)
+                        changes.append((title, "", "행정규칙 식별자 갱신"))
+            print(f"공식 판본 대조 {completed}/{len(grouped)} · 오류 {len(errors)}", flush=True)
+            if consecutive_failures >= 4 and completed < len(grouped):
+                errors.append(f"연속 조회 실패로 나머지 {len(grouped)-completed}개 문서 대조 중단")
                 break
     return changes, errors, skipped
 
