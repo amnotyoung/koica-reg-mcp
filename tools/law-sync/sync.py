@@ -139,8 +139,18 @@ class Edition:
         else:
             doc = fetch(endpoint("lsInfoR", lsiSeq=self.seq, lsId=self.identity, efYd=self.effective,
                                  chrClsCd="010202", lsNm=self.name), title=self.name, stage="법령 본문 조회")
+        if self.admin and not doc.xpath('//input[@id="efYd"]'):
+            # Some administrative rule bodies provide the effective date only in the official caption.
+            caption = doc.xpath('string(//*[@id="conTop"]/div[@class="subtit1"])')
+            match = re.search(r"\[시행\s+(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\s*\]", caption)
+            if not match:
+                raise IncompleteSourceResponse("행정규칙 본문 시행일 누락")
+            year, month, day = match.groups()
+            effective = year + month.zfill(2) + day.zfill(2)
+        else:
+            effective = field(doc, "efYd")
         if (field(doc, "admRulId" if self.admin else "lsId") != self.identity
-                or field(doc, "lsiSeq") != self.seq or field(doc, "efYd") != self.effective
+                or field(doc, "lsiSeq") != self.seq or effective != self.effective
                 or field(doc, "lsNm") != self.name or not doc.xpath('//div[@class="lawcon"]//input[@name="joNoList"]')):
             raise ValueError("본문 식별자·시행일 또는 본문 구조 불일치")
         return doc

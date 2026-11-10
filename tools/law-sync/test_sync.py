@@ -132,6 +132,17 @@ class WeeklyLawTests(unittest.TestCase):
         self.assertIn("1개 문서 대조 중단", errors[-1].message)
         self.assertEqual(result_code(errors), 75)
 
+    def test_admin_body_with_visible_effective_date(self):
+        page = html.fromstring('''<div><input id="admRulId" value="456"><input id="lsiSeq" value="123">
+            <input id="lsNm" value="규칙"><div id="conTop"><div class="subtit1">
+            [시행 2025. 5. 13.] [훈령 제241호, 2025. 4. 15., 개정]</div></div>
+            <div class="lawcon"><input name="joNoList"></div></div>''')
+        with patch("sync.fetch", return_value=page) as fetch_page:
+            self.assertIs(Edition(True, "456", "123", "20250513", "규칙").document(), page)
+            self.assertEqual(fetch_page.call_args.kwargs, {"title": "규칙", "stage": "행정규칙 본문 조회"})
+            with self.assertRaisesRegex(ValueError, "불일치"):
+                Edition(True, "456", "123", "20250415", "규칙").document()
+
     def test_admin_identity_bootstrap_changes_once(self):
         laws = {"laws": {"규칙": {"adminSeq": "123"}}}
         rows = {"규칙": {"제1조": {"text": "본문", "version": "2025.01.01 조회",
