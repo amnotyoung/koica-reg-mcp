@@ -108,6 +108,10 @@ window.createLawMap = function(snapshot, regulations, openRegulation, selectLaw)
           const label=ref.contextual?'상위법령 발췌 · 참고 조문':ref.text?'상위법령 발췌':'인용된 상위법령';
           excerpt.append(el('span','excerpt-label',label),
             el('strong','','「'+ref.title+'」 '+ref.provision));
+          if (ref.sync_review) {
+            excerpt.append(el('p','law-caption',ref.sync_review.reason+' · 이전 판본 발췌'),
+              link('대조할 판본 · '+ref.sync_review.version,ref.sync_review.url));
+          }
           if (ref.text) {
             excerpt.append(el('blockquote','',ref.text));
             if (ref.note) excerpt.append(el('p','law-caption',ref.note));
