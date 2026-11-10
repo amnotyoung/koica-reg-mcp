@@ -190,6 +190,60 @@ class SafetyTests(unittest.TestCase):
             self.assertTrue(sources_path.exists())
 
 
+def _copy(number: int) -> str:
+    return "\n".join([
+        "제정 1998.04.29. 예규 제 10호",
+        "",
+        "개정 2025.02.17. 지침 제500호",
+        "",
+        "## 제1장 총칙",
+        "",
+        "제1조(목적) 이 규정은 내규 관리에 필요한 사항을 정한다.",
+        "",
+        "### 제9조(입안예고) 입안예고 기간은 7일 이상으로 한다.",
+        "",
+        "[별표 1] 평가 기준",
+        # 원본 HWP의 구역마다 자동 번호가 이어 매겨지는 칸
+        f"<tr><td>{number}. 업무해태 가능성</td></tr>",
+        "",
+        "[별지 제1호서식] 비공개 요청서",
+        "",
+    ])
+
+
+class RepeatedDocumentTests(unittest.TestCase):
+    HEADER = "# 내규관리규정 (2025.02.17 개정)"
+
+    def test_keeps_only_first_copy_of_repeated_document(self):
+        md = "\n".join([self.HEADER, "", _copy(1), _copy(2), _copy(3)])
+
+        text, copies, collapsed = alio_sync.collapse_repeated_document(md)
+
+        self.assertTrue(collapsed)
+        self.assertEqual(copies, 3)
+        self.assertEqual(text, "\n".join([self.HEADER, "", _copy(1)]).rstrip("\n"))
+        self.assertEqual(text.count("제1조(목적)"), 1)
+
+    def test_keeps_repeated_forms_without_repeated_history(self):
+        form = "[별지 제2호서식] 계약서\n\n제1조(목적) 계약 목적\n\n제2조(기간) 계약 기간\n"
+        md = "\n".join([self.HEADER, "", _copy(1), form, form, form])
+
+        self.assertEqual(alio_sync.collapse_repeated_document(md), (md, 1, False))
+
+    def test_keeps_document_when_repeated_copies_differ(self):
+        changed = _copy(2).replace("7일 이상", "10일 이상").replace("내규 관리", "규정 관리")
+        changed = changed.replace("비공개 요청서", "공개 요청서").replace("평가 기준", "검토 기준")
+        md = "\n".join([self.HEADER, "", _copy(1), changed])
+
+        self.assertEqual(alio_sync.collapse_repeated_document(md), (md, 2, False))
+
+    def test_keeps_document_when_copy_lacks_first_article(self):
+        partial = "제정 1998.04.29. 예규 제 10호\n\n부칙만 있는 다른 문서"
+        md = "\n".join([self.HEADER, "", _copy(1), partial])
+
+        self.assertEqual(alio_sync.collapse_repeated_document(md), (md, 2, False))
+
+
 class IncrementalSyncTests(unittest.TestCase):
     def setUp(self):
         stack = self.enterContext(ExitStack())
@@ -261,6 +315,18 @@ class IncrementalSyncTests(unittest.TestCase):
         self.assertNotEqual(by_name["보수"]["collected_at"], "2026-01-02")
         self.assertRegex(by_name["보수"]["collected_at"], r"^\d{4}-\d{2}-\d{2}$")
         self.assertEqual(by_name["보수"]["page_url"], "https://www.alio.go.kr/item/new")
+
+    def test_repeated_document_is_written_once_and_logged(self):
+        (self.raw / "2.md").write_text("# 보수\n\n" + _copy(1) + _copy(2), encoding="utf-8")
+
+        with patch("alio_sync.log") as log:
+            alio_sync.write_extracts_and_sources(self.resolved)
+
+        written = (self.extracted / "규정_보수.md").read_text(encoding="utf-8")
+        self.assertEqual(written.count("제1조(목적)"), 1)
+        self.assertIn("1. 업무해태 가능성", written)
+        messages = [call.args[0] for call in log.call_args_list]
+        self.assertTrue(any("문서 전체 반복 정리: 보수" in m and "2벌" in m for m in messages))
 
     def test_type_change_removes_only_superseded_filename(self):
         self.resolved[0]["type"] = "지침"
