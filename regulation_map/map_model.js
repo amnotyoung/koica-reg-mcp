@@ -37,6 +37,29 @@
     const width=Math.max(560,165+Math.max(0,groups.length-1)*330+150+25);
     return {width,height,positions,bands};
   }
+  // Give a shared law one position while retaining each workbook relationship.
+  // A separate position map also keeps identical internal/external titles distinct.
+  function lawLayout(center, nodes, mappings, availableWidth) {
+    const duty = center === '@duty';
+    const regs = duty ? nodes : [center, ...nodes];
+    const lawPositions = new Map(), positions = new Map(), edges = [];
+    const width = Math.max(320, Math.min(740, availableWidth));
+    const gutter = width < 500 ? 44 : 100;
+    const w = (width - gutter - 48) / 2;
+    const left = 32 + w/2, right = left + w + gutter;
+    const box = (x,y) => ({x,y,w,h:96});
+    const start = duty ? 205 : 86;
+    if (duty) positions.set(center,box(left,64));
+    for (const [i,reg] of regs.entries()) {
+      positions.set(reg,box(left,start+i*110));
+      for (const title of Object.keys(mappings?.[reg]?.refs || {})) {
+        if (!lawPositions.has(title)) lawPositions.set(title,box(right,start+lawPositions.size*110));
+        edges.push({from:reg,to:title});
+      }
+    }
+    const height = start + (Math.max(regs.length,lawPositions.size,1)-1)*110 + 70;
+    return {width,height,positions,lawPositions,edges,labelY:start-60};
+  }
   function visibleReferences(relations, ids, selected) {
     const visible=new Set(ids);
     if(!selected || !visible.has(selected)) return [];
@@ -117,7 +140,7 @@
     // always opens the complete department, including leaf teams.
     return department.duties.find(d=>d.id===dutyId) || departmentOverview(department);
   }
-  const api={levels,priority,ordered,dutyLayout,visibleReferences,referencePage,departmentMatches,organizationalChoices,departmentOverview,departmentSelection};
+  const api={levels,priority,ordered,dutyLayout,lawLayout,visibleReferences,referencePage,departmentMatches,organizationalChoices,departmentOverview,departmentSelection};
   if(typeof module!=='undefined' && module.exports) module.exports=api;
   else root.MapPriority=api;
 })(typeof window!=='undefined'?window:this);

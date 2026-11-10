@@ -35,7 +35,7 @@ def bundle(root: Path = HERE) -> str:
     # Marks the single-file build: only this page offers to download itself.
     html = html.replace(STYLE_LINK, f'{BUNDLE_META}\n<style>\n{css}\n</style>')
     scripts = SCRIPT_TAGS.findall(html)
-    if scripts != ["data.js", "map_model.js", "reader.js", "app.js"]:
+    if scripts != ["data.js", "map_model.js", "reader.js", "law_map.js", "app.js"]:
         raise ValueError(f"예상하지 못한 스크립트 구성입니다: {scripts}")
     html = SCRIPT_TAGS.sub("", html)
     inline = "".join(
