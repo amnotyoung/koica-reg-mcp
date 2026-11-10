@@ -6,6 +6,7 @@
     3) 현행본 HWP 다운로드 (rulefiledown.json)
     4) kordoc CLI로 HWP → Markdown 일괄 변환
     5) 기존 파서(koica_search)가 먹는 Format A로 정규화
+       (원본 HWP에 문서 전체가 여러 벌 들어 있으면 첫 벌만 남기고 로그에 기록)
     6) data/extracted/{유형}_{규정명}.md 기록 + sources.json 매니페스트
     7) 키워드·의미 인덱스 재빌드
 
@@ -331,6 +332,69 @@ def normalize_markdown(md: str, title: str, revision: str) -> str:
     return "\n".join(out)
 
 
+# 개정 연혁 첫 줄 — '제정 1998.04.29. 예규 제 10호', '제명·전부개정 2019.04.16. …'
+_HISTORY_RE = re.compile(r"^\S*(?:제정|개정)\s*\d{4}\s*\.")
+_FIRST_ARTICLE_RE = re.compile(r"^(?:#{1,4}\s+)?제1조\s*\(")
+_HISTORY_SCAN_LINES = 10
+# 반복된 벌 사이에 허용하는 다른 줄 수. 구역마다 이어 매겨지는 자동 번호
+# ('1. 업무해태 가능성' → '2. …') 정도만 허용한다.
+_REPEAT_MAX_DIFF_RATIO = 0.01
+_REPEAT_MIN_DIFF = 3
+
+
+def collapse_repeated_document(md: str) -> tuple[str, int, bool]:
+    """문서 전체가 여러 벌 이어 붙은 변환본에서 첫 벌만 남긴다.
+
+    ALIO 내규관리규정 HWP(fileNo 211790)는 같은 구역 3개를 담고 있어
+    변환본에 본문 전체가 3번 이어 붙는다. 별지 계약서처럼 일부러 반복된
+    서식을 지우지 않도록 아래를 모두 만족할 때만 정리한다.
+      - 개정 연혁 첫 줄이 다시 나오고, 그 줄마다 새 벌이 시작된다
+      - 모든 벌에 첫 벌과 같은 제1조 줄이 있다
+      - 빈 줄을 뺀 줄 수가 같고, 다른 줄이 1%(최소 3줄) 이하다
+
+    반환: (본문, 감지한 벌 수, 정리 여부). 벌 수가 2 이상인데 정리하지
+    않았으면 반복이 의심되지만 내용이 달라 원형을 유지한 경우다.
+    """
+    lines = md.split("\n")
+    anchor = None
+    scanned = 0
+    for ln in lines:
+        s = ln.strip()
+        if not s or s.startswith("#"):
+            continue
+        if _HISTORY_RE.match(s):
+            anchor = s
+            break
+        scanned += 1
+        if scanned >= _HISTORY_SCAN_LINES:
+            break
+    if anchor is None:
+        return md, 1, False
+
+    starts = [i for i, ln in enumerate(lines) if ln.strip() == anchor]
+    if len(starts) < 2:
+        return md, 1, False
+    blocks = [lines[a:b] for a, b in zip(starts, [*starts[1:], len(lines)])]
+
+    def content(block: list[str]) -> list[str]:
+        return [ln.strip() for ln in block if ln.strip()]
+
+    first = content(blocks[0])
+    article = next((s for s in first if _FIRST_ARTICLE_RE.match(s)), None)
+    allowed = max(_REPEAT_MIN_DIFF, int(len(first) * _REPEAT_MAX_DIFF_RATIO))
+    for block in blocks[1:]:
+        other = content(block)
+        if article is None or article not in other or len(other) != len(first):
+            return md, len(blocks), False
+        if sum(a != b for a, b in zip(first, other)) > allowed:
+            return md, len(blocks), False
+
+    kept = lines[:starts[1]]
+    while kept and not kept[-1].strip():
+        kept.pop()
+    return "\n".join(kept), len(blocks), True
+
+
 # ── 6) 추출본·매니페스트 기록 ───────────────────────────────────────────
 def _replace_if_changed(staged: Path, target: Path) -> bool:
     """내용이 같으면 기존 파일과 수정 시각을 보존한다."""
@@ -435,6 +499,13 @@ def write_extracts_and_sources(
                 continue
             md = raw.read_text(encoding="utf-8")
             norm = normalize_markdown(md, r["title"], r["revision"])
+            norm, copies, collapsed = collapse_repeated_document(norm)
+            if collapsed:
+                log(f"  ⚠ 문서 전체 반복 정리: {r['title']} (fileNo {r['file_no']}) "
+                    f"— 같은 본문 {copies}벌 중 첫 벌만 기록")
+            elif copies > 1:
+                log(f"  ⚠ 문서 전체 반복 의심: {r['title']} (fileNo {r['file_no']}) "
+                    f"— 개정 연혁 첫 줄이 {copies}번 나오지만 내용이 달라 원형 유지")
             base = f"{r['type']}_{safe_filename(r['title'])}"
             n = used_names.get(base, 0)
             used_names[base] = n + 1
