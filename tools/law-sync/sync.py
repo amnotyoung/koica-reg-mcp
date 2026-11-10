@@ -7,6 +7,10 @@ from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 from functools import lru_cache
+from http.client import IncompleteRead
+import errno
+import socket
+import ssl
 import json
 from pathlib import Path
 import re
@@ -14,9 +18,9 @@ import sys
 import time
 from urllib.parse import parse_qs, quote, urlencode, urlsplit
 from urllib.request import Request, urlopen
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 
-from lxml import html
+from lxml import etree, html
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -41,6 +45,37 @@ def endpoint(page, **params):
     return ORIGIN + "/LSW/" + page + ".do?" + urlencode(params)
 
 
+class IncompleteSourceResponse(ValueError):
+    """The public site returned no usable document. A later fetch can recover."""
+
+
+def temporary_source_error(exc):
+    if isinstance(exc, HTTPError):
+        return exc.code in (408, 425, 429, 500, 502, 503, 504)
+    if isinstance(exc, URLError):
+        return temporary_source_error(exc.reason)
+    if isinstance(exc, socket.gaierror):
+        return exc.errno == socket.EAI_AGAIN
+    if isinstance(exc, ssl.SSLCertVerificationError):
+        return False
+    return (isinstance(exc, (TimeoutError, ConnectionError, ssl.SSLEOFError, IncompleteRead,
+                             IncompleteSourceResponse)) or
+            isinstance(exc, OSError) and exc.errno in (errno.ENETUNREACH, errno.EHOSTUNREACH,
+                                                        errno.EADDRNOTAVAIL, errno.ETIMEDOUT))
+
+
+@dataclass(frozen=True)
+class SourceIssue:
+    message: str
+    retryable: bool
+
+
+def result_code(errors):
+    if not errors:
+        return 0
+    return 75 if all(e.retryable for e in errors) else 1
+
+
 @lru_cache(maxsize=8)
 def fetch(url):
     if urlsplit(url).netloc != "www.law.go.kr":
@@ -50,15 +85,24 @@ def fetch(url):
             with urlopen(Request(url, headers={"User-Agent": "koica-reg-mcp weekly law review"}), timeout=20) as response:
                 if urlsplit(response.geturl()).netloc != "www.law.go.kr":
                     raise ValueError("unexpected response host")
-                return html.fromstring(response.read().decode("utf-8"))
-        except (URLError, TimeoutError, ConnectionError):
-            if attempt == 2:
+                try:
+                    return html.fromstring(response.read().decode("utf-8"))
+                except etree.ParserError as e:
+                    raise IncompleteSourceResponse(f"공식 HTML 파싱 실패: {e}") from e
+        except (OSError, IncompleteRead, IncompleteSourceResponse) as e:
+            if isinstance(e, HTTPError):
+                e.close()
+            if attempt == 2 or not temporary_source_error(e):
                 raise
-            time.sleep(2 ** attempt)
+            delay = 2 ** attempt
+            print(f"요청 재시도 {attempt+2}/3 · {type(e).__name__}: {e} · {delay}초 후", flush=True)
+            time.sleep(delay)
 
 
 def field(doc, key):
     values = set(doc.xpath('//input[@id=$key]/@value', key=key))
+    if not values or values == {""}:
+        raise IncompleteSourceResponse(f"공식 페이지 필드 누락: {key}")
     if len(values) != 1 or not all(values):
         raise ValueError(f"missing or ambiguous portal field: {key}")
     return values.pop()
@@ -114,6 +158,8 @@ def current_edition(title, record):
     category = "행정규칙" if admin else "법령"
     wrapper = fetch(ORIGIN + "/" + quote(category) + "/" + quote(name, safe=""))
     frames = wrapper.xpath('//iframe[@id="lawService"]/@src')
+    if not frames:
+        raise IncompleteSourceResponse("공식 페이지에 현행 판본 주소가 없음")
     if len(frames) != 1:
         raise ValueError("현행 판본 주소 확인 필요")
     params = parse_qs(urlsplit(frames[0]).query)
@@ -226,7 +272,7 @@ def sync(mapping, excerpts, resolve=current_edition):
             if pinned(old):
                 skipped["연혁·고정 공개본"] += 1
             elif title not in names:
-                errors.append(f"{title} {coord}: 법령 식별자 확인 필요")
+                errors.append(SourceIssue(f"{title} {coord}: 법령 식별자 확인 필요", False))
             else:
                 grouped[names[title]].append((title, coord, old))
     def compare_one(title):
@@ -250,8 +296,10 @@ def sync(mapping, excerpts, resolve=current_edition):
                 completed += 1
                 try:
                     edition, pending = future.result()
-                except (ValueError, KeyError, OSError, IndexError) as e:
-                    errors.append(f"{title}: {e}")
+                except (ValueError, KeyError, OSError, IndexError, IncompleteRead) as e:
+                    issue = SourceIssue(f"{title}: {type(e).__name__}: {e}", temporary_source_error(e))
+                    errors.append(issue)
+                    print(f"공식 조회 실패 · {issue.message} · 재시도 대상={issue.retryable}", flush=True)
                     consecutive_failures += 1
                     continue
                 consecutive_failures = 0
@@ -265,7 +313,8 @@ def sync(mapping, excerpts, resolve=current_edition):
                         changes.append((title, "", "행정규칙 식별자 갱신"))
             print(f"공식 판본 대조 {completed}/{len(grouped)} · 오류 {len(errors)}", flush=True)
             if consecutive_failures >= 4 and completed < len(grouped):
-                errors.append(f"연속 조회 실패로 나머지 {len(grouped)-completed}개 문서 대조 중단")
+                errors.append(SourceIssue(f"연속 조회 실패로 나머지 {len(grouped)-completed}개 문서 대조 중단",
+                                          all(e.retryable for e in errors)))
                 break
     return changes, errors, skipped
 
@@ -289,13 +338,13 @@ def main():
         if len(changes) > 150:
             report.append(f"- 나머지 {len(changes)-150}건은 파일 차이에서 확인하세요.")
     if errors:
-        report.extend(["", "### 조회 실패 · 이전 판본 유지", "", *("- " + err for err in errors)])
+        report.extend(["", "### 조회 실패 · 이전 판본 유지", "", *("- " + err.message for err in errors)])
     args.report.write_text("\n".join(report)+"\n", encoding="utf-8")
     print(report[2], flush=True)
     if changes:
         write_json(mp, mapping)
         write_json(ep, excerpts, sort=True)
-    return 1 if errors else 0
+    return result_code(errors)
 
 
 if __name__ == "__main__":
