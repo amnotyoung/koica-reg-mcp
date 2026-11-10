@@ -1,11 +1,16 @@
 """Offline regression checks for the scheduled law review."""
 import copy
+import socket
+import ssl
+from http.client import IncompleteRead
+from urllib.error import HTTPError, URLError
 import unittest
 from unittest.mock import patch
 
 from lxml import html
 
-from sync import Edition, current_edition, source_text, sync, update_excerpt
+from sync import (Edition, IncompleteSourceResponse, SourceIssue, current_edition, fetch,
+                  result_code, source_text, sync, temporary_source_error, update_excerpt)
 
 BODY = html.fromstring('''<div class="lawcon">
 <p><input name="joNoList" id="Y000700"><label>제7조(방법)</label>① 첫째</p>
@@ -58,6 +63,49 @@ class WeeklyLawTests(unittest.TestCase):
         with patch("sync.fetch", side_effect=[landing, wrapper]):
             current = current_edition("테스트법", {"lawId": "000123"})
         self.assertEqual((current.seq, current.effective), ("321", "20240101"))
+
+    def test_temporary_failures_request_one_fresh_attempt(self):
+        issues = []
+        for error in (TimeoutError(), ConnectionResetError(), IncompleteRead(b""),
+                      URLError(socket.gaierror(socket.EAI_AGAIN, "DNS retry")),
+                      HTTPError("", 429, "Rate limited", {}, None),
+                      HTTPError("", 503, "Service unavailable", {}, None),
+                      IncompleteSourceResponse("missing current edition frame")):
+            with self.subTest(error=error):
+                self.assertTrue(temporary_source_error(error))
+                issues.append(SourceIssue(str(error), True))
+        self.assertEqual(result_code(issues), 75)
+        self.assertEqual(result_code([]), 0)
+        for error in (HTTPError("", 404, "Not found", {}, None), ValueError("ID mismatch"),
+                      URLError(ssl.SSLCertVerificationError("invalid certificate"))):
+            with self.subTest(error=error):
+                self.assertFalse(temporary_source_error(error))
+                self.assertEqual(result_code(issues + [SourceIssue(str(error), False)]), 1)
+
+    def test_request_retry_is_bounded_and_skips_permanent_errors(self):
+        for status, expected in ((503, 3), (404, 1)):
+            with self.subTest(status=status), patch("sync.time.sleep") as sleep:
+                error = HTTPError("", status, "HTTP failure", {}, None)
+                with patch("sync.urlopen", side_effect=error) as get:
+                    with self.assertRaises(HTTPError):
+                        fetch("https://www.law.go.kr/LSW/test")
+                self.assertEqual(get.call_count, expected)
+                self.assertEqual(sleep.call_count, expected-1)
+
+    def test_stopped_transient_batch_preserves_inputs_and_retry_reason(self):
+        laws = {"laws": {f"법{i}": {"lawId": str(i)} for i in range(7)}}
+        rows = {title: {"제7조": dict(OLD)} for title in laws["laws"]}
+        original = copy.deepcopy(rows)
+        def unavailable(*_):
+            raise TimeoutError("source timed out")
+
+        with patch("builtins.print"):
+            changes, errors, _ = sync(laws, rows, unavailable)
+        self.assertFalse(changes)
+        self.assertEqual(rows, original)
+        self.assertEqual(len(errors), 7)
+        self.assertIn("1개 문서 대조 중단", errors[-1].message)
+        self.assertEqual(result_code(errors), 75)
 
     def test_admin_identity_bootstrap_changes_once(self):
         laws = {"laws": {"규칙": {"adminSeq": "123"}}}

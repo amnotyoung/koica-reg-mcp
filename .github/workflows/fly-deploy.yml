@@ -15,6 +15,7 @@ on:
       - "tests/test_regulation_documents.py"
       - ".github/workflows/regulation-map-pages.yml"
       - ".github/workflows/weekly-law-sync.yml"
+      - ".github/workflows/law-sync-attempt.yml"
       - "tools/law-sync/**"
   workflow_dispatch:
 permissions:
