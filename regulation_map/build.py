@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 import koica_search as ks
 from regulation_map.reviews import apply_reviews, load_delegation
 from regulation_map.documents import document_sections
+from regulation_map.law_evidence import attach_law_evidence
 
 ORG = "직제규정 시행세칙"
 OUT = Path(__file__).parent
@@ -347,12 +348,15 @@ def build():
     for path in paths:
         fingerprint.update(path.name.encode())
         fingerprint.update(path.read_bytes())
+    law_map = json.loads((OUT / "law_mapping.json").read_text(encoding="utf-8"))
+    excerpts = json.loads((OUT / "law_excerpts.json").read_text(encoding="utf-8"))
     data = {"meta": {"organization_source": ORG, "organization_revision": sources[ORG]["revision"],
                      "citation": f"{ORG} [별표 4]", "notices": notices, "reviews": review_stats,
                      "corpus_sha256": fingerprint.hexdigest(),
                      "scope": "저장소 공개 규정 스냅샷 · 본칙의 명시적 규정명 참조 · 별표 4 부서 업무분장 · 별표 5 해외사무소 업무분장",
                      "limits": "참조 추출은 완전하지 않습니다. 다른 규정에서 정의한 약칭·간접인용·별표 안의 참조는 포함하지 않습니다. 업무 연결은 근거 조문을 읽고 작성한 AI 내용검토이며 기관의 공식 적용 판정이 아닙니다. 미검토 업무를 자동으로 연결하지 않습니다."},
-            "departments": departments, "regulations": list(sources.values()), "relations": relations}
+            "departments": departments, "regulations": list(sources.values()), "relations": relations,
+            "law_map": attach_law_evidence(law_map, sources, excerpts)}
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c").replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
     (OUT / "data.js").write_text("window.REGULATION_MAP = " + payload + ";\n", encoding="utf-8")
     print(f"규정 지도 생성: {len(departments)}개 부서 / {sum(len(d['duties']) for d in departments)}개 업무 / {len(sources)}종 규정 / {len(relations)}개 참조 관계")

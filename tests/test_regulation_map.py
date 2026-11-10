@@ -5,12 +5,14 @@ from pathlib import Path
 import json
 import re
 from copy import deepcopy
+from urllib.parse import urljoin
 
 import koica_search as ks
 from regulation_map.build import ORG, ROOT, build_relations, official_source, parse_departments, parse_overseas_offices
 from regulation_map.reviews import apply_reviews, digest, load_delegation
 from regulation_map import delegation_annex
 from regulation_map.bundle import bundle
+from regulation_map.law_evidence import attach_law_evidence, cited_provisions
 
 
 def article(source, body, number=1, title="목적"):
@@ -155,14 +157,111 @@ class OfficialSourceTests(unittest.TestCase):
         self.assertEqual(official["list_url"], "https://www.alio.go.kr/list")
 
 
+class ExternalLawMapTests(unittest.TestCase):
+    def setUp(self):
+        snapshot = json.loads((ROOT / "regulation_map/law_mapping.json").read_text())
+        self.laws = snapshot["laws"]
+        self.mappings = snapshot["mappings"]
+
+    def test_every_edge_resolves_and_preserves_its_workbook_row_and_title(self):
+        rows = [entry["row"] for entry in self.mappings.values()]
+        self.assertEqual(len(rows), len(set(rows)))
+        referenced = set()
+        for entry in self.mappings.values():
+            self.assertGreater(entry["row"], 5)
+            for title, original in entry["refs"].items():
+                referenced.add(title)
+                self.assertIn(original, [title, *self.laws[title].get("aliases", [])])
+        self.assertEqual(referenced, set(self.laws))
+
+    def test_external_evidence_preserves_paragraph_and_separates_decree(self):
+        row = {"refs": {"계약법": "계약법", "계약법 시행령": "계약법 시행령", "민법": "민법"},
+               "reviewed": {"계약법": {"article": "제2조", "body_sha256": "stale"}}}
+        source = {"articles": [{"article": "제2조", "body": "① 「계약법」 시행령을 따른다.\n② ｢계약법｣ 제3조에 따른다."}]}
+        attach_law_evidence({"mappings": {"조달규정": row}}, {"조달규정": source})
+        self.assertEqual(row["evidence"], {"계약법 시행령": [[0, 0]], "계약법": [[0, 1, [{"title": "계약법", "provision": "제3조"}]]]})
+        self.assertFalse(row["reviewed"])
+
+    def test_external_snapshot_keeps_the_historical_title_and_exact_item(self):
+        excerpts = json.loads((ROOT / "regulation_map/law_excerpts.json").read_text())
+        name = "지능정보화 기본법"
+        row = {"refs": {name: "국가정보화 기본법"}}
+        quote = '「국가정보화 기본법」제3조제11호에 따른 정보통신망'
+        attach_law_evidence({"mappings": {"지침": row}},
+                            {"지침": {"articles": [{"body": quote}]}}, excerpts)
+        item, = row["evidence"][name][0][2]
+        self.assertEqual(item["title"], "국가정보화 기본법")
+        self.assertIn('11. "정보통신망"이란', item["text"])
+        self.assertIn("연혁", item["version"])
+        self.assertIn("212081", item["url"])
+
+    def test_coordinates_stop_at_the_next_law_and_keep_subitems(self):
+        self.assertEqual(list(cited_provisions(" 제3조의2 제2항 제1호 및 제2호, 「다른 법」제4조")),
+                         ["제3조의2제2항제1호", "제3조의2제2항제2호"])
+        self.assertEqual(list(cited_provisions("에 따라 제17조를 적용한다")), [])
+        self.assertEqual(list(cited_provisions('(이하 “법”이라 한다) 제7조 제1항에 따라')), ["제7조제1항"])
+        self.assertEqual(list(cited_provisions('(이하 “법”이라 한다) 및 「다른 법」 제1조')), [])
+
+    def test_all_contextual_selections_resolve_to_a_sourced_excerpt_or_a_review_note(self):
+        from regulation_map.law_evidence import title_key
+        excerpts = json.loads((ROOT / "regulation_map/law_excerpts.json").read_text())
+        for row in self.mappings.values():
+            for law, selections in row.get("related_provisions", {}).items():
+                self.assertIn(law, row["refs"])
+                for selection in selections:
+                    self.assertRegex(selection["line_sha256"], r"^[0-9a-f]{64}$")
+                    if "unresolved" in selection:
+                        self.assertTrue(selection["unresolved"])
+                        self.assertNotIn("provision", selection)
+                        continue
+                    text = excerpts[title_key(selection.get("title", law))][selection["provision"]]
+                    self.assertTrue(text["text"] and text["version"])
+                    self.assertTrue(text["url"].startswith("https://"))
+
+    def test_contextual_excerpt_only_attaches_to_its_reviewed_line(self):
+        line = "「데이터법」에 따라 데이터를 관리한다."
+        row = {"refs": {"데이터법": "데이터법"}, "related_provisions": {"데이터법": [
+            {"article": "제1조", "line_sha256": digest(line), "provision": "제2조제4호"}]}}
+        source = {"articles": [{"article": "제1조", "body": line}]}
+        snapshot = {"mappings": {"지침": row}}
+        excerpts = {"데이터법": {"제2조제4호": {"text": "정의 문구"}}}
+        attach_law_evidence(snapshot, {"지침": source}, excerpts)
+        ref, = row["evidence"]["데이터법"][0][2]
+        self.assertTrue(ref["contextual"])
+        self.assertEqual(ref["text"], "정의 문구")
+        source["articles"][0]["body"] = line + " (개정)"
+        attach_law_evidence(snapshot, {"지침": source}, excerpts)
+        self.assertEqual(row["evidence"]["데이터법"], [[0, 0]])
+
+    def test_internal_reference_and_historical_title_are_not_current_laws(self):
+        enterprise = self.mappings["기업성장응답센터 운영지침"]
+        self.assertEqual(set(enterprise["refs"]), {"개인정보 보호법"})
+        self.assertIn("민원 및 고객의소리 사무처리지침 (KOICA 내규)", enterprise["notes"])
+        historical = self.laws["한국방송통신대학교 설치령"]
+        self.assertIn("historicalMst", historical)
+        self.assertNotIn("lawId", historical)
+
+
 class BundleTests(unittest.TestCase):
     def make_site(self, root, app="window.APP=1;"):
         page = (ROOT / "regulation_map" / "index.html").read_text(encoding="utf-8")
         (root / "index.html").write_text(page, encoding="utf-8")
         (root / "styles.css").write_text("body{color:red}", encoding="utf-8")
         for name, body in {"data.js": "window.REGULATION_MAP={};", "map_model.js": "window.M=1;",
-                           "reader.js": "window.R=1;", "app.js": app}.items():
+                           "reader.js": "window.R=1;", "law_map.js": "window.L=1;", "app.js": app}.items():
             (root / name).write_text(body, encoding="utf-8")
+
+    def test_brand_returns_to_same_document_from_a_deep_link(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.make_site(Path(tmp))
+            html = bundle(Path(tmp))
+        brand = re.search(r'<a\b[^>]*\bclass="brand"[^>]*>', html)[0]
+        href = re.search(r'\bhref="([^"]*)"', brand)[1]
+        for page in ("file:///maps/dist/index.html", "file:///Downloads/my-map.html",
+                     "https://example.org/maps/index.html?preview=1"):
+            with self.subTest(page=page):
+                target = urljoin(page + "#department=test&duty=d1", href)
+                self.assertEqual(target.removesuffix("#"), page)
 
     def test_single_file_inlines_every_asset_in_order(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -171,7 +270,7 @@ class BundleTests(unittest.TestCase):
         self.assertNotIn('src="', html)
         self.assertNotIn('href="styles.css"', html)
         self.assertIn("body{color:red}", html)
-        order = [html.index(x) for x in ["window.REGULATION_MAP", "window.M=1", "window.R=1", "window.APP=1"]]
+        order = [html.index(x) for x in ["window.REGULATION_MAP", "window.M=1", "window.R=1", "window.L=1", "window.APP=1"]]
         self.assertEqual(order, sorted(order))
         self.assertLess(order[-1], html.index("</body>"))
         self.assertEqual(html.count('name="regulation-map-bundle"'), 1)

@@ -109,3 +109,16 @@ assert(short.width*0.92<=830,'two columns fit a 1440px window at the readable sc
 assert(short.height<=470,'one row fits the smallest map frame without vertical scrolling');
 assert.equal(M.dutyLayout(two,[]).bands.length,0);
 console.log('Map priority ordering, filtering, task context, and layout checks passed');
+
+// The same title can belong to both an internal regulation and an external law.
+const mapping={'가':{refs:{'가':'가','공유법':'공유법'}},'나':{refs:{'공유법':'공유법'}}};
+for (const width of [320,740]) {
+  const layer=M.lawLayout('@duty',['가','나'],mapping,width);
+  assert.deepEqual([...layer.lawPositions.keys()],['가','공유법']);
+  assert.equal(layer.edges.length,3);
+  const reg=layer.positions.get('가'),law=layer.lawPositions.get('가');
+  assert(reg.x+reg.w/2 < law.x-law.w/2);
+  assert(law.x+law.w/2 < layer.width);
+}
+assert.deepEqual(M.lawLayout('나',[],mapping,640).edges,[{from:'나',to:'공유법'}]);
+assert.equal(M.lawLayout('@duty',[],mapping,640).lawPositions.size,0);

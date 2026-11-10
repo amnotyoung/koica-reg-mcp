@@ -16,8 +16,13 @@
   const basisLabel = link => ({direct_component:'특정 행위의 직접 근거',related_principle:'관련 원칙',common_procedure:'공통 처리 절차'}[link?.relation_basis] || '');
   const badge = p => `<span class="priority-badge ${esc(p.level)}">${esc(p.label)}</span>`;
   const regs = new Map(D.regulations.map(r => [r.id, r]));
+  const lawMap = window.createLawMap(D.law_map, regs, expand, selectLaw);
+  function lawAction(id) {
+    const count = lawMap.count(id);
+    return count ? `<button class="outline-button law-action" data-law-reg="${esc(id)}">상위법령 지도 · ${count}종 ↗</button>` : '';
+  }
   const adjacent = id => D.relations.filter(e => e.from === id || e.to === id);
-  const state = {department: null, duty: null, focus: null, selected: null, page: 0, list: window.matchMedia('(max-width:720px)').matches, zoom: null, scrollPending: true, viewPref: null};
+  const state = {department: null, duty: null, focus: null, selected: null, selectedLaw: null, page: 0, list: window.matchMedia('(max-width:720px)').matches, zoom: null, scrollPending: true, viewPref: null};
   const narrow = () => window.matchMedia('(max-width:1200px)').matches;
   // 1 SVG unit = 1 CSS px at 100%. The automatic scale fits the width only while
   // node titles stay at least ~13px; otherwise the map scrolls and can be dragged.
@@ -73,7 +78,7 @@
     state.department=department;
     closeDepartmentSearch();
     state.duty=MP.departmentSelection(department,dutyId);
-    state.focus=null;state.selected=null;state.page=0;state.viewPref=null;$('priority-filter').value='all';
+    state.focus=null;state.selectedLaw=null;state.selected=null;state.page=0;$('priority-filter').value='all';
     $('department-path').textContent=trail([department.division,...department.path])+(department.aggregate?` · 하위 ${department.children.length}개 ${unit(department)} 업무`:'');
     $('duty-count').textContent=department.duties.length;
     renderDuties();resetZoom();render();showDuty();saveState();
@@ -113,11 +118,68 @@
     if(current)parts.push(current);
     return parts.length>3?[parts[0],parts[1],parts.slice(2).join('').slice(0,max-1)+'…']:parts;
   }
+  function renderLawLayer(layout,viewport) {
+    for (const edge of layout.edges) {
+      const a=layout.positions.get(edge.from), b=layout.lawPositions.get(edge.to);
+      const start=a.x+a.w/2, end=b.x-b.w/2, mid=(start+end)/2;
+      const path=svg('path',{d:`M ${start} ${a.y} C ${mid} ${a.y} ${mid} ${b.y} ${end} ${b.y}`,
+        class:'law-edge'+(state.selected===edge.from?' active':'')});
+      const group=svg('g',{class:'law-connection',role:'button',tabindex:0,
+        'data-reg':edge.from,'data-law':edge.to,'aria-label':edge.from+' → '+edge.to+' 연결 근거'});
+      group.append(svg('path',{d:path.getAttribute('d'),class:'edge-hit'}),path,svg('title',{},edge.from+' → '+edge.to+' · 연결 근거 보기'));
+      const openPair=()=>selectLaw(edge.to,edge.from);
+      group.addEventListener('click',openPair);
+      group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openPair();}});
+      viewport.append(group);
+    }
+    for (const [title,p] of layout.lawPositions) {
+      const node=svg('g',{class:'node external-law'+(state.selectedLaw===title?' selected':''),'aria-pressed':String(state.selectedLaw===title),'data-law':title,role:'button',tabindex:0,
+        transform:`translate(${p.x-p.w/2} ${p.y-p.h/2})`,'aria-label':'상위법령: '+title});
+      node.append(svg('rect',{class:'node-box',width:p.w,height:p.h,rx:4}));
+      const status=lawMap.lawLabel(title);
+      node.append(svg('text',{x:13,y:23,class:'badge'},status));
+      lines(title,Math.max(7,Math.floor((p.w-26)/15))).forEach((line,i)=>{
+        node.append(svg('text',{x:13,y:45+17*i,class:'title'},line));
+      });
+      node.append(svg('title',{},title+' · '+status));
+      const openLaw=()=>selectLaw(title,state.selected || state.focus);
+      node.addEventListener('click',openLaw);
+      node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openLaw();}});
+      viewport.append(node);
+    }
+  }
+  function bindLawHighlights(viewport) {
+    let hovered=null,focused=null;
+    const nodes=Array.from(viewport.querySelectorAll('.node[data-law],.node[data-reg]'));
+    const connections=Array.from(viewport.querySelectorAll('.law-connection'));
+    function paint() {
+      const current=hovered || focused, regs=new Set(), laws=new Set();
+      for (const edge of connections) {
+        const match=current && (!current.dataset.reg || current.dataset.reg===edge.dataset.reg)
+          && (!current.dataset.law || current.dataset.law===edge.dataset.law);
+        edge.classList.toggle('related',!!match);
+        if (match) {regs.add(edge.dataset.reg);laws.add(edge.dataset.law);}
+      }
+      for (const node of nodes) node.classList.toggle('related',
+        node.dataset.law ? laws.has(node.dataset.law) : regs.has(node.dataset.reg));
+    }
+    for (const target of [...nodes,...connections]) {
+      target.addEventListener('pointerenter',()=>{hovered=target;paint();});
+      target.addEventListener('pointerleave',()=>{hovered=null;paint();});
+      target.addEventListener('focus',()=>{focused=target;paint();});
+      target.addEventListener('blur',()=>{focused=null;paint();});
+    }
+  }
   function render() {
     const g=graphData();state.graph=g;
+    const filteredEmpty=$('priority-filter').value!=='all' && g.total>0 && g.matched===0;
+    $('filter-empty').hidden=!filteredEmpty;
+    const mapped = MP.lawLayout(g.center,g.nodes,D.law_map?.mappings,$('map-summary').clientWidth || 640);
+    const hasLaws = mapped.lawPositions.size > 0;
+    const showLaws = hasLaws && $('show-laws').checked;
     // The map is the default so relationships are visible at a glance; phones
-    // start with cards. A view the person picks holds within the same duty.
-    state.list=state.viewPref?state.viewPref==='list':window.matchMedia('(max-width:720px)').matches;
+    // start with cards for duties without mapped laws.
+    state.list=state.viewPref?state.viewPref==='list':!hasLaws && window.matchMedia('(max-width:720px)').matches;
     $('map-title').textContent=state.focus || state.duty.title;
     const owner=state.duty.overview?`${state.department.name} 전체`:dutyOwner().name;
     $('map-subtitle').textContent=state.focus
@@ -137,9 +199,11 @@
     if(chosen) refs=allRefs?` · 선택 규정 참조: 현재 업무 범위 ${explicit}개`:' · 선택 규정: 추출된 규정 참조 없음';
     else if(state.focus && explicit) refs=state.list?` · 참조 관계 ${explicit}개 · 지도에서 확인`:` · 참조선 ${explicit}개 표시`;
     renderBasis();
+    lawMap.preview(state.list ? state.selected || state.focus : null);
     $('map-summary').innerHTML=esc(state.focus?`연결 규정 ${g.matched===g.total?`${g.total}종`:`필터 결과 ${g.matched}종`} 중 ${g.nodes.length}종 표시${refs}`:`${shown} · ${status}${refs}`)
       +(chosen && allRefs?` <button class="text-button inline-action" data-expand="${esc(chosen)}">전체 참조 ${allRefs}종 보기 →</button>`:'');
-    $('graph-hint').textContent=state.focus?'선택한 규정의 참조만 표시합니다. 다른 연결은 노드를 선택해 확인하세요.'
+    if (showLaws && !state.list) $('map-summary').append(` · 상위법령 ${mapped.lawPositions.size}종`);
+    $('graph-hint').textContent=showLaws?'카드에 마우스를 올리면 연결된 문서가 강조됩니다. 보라색 선을 누르면 연결 근거를 확인할 수 있습니다.':state.focus?'선택한 규정의 참조만 표시합니다. 다른 연결은 노드를 선택해 확인하세요.'
       :chosen?(explicit?`선택한 규정과 현재 업무 범위 규정 사이의 참조선 ${explicit}개를 표시합니다.`:`현재 업무 범위에는 선택한 규정의 참조선이 없습니다.${allRefs?` 전체 참조 ${allRefs}종은 규정 참조 기준에서 볼 수 있습니다.`:''}`)
       :'규정을 선택하면 해당 규정의 참조선과 근거를 볼 수 있습니다.';
     $('neighbor-pager').hidden=!state.focus || g.pages<2;
@@ -149,12 +213,19 @@
     const first=state.duty.links.find(link=>link.priority.level==='core');
     document.querySelector('.map-toolbar').hidden=state.list;
     document.querySelector('.map-bottom').hidden=state.list;
+    $('laws-control').hidden=!hasLaws;
     $('reference-legend').hidden=!explicit;
     $('work-legend').hidden=!!state.focus;
     $('work-links-control').hidden=!!state.focus;
     const viewport=$('viewport');viewport.replaceChildren();
     let positions,width,height;
-    if(!state.focus) {
+    if(showLaws) {
+      ({positions,width,height}=mapped);
+      const firstReg=positions.get(g.center),firstLaw=mapped.lawPositions.values().next().value;
+      viewport.append(svg('text',{x:firstReg.x-firstReg.w/2,y:mapped.labelY,class:'band-label core'},'KOICA 내규'));
+      viewport.append(svg('text',{x:firstLaw.x-firstLaw.w/2,y:mapped.labelY,class:'band-label law-label'},'상위법령 · '+mapped.lawPositions.size+'종'));
+      renderLawLayer(mapped,viewport);
+    } else if(!state.focus) {
       const layout=MP.dutyLayout(state.duty.links,g.nodes,{overview:!!state.duty.overview});
       ({positions,width,height}=layout);
       for(const band of layout.bands) {
@@ -171,17 +242,22 @@
         positions.set(id,{x:width/2+Math.cos(angle)*(many?540:395),y:height/2+Math.sin(angle)*(many?350:265),...size});
       });
     }
-    state.canvas={width,height};
+    state.canvas={width,height,lawLayout:showLaws};
     $('map-svg').setAttribute('viewBox',`0 0 ${width} ${height}`);
     const connection=(from,to)=>{const a=positions.get(from),b=positions.get(to);const dx=b.x-a.x,dy=b.y-a.y;const ka=1/Math.max(Math.abs(dx)/(a.w/2+5),Math.abs(dy)/(a.h/2+5));const kb=1/Math.max(Math.abs(dx)/(b.w/2+5),Math.abs(dy)/(b.h/2+5));return `M ${a.x+dx*ka} ${a.y+dy*ka} L ${b.x-dx*kb} ${b.y-dy*kb}`;};
     g.edges.forEach(e=>{
       const group=svg('g',{class:'edge-group',role:'button',tabindex:0,'aria-label':e.kind==='explicit'?`${e.from} → ${e.to} 참조 근거`:`${e.to} 업무 내용 연결 근거`});
       let path=connection(e.from,e.to);
-      if(!state.focus && e.kind==='reviewed') {
+      if(showLaws) {
+        const a=positions.get(e.from),b=positions.get(e.to);
+        const start=a.x-a.w/2,end=b.x-b.w/2;
+        const lane=e.kind==='reviewed'?8:(e.from===g.center?16:23);
+        path=`M ${start} ${a.y} H ${lane} V ${b.y} H ${end-2}`;
+      } else if(!state.focus && e.kind==='reviewed') {
         const a=positions.get(e.from),b=positions.get(e.to),spine=b.x-145;
         path=`M ${a.x} ${a.y+a.h/2+5} V 155 H ${spine} V ${b.y} H ${b.x-b.w/2-5}`;
       }
-      if(e.kind==='explicit' && g.edges.some(other=>other.from===e.to && other.to===e.from)) {
+      if(!showLaws && e.kind==='explicit' && g.edges.some(other=>other.from===e.to && other.to===e.from)) {
         const a=positions.get(e.from),b=positions.get(e.to),length=Math.hypot(b.x-a.x,b.y-a.y);
         const midX=(a.x+b.x)/2-(b.y-a.y)*28/length,midY=(a.y+b.y)/2+(b.x-a.x)*28/length;
         path=path.replace(' L ',` Q ${midX} ${midY} `);
@@ -196,20 +272,22 @@
       const central=id===g.center, duty=id==='@duty', r=regs.get(id);
       const title=duty?state.duty.title:id,prio=duty?null:priority(id);
       const group=svg('g',{class:`node ${central?'central':''} ${duty?'':prio.level} ${state.selected===id?'selected':''} ${!state.focus&&!state.selected&&first?.source===id?'entry':''}`,transform:`translate(${p.x-p.w/2} ${p.y-p.h/2})`,tabindex:0,role:'button','aria-label':duty?(state.duty.overview?'선택한 부서: ':'선택한 업무: ')+title:'규정: '+title});
+      if (showLaws && !duty) group.dataset.reg=id;
       group.append(svg('rect',{width:p.w,height:p.h,rx:4,class:'node-box'}));
       const category=duty?(state.duty.overview?'부서 전체':'업무'):prio.label;
-      if(duty || state.focus) {
+      if(duty || state.focus || showLaws) {
         group.append(svg('text',{x:15,y:25,class:'badge',fill:central?'rgba(255,255,255,.82)':color(category)},category));
       }
-      const titleLines=lines(title,p.w>=230?17:p.w<200?13:15);
-      titleLines.forEach((l,i)=>group.append(svg('text',{x:15,y:(duty||state.focus?50:34)+i*17,class:'title'},l)));
-      if(titleLines.length<3) group.append(svg('text',{x:15,y:p.h-13,class:'meta'},duty?(state.duty.overview?`${state.department.duties.length}개 업무`:dutyOwner().name):(state.duty.links.find(l=>l.source===id)?.role || `참조 연결 ${adjacent(id).length}개`)));
+      const titleLines=lines(title,showLaws?Math.max(7,Math.floor((p.w-30)/15)):p.w>=230?17:p.w<200?13:15);
+      titleLines.forEach((l,i)=>group.append(svg('text',{x:15,y:(duty||state.focus||showLaws?45:34)+i*17,class:'title'},l)));
+      if(titleLines.length<3 && (!showLaws || p.w>200)) group.append(svg('text',{x:15,y:p.h-13,class:'meta'},duty?(state.duty.overview?`${state.department.duties.length}개 업무`:dutyOwner().name):(state.duty.links.find(l=>l.source===id)?.role || `참조 연결 ${adjacent(id).length}개`)));
       group.append(svg('title',{},duty?title:`${title} · ${prio.label}\n${prio.reason}`));
-      const activate=()=>{if(duty){state.selected=null;showDuty();render();}else selectRegulation(id);};
+      const activate=()=>{if(duty){state.selectedLaw=null;state.selected=null;showDuty();render();}else selectRegulation(id);};
       group.addEventListener('click',activate);group.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();activate();}});viewport.append(group);
     }
-    $('list-view').innerHTML=g.nodes.length?g.nodes.map(id=>{const r=regs.get(id);const links=D.relations.filter(e=>e.kind==='explicit'&&(e.from===g.center&&e.to===id||e.to===g.center&&e.from===id));const desc=state.focus?(links.length>1?'중심 규정과 서로 참조':links[0]?.from===id?'이 규정이 중심 규정을 참조':'중심 규정이 이 규정을 참조'):(state.duty.links.find(l=>l.source===id)?.role || '내용 검토 연결');return `<button class="list-card priority-${priority(id).level} ${state.selected===id?'selected':''}" data-reg="${esc(id)}" ${state.selected===id?'aria-current="true"':''}><span>${badge(priority(id))}<small>${esc(r.category)} · ${esc(r.revision)}</small><strong>${esc(id)}</strong><small>${desc}</small>${basisLabel(state.duty.links.find(l=>l.source===id))?`<small class="relation-basis">${esc(basisLabel(state.duty.links.find(l=>l.source===id)))}</small>`:''}<small class="priority-reason">${esc(priority(id).reason)}</small></span><span>↗</span></button>`;}).join(''):`<p class="empty">${g.total?'선택한 순서에 해당하는 연결이 없습니다. 전체 관계로 전환해보세요.':state.focus?'현재 추출된 규정 참조가 없습니다.':state.duty.review.status==='no_direct_basis'?'내부 규정을 검토했으나 직접 연결할 근거가 부족합니다. 오른쪽에서 연결 판단의 범위를 확인하세요.':'이 업무의 내용 연결은 아직 검토하지 않았거나 재검토가 필요합니다.'}</p>`;
-    if(!g.nodes.length) {const p=svg('text',state.focus?{x:width/2,y:height/2+110,'text-anchor':'middle',fill:'#67717C','font-size':14}:{x:35,y:240,fill:'#67717C','font-size':14},g.total?'선택한 순서에 해당하는 연결이 없습니다':state.focus?'추출된 규정 참조가 없습니다':state.duty.review.status==='no_direct_basis'?'직접 연결 판단이 아직 확정되지 않았습니다':'이 업무의 내용 연결은 검토 전입니다');viewport.append(p);}
+    if (showLaws) bindLawHighlights(viewport);
+    $('list-view').innerHTML=g.nodes.length?g.nodes.map(id=>{const r=regs.get(id);const links=D.relations.filter(e=>e.kind==='explicit'&&(e.from===g.center&&e.to===id||e.to===g.center&&e.from===id));const desc=state.focus?(links.length>1?'중심 규정과 서로 참조':links[0]?.from===id?'이 규정이 중심 규정을 참조':'중심 규정이 이 규정을 참조'):(state.duty.links.find(l=>l.source===id)?.role || '내용 검토 연결');return `<button class="list-card priority-${priority(id).level} ${state.selected===id?'selected':''}" data-reg="${esc(id)}" ${state.selected===id?'aria-current="true"':''}><span>${badge(priority(id))}<small>${esc(r.category)} · ${esc(r.revision)}</small><strong>${esc(id)}</strong><small>${desc}</small>${basisLabel(state.duty.links.find(l=>l.source===id))?`<small class="relation-basis">${esc(basisLabel(state.duty.links.find(l=>l.source===id)))}</small>`:''}<small class="priority-reason">${esc(priority(id).reason)}</small></span><span>↗</span></button>`;}).join(''):filteredEmpty?'':`<p class="empty">${state.focus?'현재 추출된 규정 참조가 없습니다.':state.duty.review.status==='no_direct_basis'?'내부 규정을 검토했으나 직접 연결할 근거가 부족합니다. 오른쪽에서 연결 판단의 범위를 확인하세요.':'이 업무의 내용 연결은 아직 검토하지 않았거나 재검토가 필요합니다.'}</p>`;
+    if(!g.nodes.length && !showLaws && !filteredEmpty) {const p=svg('text',state.focus?{x:width/2,y:height/2+110,'text-anchor':'middle',fill:'#67717C','font-size':14}:{x:35,y:240,fill:'#67717C','font-size':14},g.total?'선택한 순서에 해당하는 연결이 없습니다':state.focus?'추출된 규정 참조가 없습니다':state.duty.review.status==='no_direct_basis'?'직접 연결 판단이 아직 확정되지 않았습니다':'이 업무의 내용 연결은 검토 전입니다');viewport.append(p);}
     $('graph').hidden=state.list;$('list-view').hidden=!state.list;
     $('view-toggle').textContent=state.list?'지도로 보기':'목록으로 보기';$('view-toggle').setAttribute('aria-pressed',state.list);
     applyZoom();
@@ -259,32 +337,51 @@
   }
   function showOverviewRegulation(id,link,direct,otherCount) {
     const r=regs.get(id);
-    $('detail').innerHTML=`<h3>${esc(id)}</h3><p class="revision">${esc(r.revision)}</p><button class="outline-button fulltext-button" data-read-source="${esc(id)}">규정 전문 보기 ↗</button>${officialLinks(r)}<p class="detail-description">${link.team_count}개 담당부서의 ${link.associations.length}개 업무와 연결됩니다.</p><p class="source-label">${esc(link.priority.reason)}</p>${direct.map(e=>`<button class="outline-button reference-action" data-edge-from="${esc(e.from)}" data-edge-to="${esc(e.to)}">${e.from===state.focus?'중심 규정에서 참조한 근거':'중심 규정을 참조하는 근거'} 보기</button>`).join('')}${otherCount?`<button class="primary-button" data-expand="${esc(id)}">연결된 다른 규정 보기 (${otherCount}종) ↗</button>`:''}<h4>연결된 팀·업무와 근거</h4>${link.associations.map(a=>`<details class="overview-association"><summary><span>${esc(a.department_name)}</span><strong>${esc(a.number)}. ${esc(a.duty_title)}</strong></summary>${badge(a.link.priority)}${basisLabel(a.link)?`<p class="relation-basis">관계 구분: ${esc(basisLabel(a.link))}</p>`:''}<p class="detail-description">${esc(a.link.rationale)}</p><div class="condition"><strong>이 업무의 적용 조건</strong><p>${esc(a.link.condition)}</p></div><p class="source-label">${esc(a.review?.reviewer || 'AI 내용검토 · 기관 검토 전')} · ${esc(a.review?.reviewed_at || '')}</p><button class="outline-button reference-action" data-select-duty="${esc(a.duty_id)}">이 업무의 규정 지도로 이동 ↗</button>${evidenceCards(a.link.evidence || [])}</details>`).join('')}`;
+    $('detail').innerHTML=`<h3>${esc(id)}</h3><p class="revision">${esc(r.revision)}</p><button class="outline-button fulltext-button" data-read-source="${esc(id)}">규정 전문 보기 ↗</button>${officialLinks(r)}${lawAction(id)}<p class="detail-description">${link.team_count}개 담당부서의 ${link.associations.length}개 업무와 연결됩니다.</p><p class="source-label">${esc(link.priority.reason)}</p>${direct.map(e=>`<button class="outline-button reference-action" data-edge-from="${esc(e.from)}" data-edge-to="${esc(e.to)}">${e.from===state.focus?'중심 규정에서 참조한 근거':'중심 규정을 참조하는 근거'} 보기</button>`).join('')}${otherCount?`<button class="primary-button" data-expand="${esc(id)}">연결된 다른 규정 보기 (${otherCount}종) ↗</button>`:''}<h4>연결된 팀·업무와 근거</h4>${link.associations.map(a=>`<details class="overview-association"><summary><span>${esc(a.department_name)}</span><strong>${esc(a.number)}. ${esc(a.duty_title)}</strong></summary>${badge(a.link.priority)}${basisLabel(a.link)?`<p class="relation-basis">관계 구분: ${esc(basisLabel(a.link))}</p>`:''}<p class="detail-description">${esc(a.link.rationale)}</p><div class="condition"><strong>이 업무의 적용 조건</strong><p>${esc(a.link.condition)}</p></div><p class="source-label">${esc(a.review?.reviewer || 'AI 내용검토 · 기관 검토 전')} · ${esc(a.review?.reviewed_at || '')}</p><button class="outline-button reference-action" data-select-duty="${esc(a.duty_id)}">이 업무의 규정 지도로 이동 ↗</button>${evidenceCards(a.link.evidence || [])}</details>`).join('')}`;
   }
   function selectDuty(id) {
     const duty=state.department.duties.find(d=>d.id===id);
     if(!duty)return;
-    state.duty=duty;state.focus=null;state.selected=null;state.page=0;state.viewPref=null;$('priority-filter').value='all';
+    state.duty=duty;state.focus=null;state.selectedLaw=null;state.selected=null;state.page=0;$('priority-filter').value='all';
     resetZoom();renderDuties();render();showDuty();saveState();
   }
+  function revealResults() {
+    const title=$('map-title');
+    title.focus({preventScroll:true});
+    title.scrollIntoView({block:'start'});
+  }
   function revealDetail() {if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('.inspector').scrollIntoView({behavior:'smooth',block:'start'});}
-  function selectRegulation(id) {state.selected=id;showRegulation(id);render();revealDetail();}
-  function backToDutyMap() {state.focus=null;state.selected=null;state.page=0;$('priority-filter').value='all';resetZoom();render();showDuty();saveState();}
+  function selectLaw(name, candidateReg) {
+    const from=D.law_map.mappings[candidateReg]?.refs[name] ? candidateReg : null;
+    state.selected=from;
+    state.selectedLaw=name;
+    render();
+    const visible=new Set([state.graph.center,...state.graph.nodes]);
+    lawMap.inspect(name,from,visible,reg=>{
+      if (visible.has(reg)) selectRegulation(reg);
+      else expand(reg);
+    });
+    document.querySelector('.inspector').scrollTop=0;
+    revealDetail();
+  }
+  function selectRegulation(id) {state.selectedLaw=null;state.selected=id;showRegulation(id);render();revealDetail();}
+  function backToDutyMap() {state.focus=null;state.selectedLaw=null;state.selected=null;state.page=0;$('priority-filter').value='all';resetZoom();render();showDuty();saveState();}
   function showRegulation(id) {
     document.querySelector('.inspector').scrollTop=0;
     const r=regs.get(id), all=adjacent(id), otherCount=new Set(all.map(e=>e.from===id?e.to:e.from)).size;
     const link=state.duty.links.find(x=>x.source===id);
     const direct=state.focus && state.focus!==id?all.filter(e=>e.from===state.focus || e.to===state.focus):[];
     if(state.duty.overview && link){showOverviewRegulation(id,link,direct,otherCount);return;}
-    $('detail').innerHTML=`<h3>${esc(id)}</h3><span class="pill">${esc(link?.role || r.category)}</span><div class="revision">${esc(r.revision)}</div><button class="outline-button fulltext-button" data-read-source="${esc(id)}">규정 전문 보기 ↗</button>${officialLinks(r)}${link?`${basisLabel(link)?`<p class="relation-basis">관계 구분: ${esc(basisLabel(link))}</p>`:''}<h4>업무와 연결되는 이유</h4><p class="detail-description">${esc(link.rationale)}</p><div class="condition"><strong>적용 조건</strong><p>${esc(link.condition)}</p></div><details class="more-relations"><summary>${esc(link.priority.label)} · 분류 이유</summary><p class="detail-description">${esc(link.priority.reason)}<br>업무별 읽기 순서이며 법적 효력의 우열을 뜻하지 않습니다.</p></details><div class="source-label">${esc(state.duty.review.reviewer)} · ${esc(state.duty.review.reviewed_at)}</div>`:'<p class="detail-description">선택한 업무와의 내용 연결은 미검토이며 확인 순서는 미평가입니다. 원문에 명시된 참조 관계를 탐색할 수 있습니다.</p>'}${direct.map(e=>`<button class="outline-button reference-action" data-edge-from="${esc(e.from)}" data-edge-to="${esc(e.to)}">${e.from===state.focus?'중심 규정에서 참조한 근거':'중심 규정을 참조하는 근거'} 보기</button>`).join('')}${otherCount?`<button class="primary-button" data-expand="${esc(id)}">연결된 다른 규정 보기 (${otherCount}종) ↗</button>`:'<p class="detail-description">현재 추출 방식으로 확인된 참조가 없습니다. 관계가 없다는 뜻은 아닙니다.</p>'}${link?`<h4>근거 조문</h4>${evidenceCards(link.evidence)}`:''}`;
+    $('detail').innerHTML=`<h3>${esc(id)}</h3><span class="pill">${esc(link?.role || r.category)}</span><div class="revision">${esc(r.revision)}</div><button class="outline-button fulltext-button" data-read-source="${esc(id)}">규정 전문 보기 ↗</button>${officialLinks(r)}${lawAction(id)}${link?`${basisLabel(link)?`<p class="relation-basis">관계 구분: ${esc(basisLabel(link))}</p>`:''}<h4>업무와 연결되는 이유</h4><p class="detail-description">${esc(link.rationale)}</p><div class="condition"><strong>적용 조건</strong><p>${esc(link.condition)}</p></div><details class="more-relations"><summary>${esc(link.priority.label)} · 분류 이유</summary><p class="detail-description">${esc(link.priority.reason)}<br>업무별 읽기 순서이며 법적 효력의 우열을 뜻하지 않습니다.</p></details><div class="source-label">${esc(state.duty.review.reviewer)} · ${esc(state.duty.review.reviewed_at)}</div>`:'<p class="detail-description">선택한 업무와의 내용 연결은 미검토이며 확인 순서는 미평가입니다. 원문에 명시된 참조 관계를 탐색할 수 있습니다.</p>'}${direct.map(e=>`<button class="outline-button reference-action" data-edge-from="${esc(e.from)}" data-edge-to="${esc(e.to)}">${e.from===state.focus?'중심 규정에서 참조한 근거':'중심 규정을 참조하는 근거'} 보기</button>`).join('')}${otherCount?`<button class="primary-button" data-expand="${esc(id)}">연결된 다른 규정 보기 (${otherCount}종) ↗</button>`:'<p class="detail-description">현재 추출 방식으로 확인된 참조가 없습니다. 관계가 없다는 뜻은 아닙니다.</p>'}${link?`<h4>근거 조문</h4>${evidenceCards(link.evidence)}`:''}`;
   }
   function showEdge(e) {
+    if(state.selectedLaw){state.selectedLaw=null;render();}
     document.querySelector('.inspector').scrollTop=0;
     const review=e.content_review;
     $('detail').innerHTML=`<div class="detail-kicker">${review?'규정 관계 내용검토':'규정명 참조 자동 추출 · 내용 미검토'}</div><h3>${esc(e.from)}</h3><button class="text-button" data-read-source="${esc(e.from)}">이 규정 전문 보기 ↗</button><p class="detail-description">↓ ${esc(review?.label || '참조합니다')}</p><h3>${esc(e.to)}</h3><button class="text-button" data-read-source="${esc(e.to)}">참조 대상 전문 보기 ↗</button>${!review?`<div class="source-label">참조 원문: ${esc(regs.get(e.from).revision)}<br>참조 대상: ${esc(regs.get(e.to).revision)}</div>`:''}${review?`<p class="detail-description">${esc(review.explanation)}</p><div class="source-label">${esc(review.reviewed_at)} · AI 내용검토, 기관 검토 전</div>${evidenceCards(review.evidence)}`:`<p class="detail-description">원문에 규정명이 명시되어 자동 추출한 참조입니다. 관계의 의미·적용 조건은 아직 내용 검토하지 않았습니다.</p>`}<details class="more-relations" ${review?'':'open'}><summary>자동 추출 참조 ${e.evidence.length}건 확인</summary>${e.evidence.map(v=>`<div class="evidence-card"><div class="citation">${esc(e.from)} ${esc(v.article)}<br>${esc(v.title)}</div><p>${esc(v.quote)}</p><div class="terms">대상: ${esc(e.to)} ${esc(v.target_article || '(규정명 참조)')}</div>${articleDetail(e.from,v.article)}</div>`).join('')}</details><button class="primary-button" data-expand="${esc(e.to)}">참조 대상 주변으로 이동 ↗</button><button class="outline-button" data-reg="${esc(e.from)}">출발 규정 살펴보기</button>`;
     revealDetail();
   }
-  function expand(id) {if(!regs.has(id))return;$('priority-filter').value='all';state.focus=id;state.selected=id;state.page=0;resetZoom();render();showRegulation(id);saveState();if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('main').scrollIntoView({behavior:'smooth',block:'start'});}
+  function expand(id) {if(!regs.has(id))return;$('priority-filter').value='all';state.focus=id;state.selectedLaw=null;state.selected=id;state.page=0;resetZoom();render();showRegulation(id);saveState();if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('main').scrollIntoView({behavior:'smooth',block:'start'});}
   function fitZoom(both=false) {
     const graph=$('graph'),{width=1100,height=720}=state.canvas||{};
     if(!graph.clientWidth)return null;
@@ -302,13 +399,13 @@
     $('zoom-reset').textContent=Math.round(state.zoom*100)+'%';
     $('zoom-fit').setAttribute('aria-pressed',String(Math.abs(state.zoom-(fitZoom(true)||0))<.005));
     $('zoom-out').disabled=state.zoom<=minZoom()+.001;$('zoom-in').disabled=state.zoom>=MAX_ZOOM-.001;
-    $('zoom-note').hidden=state.zoom>=READABLE_ZOOM-.001;
+    $('zoom-note').style.visibility=state.zoom<READABLE_ZOOM-.001?'visible':'hidden';
     if(state.scrollPending) {
       state.scrollPending=false;
       // A regulation-centred map opens on its centre; a duty map opens at the
       // starting node and first column.
-      graph.scrollLeft=state.focus?(width*state.zoom-graph.clientWidth)/2:0;
-      graph.scrollTop=state.focus?(height*state.zoom-graph.clientHeight)/2:0;
+      graph.scrollLeft=state.focus && !state.canvas.lawLayout?(width*state.zoom-graph.clientWidth)/2:0;
+      graph.scrollTop=state.focus && !state.canvas.lawLayout?(height*state.zoom-graph.clientHeight)/2:0;
     }
   }
   function setZoom(next, anchor) {
@@ -352,11 +449,20 @@
   $('department-results').addEventListener('click',e=>{const row=e.target.closest('[data-department-index]');if(row)commitDepartment(Number(row.dataset.departmentIndex));});
   document.querySelector('.department-picker').addEventListener('focusout',e=>{if(!e.currentTarget.contains(e.relatedTarget))closeDepartmentSearch();});
   document.addEventListener('pointerdown',e=>{if(!e.target.closest('.department-picker'))closeDepartmentSearch();});
-  $('department-overview').addEventListener('click',()=>selectDepartment(state.department.id));
-  $('duties').addEventListener('click',e=>{const b=e.target.closest('[data-duty]');if(b)selectDuty(b.dataset.duty);});
+  $('department-overview').addEventListener('click',()=>{
+    selectDepartment(state.department.id);
+    if(window.matchMedia('(max-width:720px)').matches)revealResults();
+  });
+  $('duties').addEventListener('click',e=>{
+    const b=e.target.closest('[data-duty]');
+    if(!b)return;
+    selectDuty(b.dataset.duty);
+    if(window.matchMedia('(max-width:720px)').matches)revealResults();
+  });
   document.addEventListener('click',e=>{
     const b=e.target.closest('button');
-    if(b?.dataset.selectDuty){selectDuty(b.dataset.selectDuty);if(window.matchMedia('(max-width:1200px)').matches)document.querySelector('main').scrollIntoView({behavior:'smooth',block:'start'});}
+    if(b?.dataset.selectDuty){selectDuty(b.dataset.selectDuty);if(narrow())revealResults();}
+    else if(b?.dataset.lawReg)lawMap.open('reg',b.dataset.lawReg);
     else if(b?.dataset.expand)expand(b.dataset.expand);
     else if(b?.dataset.reg)selectRegulation(b.dataset.reg);
     else if(b?.dataset.edgeFrom){const edge=D.relations.find(x=>x.from===b.dataset.edgeFrom&&x.to===b.dataset.edgeTo);if(edge)showEdge(edge);}
@@ -365,12 +471,23 @@
   });
   $('regulation-search').addEventListener('input',e=>{
     const q=e.target.value.trim();if(!q){$('search-results').hidden=true;return;}
-    const matches=D.regulations.filter(r=>r.id.includes(q)).slice(0,15);
-    $('search-results').innerHTML=matches.length?matches.map(r=>`<button data-search-reg="${esc(r.id)}">${esc(r.id)}<small>${esc(r.category)} · ${esc(r.revision)}</small></button>`).join(''):'<p class="empty">일치하는 규정이 없습니다.</p>';
+    const matches=lawMap.search(q).slice(0,20);
+    $('search-results').innerHTML=matches.length?matches.map(({kind,name,label})=>`<button data-search-kind="${kind}" data-search-name="${esc(name)}">${esc(name)}<small>${esc(label)} · ${kind==='reg'?'참조 지도로 이동':'법령 상세로 이동'}</small></button>`).join(''):'<p class="empty">일치하는 이름이 없습니다.</p>';
     $('search-results').hidden=false;
   });
-  $('search-results').addEventListener('click',e=>{const b=e.target.closest('[data-search-reg]');if(b){expand(b.dataset.searchReg);$('search-results').hidden=true;$('regulation-search').value='';}});
+  $('search-results').addEventListener('click',e=>{
+    const b=e.target.closest('[data-search-name]');
+    if(!b)return;
+    $('search-results').hidden=true;$('regulation-search').value='';
+    if(b.dataset.searchKind==='reg')expand(b.dataset.searchName);
+    else selectLaw(b.dataset.searchName,state.selected || state.focus);
+  });
   $('regulation-search').addEventListener('keydown',e=>{if(e.key==='Escape')$('search-results').hidden=true;if(e.key==='ArrowDown'){$('search-results').querySelector('button')?.focus();e.preventDefault();}});
+  $('open-laws').addEventListener('click',()=>{
+    if (state.selectedLaw) {lawMap.open('law',state.selectedLaw);return;}
+    const firstMapped=state.duty.links.find(link=>lawMap.count(link.source));
+    lawMap.open('reg',state.selected || state.focus || firstMapped?.source || state.duty.links[0]?.source);
+  });
   $('reset').addEventListener('click',backToDutyMap);
   $('basis-duty').addEventListener('click',()=>{if(state.focus)backToDutyMap();});
   $('basis-reference').addEventListener('click',()=>{if(!state.focus && state.selected)expand(state.selected);});
@@ -380,9 +497,20 @@
     card.scrollIntoView({behavior:'smooth',block:'center'});
     card.focus({preventScroll:true});
   });
+  $('show-laws').addEventListener('change',()=>{resetZoom();render();});
   $('show-reviewed').addEventListener('change',render);
-  $('priority-filter').addEventListener('change',()=>{state.selected=null;state.page=0;render();state.focus?showRegulation(state.focus):showDuty();});
-  for(const [id,step] of [['previous-neighbors',-1],['next-neighbors',1]]) $(id).addEventListener('click',()=>{state.page+=step;state.selected=state.focus;render();showRegulation(state.focus);});
+  function applyPriorityFilter() {
+    state.selectedLaw=null;state.selected=null;state.page=0;
+    render();
+    if(state.focus)showRegulation(state.focus);else showDuty();
+  }
+  $('priority-filter').addEventListener('change',applyPriorityFilter);
+  $('clear-priority').addEventListener('click',()=>{
+    $('priority-filter').value='all';
+    applyPriorityFilter();
+    $('priority-filter').focus({preventScroll:true});
+  });
+  for(const [id,step] of [['previous-neighbors',-1],['next-neighbors',1]]) $(id).addEventListener('click',()=>{state.page+=step;state.selectedLaw=null;state.selected=state.focus;render();showRegulation(state.focus);});
   $('view-toggle').addEventListener('click',()=>{state.viewPref=state.list?'map':'list';render();});
   $('zoom-in').addEventListener('click',()=>setZoom((state.zoom||1)*1.2));
   $('zoom-out').addEventListener('click',()=>setZoom((state.zoom||1)/1.2));
@@ -417,6 +545,7 @@
     const q=new URLSearchParams(location.hash.slice(1));
     const department=departmentChoices.find(d=>d.id===q.get('department'))||defaultDepartment;
     if($('regulation-reader').open)$('regulation-reader').close();
+    if($('law-dialog').open)$('law-dialog').close();
     if($('info-dialog').open)$('info-dialog').close();
     selectDepartment(department.id,q.get('duty'));
     if(regs.has(q.get('regulation')))expand(q.get('regulation'));
