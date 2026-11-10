@@ -1,5 +1,6 @@
 """Offline regression checks for the scheduled law review."""
 import copy
+from io import BytesIO
 import socket
 import ssl
 from http.client import IncompleteRead
@@ -68,15 +69,15 @@ class WeeklyLawTests(unittest.TestCase):
         issues = []
         for error in (TimeoutError(), ConnectionResetError(), IncompleteRead(b""),
                       URLError(socket.gaierror(socket.EAI_AGAIN, "DNS retry")),
-                      HTTPError("", 429, "Rate limited", {}, None),
-                      HTTPError("", 503, "Service unavailable", {}, None),
+                      HTTPError("", 429, "Rate limited", {}, BytesIO()),
+                      HTTPError("", 503, "Service unavailable", {}, BytesIO()),
                       IncompleteSourceResponse("missing current edition frame")):
             with self.subTest(error=error):
                 self.assertTrue(temporary_source_error(error))
                 issues.append(SourceIssue(str(error), True))
         self.assertEqual(result_code(issues), 75)
         self.assertEqual(result_code([]), 0)
-        for error in (HTTPError("", 404, "Not found", {}, None), ValueError("ID mismatch"),
+        for error in (HTTPError("", 404, "Not found", {}, BytesIO()), ValueError("ID mismatch"),
                       URLError(ssl.SSLCertVerificationError("invalid certificate"))):
             with self.subTest(error=error):
                 self.assertFalse(temporary_source_error(error))
@@ -85,7 +86,7 @@ class WeeklyLawTests(unittest.TestCase):
     def test_request_retry_is_bounded_and_skips_permanent_errors(self):
         for status, expected in ((503, 3), (404, 1)):
             with self.subTest(status=status), patch("sync.time.sleep") as sleep:
-                error = HTTPError("", status, "HTTP failure", {}, None)
+                error = HTTPError("", status, "HTTP failure", {}, BytesIO())
                 with patch("sync.urlopen", side_effect=error) as get:
                     with self.assertRaises(HTTPError):
                         fetch("https://www.law.go.kr/LSW/test")

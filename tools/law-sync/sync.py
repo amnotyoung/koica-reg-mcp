@@ -90,6 +90,8 @@ def fetch(url):
                 except etree.ParserError as e:
                     raise IncompleteSourceResponse(f"공식 HTML 파싱 실패: {e}") from e
         except (OSError, IncompleteRead, IncompleteSourceResponse) as e:
+            if isinstance(e, HTTPError):
+                e.close()
             if attempt == 2 or not temporary_source_error(e):
                 raise
             delay = 2 ** attempt
