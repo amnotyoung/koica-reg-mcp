@@ -1,12 +1,13 @@
 """Offline regression checks for the scheduled law review."""
 import copy
-from io import BytesIO
+from io import BytesIO, StringIO
+from contextlib import redirect_stdout
 import socket
 import ssl
 from http.client import IncompleteRead
 from urllib.error import HTTPError, URLError
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from lxml import html
 
@@ -61,8 +62,11 @@ class WeeklyLawTests(unittest.TestCase):
     def test_effective_slice_comes_from_current_permalink(self):
         landing = html.fromstring('<form><input id="lsId" value="000123"><input id="lsNm" value="테스트법"></form>')
         wrapper = html.fromstring('<iframe id="lawService" src="/LSW/lsInfoP.do?lsiSeq=321&amp;efYd=20240101"></iframe>')
-        with patch("sync.fetch", side_effect=[landing, wrapper]):
+        with patch("sync.fetch", side_effect=[landing, wrapper]) as fetch_page:
             current = current_edition("테스트법", {"lawId": "000123"})
+        self.assertEqual([c.kwargs for c in fetch_page.call_args_list],
+                         [{"title": "테스트법", "stage": "법령 ID 조회"},
+                          {"title": "테스트법", "stage": "현행 판본 주소 조회"}])
         self.assertEqual((current.seq, current.effective), ("321", "20240101"))
 
     def test_temporary_failures_request_one_fresh_attempt(self):
@@ -87,11 +91,31 @@ class WeeklyLawTests(unittest.TestCase):
         for status, expected in ((503, 3), (404, 1)):
             with self.subTest(status=status), patch("sync.time.sleep") as sleep:
                 error = HTTPError("", status, "HTTP failure", {}, BytesIO())
-                with patch("sync.urlopen", side_effect=error) as get:
+                with patch("sync.urlopen", side_effect=error) as get, redirect_stdout(StringIO()) as logs:
                     with self.assertRaises(HTTPError):
-                        fetch("https://www.law.go.kr/LSW/test")
+                        fetch("https://www.law.go.kr/LSW/test", title="테스트법", stage="법령 ID 조회")
+                self.assertIn(f"시도={expected}/3", logs.getvalue().splitlines()[-1])
+                self.assertIn("요청 종료", logs.getvalue().splitlines()[-1])
                 self.assertEqual(get.call_count, expected)
                 self.assertEqual(sleep.call_count, expected-1)
+
+    def test_retry_logs_time_each_attempt_excluding_backoff(self):
+        url = "https://www.law.go.kr/LSW/retry-test"
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.geturl.return_value = url
+        response.read.return_value = b"<html><p>ok</p></html>"
+        with (patch("sync.urlopen", side_effect=[TimeoutError("timed out"), response]) as get,
+              patch("sync.time.sleep") as sleep,
+              patch("sync.time.monotonic", side_effect=[0, 20.25, 21.25, 22.75]),
+              redirect_stdout(StringIO()) as logs):
+            fetch(url, title="테스트법", stage="현행 판본 주소 조회")
+        self.assertEqual([c.kwargs["timeout"] for c in get.call_args_list], [20, 20])
+        sleep.assert_called_once_with(1)
+        self.assertEqual(logs.getvalue().splitlines(), [
+            "요청 실패 · 법령=테스트법 · 단계=현행 판본 주소 조회 · 시도=1/3 · 경과=20.25초 · TimeoutError: timed out · 1초 후 재시도",
+            "재시도 성공 · 법령=테스트법 · 단계=현행 판본 주소 조회 · 시도=2/3 · 경과=1.50초",
+        ])
 
     def test_stopped_transient_batch_preserves_inputs_and_retry_reason(self):
         laws = {"laws": {f"법{i}": {"lawId": str(i)} for i in range(7)}}

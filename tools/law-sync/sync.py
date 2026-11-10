@@ -77,26 +77,36 @@ def result_code(errors):
 
 
 @lru_cache(maxsize=8)
-def fetch(url):
+def fetch(url, *, title, stage):
     if urlsplit(url).netloc != "www.law.go.kr":
         raise ValueError("unexpected source host")
-    for attempt in range(3):
+    for attempt in range(1, 4):
+        started = time.monotonic()
         try:
             with urlopen(Request(url, headers={"User-Agent": "koica-reg-mcp weekly law review"}), timeout=20) as response:
                 if urlsplit(response.geturl()).netloc != "www.law.go.kr":
                     raise ValueError("unexpected response host")
                 try:
-                    return html.fromstring(response.read().decode("utf-8"))
+                    doc = html.fromstring(response.read().decode("utf-8"))
                 except etree.ParserError as e:
                     raise IncompleteSourceResponse(f"공식 HTML 파싱 실패: {e}") from e
-        except (OSError, IncompleteRead, IncompleteSourceResponse) as e:
+        except (OSError, IncompleteRead, ValueError) as e:
+            elapsed = time.monotonic() - started
             if isinstance(e, HTTPError):
                 e.close()
-            if attempt == 2 or not temporary_source_error(e):
+            retry = attempt < 3 and temporary_source_error(e)
+            delay = 2 ** (attempt - 1)
+            outcome = f"{delay}초 후 재시도" if retry else "요청 종료"
+            print(f"요청 실패 · 법령={title} · 단계={stage} · 시도={attempt}/3 · 경과={elapsed:.2f}초"
+                  f" · {type(e).__name__}: {e} · {outcome}", flush=True)
+            if not retry:
                 raise
-            delay = 2 ** attempt
-            print(f"요청 재시도 {attempt+2}/3 · {type(e).__name__}: {e} · {delay}초 후", flush=True)
             time.sleep(delay)
+        else:
+            if attempt > 1:
+                elapsed = time.monotonic() - started
+                print(f"재시도 성공 · 법령={title} · 단계={stage} · 시도={attempt}/3 · 경과={elapsed:.2f}초", flush=True)
+            return doc
 
 
 def field(doc, key):
@@ -124,10 +134,11 @@ class Edition:
 
     def document(self):
         if self.admin:
-            doc = fetch(endpoint("admRulLsInfoR", admRulSeq=self.seq, chrClsCd="010202"))
+            doc = fetch(endpoint("admRulLsInfoR", admRulSeq=self.seq, chrClsCd="010202"),
+                        title=self.name, stage="행정규칙 본문 조회")
         else:
             doc = fetch(endpoint("lsInfoR", lsiSeq=self.seq, lsId=self.identity, efYd=self.effective,
-                                 chrClsCd="010202", lsNm=self.name))
+                                 chrClsCd="010202", lsNm=self.name), title=self.name, stage="법령 본문 조회")
         if (field(doc, "admRulId" if self.admin else "lsId") != self.identity
                 or field(doc, "lsiSeq") != self.seq or field(doc, "efYd") != self.effective
                 or field(doc, "lsNm") != self.name or not doc.xpath('//div[@class="lawcon"]//input[@name="joNoList"]')):
@@ -135,8 +146,8 @@ class Edition:
         return doc
 
 
-def admin_edition(seq):
-    doc = fetch(endpoint("admRulInfoP", admRulSeq=seq))
+def admin_edition(seq, title):
+    doc = fetch(endpoint("admRulInfoP", admRulSeq=seq), title=title, stage="행정규칙 판본 정보 조회")
     if field(doc, "admRulSeq") != seq:
         raise ValueError("행정규칙 일련번호 불일치")
     return Edition(True, field(doc, "admRulId"), seq, field(doc, "efYd"), field(doc, "admNm"))
@@ -146,17 +157,18 @@ def current_edition(title, record):
     admin = "adminSeq" in record
     if admin:
         name = title
-        identity = record.get("adminId") or admin_edition(record["adminSeq"]).identity
+        identity = record.get("adminId") or admin_edition(record["adminSeq"], title).identity
     else:
         identity = record["lawId"]
-        doc = fetch(endpoint("lsInfoP", lsId=identity))
+        doc = fetch(endpoint("lsInfoP", lsId=identity), title=title, stage="법령 ID 조회")
         if field(doc, "lsId") != identity:
             raise ValueError("법령 ID 불일치")
         name = field(doc, "lsNm")
     # The ID landing page uses promulgation dates for some phased amendments.
     # The official Korean permalink resolves the actually effective slice.
     category = "행정규칙" if admin else "법령"
-    wrapper = fetch(ORIGIN + "/" + quote(category) + "/" + quote(name, safe=""))
+    wrapper = fetch(ORIGIN + "/" + quote(category) + "/" + quote(name, safe=""),
+                    title=title, stage="현행 판본 주소 조회")
     frames = wrapper.xpath('//iframe[@id="lawService"]/@src')
     if not frames:
         raise IncompleteSourceResponse("공식 페이지에 현행 판본 주소가 없음")
@@ -167,7 +179,7 @@ def current_edition(title, record):
     if not seq.isdigit():
         raise ValueError("잘못된 일련번호")
     if admin:
-        edition = admin_edition(seq)
+        edition = admin_edition(seq, title)
         if edition.identity != identity:
             raise ValueError("동명 행정규칙 또는 식별자 변경")
     else:
