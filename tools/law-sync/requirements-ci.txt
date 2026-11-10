@@ -1,0 +1,4 @@
+# CPython 3.12, GitHub's ubuntu x86-64 runner
+lxml==6.1.1 \
+    --hash=sha256:54a7f95e4de5fb94e2f9f4b9055c6ba33bf3d628fd77a1d647c5923caa2cdcdc \
+    --hash=sha256:ebe6af670449830d6d9b752c256a983291c766a1365ba5d5460048f9e33a7818
