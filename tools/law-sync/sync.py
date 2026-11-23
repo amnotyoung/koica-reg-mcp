@@ -30,6 +30,12 @@ ORIGIN = "https://www.law.go.kr"
 DRF_BASE = ORIGIN + "/DRF/"
 PROVISION = re.compile(r"제(\d+)조(?:의(\d+))?(?:제(\d+)항)?(?:제(\d+(?:의\d+)?)호)?(?:([가-하])목)?")
 ARTICLE_HEADER = re.compile(r"^제(\d+)조(?:의(\d+))?(?:\([^)]*\))?\s*")
+REVISION_ANNOTATION = re.compile(
+    r"\s*(?:"
+    r"<(?:개정|신설|전문개정|전부개정|제목개정|본조신설|단서신설|후단신설|전단신설|일부개정|삭제|종전|시행일|\d{4}\.\s*\d{1,2}\.\s*\d{1,2})[^>]*>"
+    r"|\[(?:개정|신설|전문개정|전부개정|제목개정|본조신설|단서신설|후단신설|전단신설|일부개정|삭제|종전|시행일)[^\]]*\]"
+    r")"
+)
 HANG = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"
 ANTIBOT_PROBE_BYTES = 4096
 DEFAULT_USER_AGENT = (
@@ -231,7 +237,8 @@ def _to_list(value):
 def _clean_text(text):
     text = re.sub(r"<br\s*/?>", "\n", str(text or ""), flags=re.IGNORECASE)
     text = re.sub(r"</?[a-zA-Z][^>]*>", "", text)
-    return html.unescape(text)
+    text = html.unescape(text)
+    return REVISION_ANNOTATION.sub("", text)
 
 
 def _flatten_content(value):
@@ -269,7 +276,7 @@ def _parse_admin_articles(blocks):
     articles = {}
     current_key = None
     for block in blocks:
-        for raw_line in block.splitlines():
+        for raw_line in _clean_text(block).splitlines():
             line = " ".join(raw_line.split())
             if not line:
                 continue
