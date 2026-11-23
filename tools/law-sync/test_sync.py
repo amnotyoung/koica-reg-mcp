@@ -1,35 +1,109 @@
-"""Offline regression checks for the scheduled law review."""
+"""Offline regression checks for the scheduled law review (Open API)."""
 import copy
-from io import BytesIO, StringIO
 from contextlib import redirect_stdout
+from http.client import IncompleteRead
+from io import BytesIO, StringIO
+import os
 import socket
 import ssl
-from http.client import IncompleteRead
-from urllib.error import HTTPError, URLError
 import unittest
 from unittest.mock import MagicMock, patch
-
-from lxml import html
+from urllib.error import HTTPError, URLError
+import xml.etree.ElementTree as ET
 
 from sync import (Edition, IncompleteSourceResponse, SourceIssue, current_edition, fetch,
-                  result_code, source_text, sync, temporary_source_error, update_excerpt)
+                  mask_sensitive, parse_antibot_url, result_code, source_text, sync,
+                  temporary_source_error, update_excerpt)
 
-BODY = html.fromstring('''<div class="lawcon">
-<p><input name="joNoList" id="Y000700"><label>제7조(방법)</label>① 첫째</p>
-<p>1. 첫째 항의 호</p><p>가. 첫째 목</p><p>나. 둘째 목</p>
-<p>② 둘째</p><p>1. 둘째 항의 호</p><p>2. 둘째 항의 다른 호</p>
-<p><span class="sfon">[개정]</span></p></div>''')
+BODY = {
+    "조문": {
+        "조문단위": [
+            {
+                "조문여부": "조문",
+                "조문번호": "7",
+                "조문가지번호": "",
+                "조문내용": "제7조(방법)",
+                "항": [
+                    {
+                        "항번호": "①",
+                        "항내용": "① 첫째",
+                        "호": [
+                            {
+                                "호번호": "1.",
+                                "호내용": "1. 첫째 항의 호",
+                                "목": [
+                                    {"목번호": "가.", "목내용": "가. 첫째 목"},
+                                    {"목번호": "나.", "목내용": "나. 둘째 목"},
+                                ],
+                            }
+                        ],
+                    },
+                    {
+                        "항번호": "②",
+                        "항내용": "② 둘째",
+                        "호": [
+                            {"호번호": "1.", "호내용": "1. 둘째 항의 호"},
+                            {"호번호": "2.", "호내용": "2. 둘째 항의 다른 호"},
+                        ],
+                    },
+                ],
+            }
+        ]
+    }
+}
 OLD = {"text": "이전 문구", "version": "2025.01.01 시행",
        "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=1#J7:0"}
 NEW = Edition(False, "000123", "2", "20260101", "테스트법")
 
 
 class WeeklyLawTests(unittest.TestCase):
+    def setUp(self):
+        fetch.cache_clear()
+
     def test_exact_subunit_never_includes_next_parent_or_annotations(self):
         self.assertEqual(source_text(BODY, "제7조제1항제1호나목"), "나. 둘째 목")
         self.assertEqual(source_text(BODY, "제7조제2항제2호"), "2. 둘째 항의 다른 호")
         self.assertIsNone(source_text(BODY, "제7조제1호"))
         self.assertIsNone(source_text(BODY, "제8조"))
+
+    def test_hang_level_mok_aligns_with_ho_by_ga_reset(self):
+        doc = {
+            "조문": {
+                "조문단위": [{
+                    "조문여부": "조문",
+                    "조문번호": "3",
+                    "조문내용": "제3조(정의)",
+                    "항": [{
+                        "항내용": "① 정의는 다음과 같다.",
+                        "호": [
+                            {"호번호": "1.", "호내용": "1. 첫째 호"},
+                            {"호번호": "2.", "호내용": "2. 둘째 호"},
+                        ],
+                        "목": [
+                            {"목번호": "가.", "목내용": "가. 1호 가목"},
+                            {"목번호": "가.", "목내용": "가. 2호 가목"},
+                            {"목번호": "나.", "목내용": "나. 2호 나목"},
+                        ],
+                    }],
+                }]
+            }
+        }
+        self.assertEqual(source_text(doc, "제3조제1항제2호나목"), "나. 2호 나목")
+
+    def test_unit_level_ho_and_html_cleanup_preserve_revision_tags(self):
+        doc = {
+            "조문": {
+                "조문단위": [{
+                    "조문여부": "조문",
+                    "조문번호": "2",
+                    "조문내용": "제2조(정의) 이 법에서 사용하는 용어의 뜻은 다음과 같다.",
+                    "호": [
+                        {"호번호": "1.", "호내용": "1. &quot;개인정보&quot;란&nbsp;정보를 말한다.<br/>&lt;개정 2026.1.1.&gt;"},
+                    ],
+                }]
+            }
+        }
+        self.assertEqual(source_text(doc, "제2조제1호"), '1. "개인정보"란 정보를 말한다.\n<개정 2026.1.1.>')
 
     def test_changed_text_and_idempotent_second_read(self):
         result, reason = update_excerpt(OLD, "테스트법", "제7조제2항", NEW, lambda: BODY)
@@ -59,15 +133,89 @@ class WeeklyLawTests(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertEqual(sum(counts.values()), 1)
 
-    def test_effective_slice_comes_from_current_permalink(self):
-        landing = html.fromstring('<form><input id="lsId" value="000123"><input id="lsNm" value="테스트법"></form>')
-        wrapper = html.fromstring('<iframe id="lawService" src="/LSW/lsInfoP.do?lsiSeq=321&amp;efYd=20240101"></iframe>')
-        with patch("sync.fetch", side_effect=[landing, wrapper]) as fetch_page:
+    def test_effective_slice_comes_from_eflaw_open_api(self):
+        search_xml = ET.fromstring('''<LawSearch>
+            <law>
+                <법령ID>000123</법령ID>
+                <법령일련번호>321</법령일련번호>
+                <시행일자>20240101</시행일자>
+                <법령명한글>테스트법</법령명한글>
+                <현행연혁코드>현행</현행연혁코드>
+            </law>
+            <law>
+                <법령ID>000123</법령ID>
+                <법령일련번호>999</법령일련번호>
+                <시행일자>20990101</시행일자>
+                <법령명한글>테스트법</법령명한글>
+                <현행연혁코드>시행예정</현행연혁코드>
+            </law>
+        </LawSearch>''')
+        with patch("sync.fetch_xml", return_value=search_xml) as fetch_page:
             current = current_edition("테스트법", {"lawId": "000123"})
-        self.assertEqual([c.kwargs for c in fetch_page.call_args_list],
-                         [{"title": "테스트법", "stage": "법령 ID 조회"},
-                          {"title": "테스트법", "stage": "현행 판본 주소 조회"}])
-        self.assertEqual((current.seq, current.effective), ("321", "20240101"))
+        self.assertEqual(fetch_page.call_args.args, ("lawSearch.do", {"target": "eflaw", "LID": "000123", "nw": "3", "display": "100"}))
+        self.assertEqual(fetch_page.call_args.kwargs, {"title": "테스트법", "stage": "현행 법령 판본 조회"})
+        self.assertEqual((current.seq, current.effective, current.name), ("321", "20240101", "테스트법"))
+
+    def test_admin_search_strips_category_prefix_and_reads_xml_articles(self):
+        empty_xml = ET.fromstring("<AdmRulSearch></AdmRulSearch>")
+        found_xml = ET.fromstring('''<AdmRulSearch>
+            <admrul>
+                <행정규칙ID>27941</행정규칙ID>
+                <행정규칙일련번호>2100000274732</행정규칙일련번호>
+                <시행일자>20250513</시행일자>
+                <행정규칙명>(계약예규) 적격심사기준</행정규칙명>
+                <현행연혁구분>현행</현행연혁구분>
+            </admrul>
+        </AdmRulSearch>''')
+        with patch("sync.fetch_xml", side_effect=[empty_xml, found_xml]) as search:
+            current = current_edition("(계약예규) 적격심사기준", {"adminSeq": "2100000274732", "adminId": "27941"})
+        self.assertEqual(search.call_count, 2)
+        self.assertEqual(search.call_args_list[1].args[1]["query"], "적격심사기준")
+        self.assertEqual((current.seq, current.effective), ("2100000274732", "20250513"))
+
+        body_xml = ET.fromstring('''<AdmRulService>
+            <행정규칙기본정보>
+                <행정규칙ID>27941</행정규칙ID>
+                <행정규칙일련번호>2100000274732</행정규칙일련번호>
+                <행정규칙명>(계약예규) 적격심사기준</행정규칙명>
+                <시행일자>20250513</시행일자>
+            </행정규칙기본정보>
+            <조문내용>제5조(배점) ① 첫째 항이다.\n② 둘째 항이다.</조문내용>
+        </AdmRulService>''')
+        with patch("sync.fetch_xml", return_value=body_xml):
+            doc = current.document()
+        self.assertEqual(source_text(doc, "제5조제2항"), "② 둘째 항이다.")
+
+    def test_antibot_url_parsing_and_hop_resolution(self):
+        html_a = "<script>var x={t:'/DRF',h:'/lawService.do',o:'?OC=secret&target=eflaw'};location.assign(x.t+x.h+x.o);</script>"
+        self.assertEqual(parse_antibot_url(html_a), "/DRF/lawService.do?OC=secret&target=eflaw")
+        html_b = "<script>var x={o:'/DRF/XXXlawSearch.do?a=1',c:5},z=3;location.assign(x.o.substr(0,x.c)+x.o.substr(x.c+z));</script>"
+        self.assertEqual(parse_antibot_url(html_b), "/DRF/lawSearch.do?a=1")
+
+        url = "https://www.law.go.kr/DRF/lawService.do?OC=secret&target=eflaw"
+        challenge = MagicMock()
+        challenge.__enter__.return_value = challenge
+        challenge.geturl.return_value = url
+        challenge.read.return_value = html_a.encode("utf-8")
+        ok = MagicMock()
+        ok.__enter__.return_value = ok
+        ok.geturl.return_value = url
+        ok.read.return_value = b'{"ok": true}'
+        with patch("sync.urlopen", side_effect=[challenge, ok]) as get:
+            body = fetch(url, title="테스트법", stage="법령 본문 조회")
+        self.assertEqual(body, '{"ok": true}')
+        self.assertEqual(get.call_count, 2)
+
+    def test_mask_sensitive_hides_oc_key(self):
+        self.assertEqual(
+            mask_sensitive("HTTPError on https://www.law.go.kr/DRF/lawSearch.do?OC=mysecretkey&target=eflaw"),
+            "HTTPError on https://www.law.go.kr/DRF/lawSearch.do?OC=***&target=eflaw",
+        )
+
+    def test_missing_api_key_is_not_retryable(self):
+        with patch.dict(os.environ, {"LAW_OC": ""}, clear=False):
+            with self.assertRaisesRegex(ValueError, "LAW_OC"):
+                current_edition("테스트법", {"lawId": "000123"})
 
     def test_temporary_failures_request_one_fresh_attempt(self):
         issues = []
@@ -75,7 +223,7 @@ class WeeklyLawTests(unittest.TestCase):
                       URLError(socket.gaierror(socket.EAI_AGAIN, "DNS retry")),
                       HTTPError("", 429, "Rate limited", {}, BytesIO()),
                       HTTPError("", 503, "Service unavailable", {}, BytesIO()),
-                      IncompleteSourceResponse("missing current edition frame")):
+                      IncompleteSourceResponse("missing current edition")):
             with self.subTest(error=error):
                 self.assertTrue(temporary_source_error(error))
                 issues.append(SourceIssue(str(error), True))
@@ -89,32 +237,35 @@ class WeeklyLawTests(unittest.TestCase):
 
     def test_request_retry_is_bounded_and_skips_permanent_errors(self):
         for status, expected in ((503, 3), (404, 1)):
+            fetch.cache_clear()
             with self.subTest(status=status), patch("sync.time.sleep") as sleep:
-                error = HTTPError("", status, "HTTP failure", {}, BytesIO())
+                error = HTTPError("https://www.law.go.kr/DRF/test?OC=secret", status, "HTTP failure", {}, BytesIO())
                 with patch("sync.urlopen", side_effect=error) as get, redirect_stdout(StringIO()) as logs:
                     with self.assertRaises(HTTPError):
-                        fetch("https://www.law.go.kr/LSW/test", title="테스트법", stage="법령 ID 조회")
-                self.assertIn(f"시도={expected}/3", logs.getvalue().splitlines()[-1])
-                self.assertIn("요청 종료", logs.getvalue().splitlines()[-1])
+                        fetch("https://www.law.go.kr/DRF/test?OC=secret", title="테스트법", stage="현행 법령 판본 조회")
+                out = logs.getvalue()
+                self.assertNotIn("secret", out)
+                self.assertIn(f"시도={expected}/3", out.splitlines()[-1])
+                self.assertIn("요청 종료", out.splitlines()[-1])
                 self.assertEqual(get.call_count, expected)
-                self.assertEqual(sleep.call_count, expected-1)
+                self.assertEqual(sleep.call_count, expected - 1)
 
     def test_retry_logs_time_each_attempt_excluding_backoff(self):
-        url = "https://www.law.go.kr/LSW/retry-test"
+        url = "https://www.law.go.kr/DRF/retry-test"
         response = MagicMock()
         response.__enter__.return_value = response
         response.geturl.return_value = url
-        response.read.return_value = b"<html><p>ok</p></html>"
+        response.read.return_value = b'{"ok": true}'
         with (patch("sync.urlopen", side_effect=[TimeoutError("timed out"), response]) as get,
               patch("sync.time.sleep") as sleep,
               patch("sync.time.monotonic", side_effect=[0, 20.25, 21.25, 22.75]),
               redirect_stdout(StringIO()) as logs):
-            fetch(url, title="테스트법", stage="현행 판본 주소 조회")
+            fetch(url, title="테스트법", stage="현행 법령 판본 조회")
         self.assertEqual([c.kwargs["timeout"] for c in get.call_args_list], [20, 20])
         sleep.assert_called_once_with(1)
         self.assertEqual(logs.getvalue().splitlines(), [
-            "요청 실패 · 법령=테스트법 · 단계=현행 판본 주소 조회 · 시도=1/3 · 경과=20.25초 · TimeoutError: timed out · 1초 후 재시도",
-            "재시도 성공 · 법령=테스트법 · 단계=현행 판본 주소 조회 · 시도=2/3 · 경과=1.50초",
+            "요청 실패 · 법령=테스트법 · 단계=현행 법령 판본 조회 · 시도=1/3 · 경과=20.25초 · TimeoutError: timed out · 1초 후 재시도",
+            "재시도 성공 · 법령=테스트법 · 단계=현행 법령 판본 조회 · 시도=2/3 · 경과=1.50초",
         ])
 
     def test_stopped_transient_batch_preserves_inputs_and_retry_reason(self):
@@ -132,17 +283,6 @@ class WeeklyLawTests(unittest.TestCase):
         self.assertIn("1개 문서 대조 중단", errors[-1].message)
         self.assertEqual(result_code(errors), 75)
 
-    def test_admin_body_with_visible_effective_date(self):
-        page = html.fromstring('''<div><input id="admRulId" value="456"><input id="lsiSeq" value="123">
-            <input id="lsNm" value="규칙"><div id="conTop"><div class="subtit1">
-            [시행 2025. 5. 13.] [훈령 제241호, 2025. 4. 15., 개정]</div></div>
-            <div class="lawcon"><input name="joNoList"></div></div>''')
-        with patch("sync.fetch", return_value=page) as fetch_page:
-            self.assertIs(Edition(True, "456", "123", "20250513", "규칙").document(), page)
-            self.assertEqual(fetch_page.call_args.kwargs, {"title": "규칙", "stage": "행정규칙 본문 조회"})
-            with self.assertRaisesRegex(ValueError, "불일치"):
-                Edition(True, "456", "123", "20250415", "규칙").document()
-
     def test_admin_identity_bootstrap_changes_once(self):
         laws = {"laws": {"규칙": {"adminSeq": "123"}}}
         rows = {"규칙": {"제1조": {"text": "본문", "version": "2025.01.01 조회",
@@ -156,6 +296,7 @@ class WeeklyLawTests(unittest.TestCase):
 
     def test_article_link_has_specific_effective_slice(self):
         self.assertIn("efYd=20260101#J7:3", NEW.link("제7조의3제1항"))
+
 
 if __name__ == "__main__":
     unittest.main()
