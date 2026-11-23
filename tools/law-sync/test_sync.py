@@ -90,6 +90,21 @@ class WeeklyLawTests(unittest.TestCase):
         }
         self.assertEqual(source_text(doc, "제3조제1항제2호나목"), "나. 2호 나목")
 
+    def test_unit_level_ho_and_html_cleanup_preserve_revision_tags(self):
+        doc = {
+            "조문": {
+                "조문단위": [{
+                    "조문여부": "조문",
+                    "조문번호": "2",
+                    "조문내용": "제2조(정의) 이 법에서 사용하는 용어의 뜻은 다음과 같다.",
+                    "호": [
+                        {"호번호": "1.", "호내용": "1. &quot;개인정보&quot;란&nbsp;정보를 말한다.<br/>&lt;개정 2026.1.1.&gt;"},
+                    ],
+                }]
+            }
+        }
+        self.assertEqual(source_text(doc, "제2조제1호"), '1. "개인정보"란 정보를 말한다.\n<개정 2026.1.1.>')
+
     def test_changed_text_and_idempotent_second_read(self):
         result, reason = update_excerpt(OLD, "테스트법", "제7조제2항", NEW, lambda: BODY)
         self.assertTrue(result["text"].startswith("② 둘째"))

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 import errno
 from functools import lru_cache
+import html
 from http.client import IncompleteRead
 from itertools import islice
 import json
@@ -227,9 +228,15 @@ def _to_list(value):
     return value if isinstance(value, list) else [value]
 
 
+def _clean_text(text):
+    text = re.sub(r"<br\s*/?>", "\n", str(text or ""), flags=re.IGNORECASE)
+    text = re.sub(r"</?[a-zA-Z][^>]*>", "", text)
+    return html.unescape(text)
+
+
 def _flatten_content(value):
     if isinstance(value, str):
-        return value
+        return _clean_text(value)
     if not isinstance(value, list):
         return ""
     parts = []
@@ -237,7 +244,7 @@ def _flatten_content(value):
         if isinstance(item, str):
             stripped = item.strip()
             if stripped and not stripped.startswith(("<img", "</img")):
-                parts.append(item)
+                parts.append(_clean_text(item))
         elif isinstance(item, list):
             nested = _flatten_content(item)
             if nested:
@@ -319,7 +326,7 @@ class Edition:
         info = law.get("기본정보") or {}
         law_id = str(info.get("법령ID") or "").strip()
         effective = normalize_ymd(info.get("시행일자"))
-        law_name = str(info.get("법령명_한글") or "").strip()
+        law_name = str(info.get("법령명_한글") or info.get("법령명한글") or info.get("법령명") or "").strip()
         units = _to_list((law.get("조문") or {}).get("조문단위"))
         if (not same_id(law_id, self.identity) or effective != self.effective
                 or title_key(law_name) != title_key(self.name) or not units):
@@ -444,18 +451,10 @@ def _statute_article_lines(law, jo, branch):
         if line:
             lines.append(line)
 
-    for hang in _to_list(unit.get("항")):
-        if not isinstance(hang, dict):
-            continue
-        hang_text = _flatten_content(hang.get("항내용"))
-        for raw in hang_text.splitlines():
-            line = " ".join(raw.split())
-            if line:
-                lines.append(line)
-
-        hos = [h for h in _to_list(hang.get("호")) if isinstance(h, dict)]
-        hang_moks = [m for m in _to_list(hang.get("목")) if isinstance(m, dict)]
-        mok_groups = _group_mok_by_reset(hang_moks)
+    def _append_hos(container):
+        hos = [h for h in _to_list(container.get("호")) if isinstance(h, dict)]
+        parent_moks = [m for m in _to_list(container.get("목")) if isinstance(m, dict)]
+        mok_groups = _group_mok_by_reset(parent_moks)
         alignable = bool(hos) and len(mok_groups) == len(hos)
 
         for idx, ho in enumerate(hos):
@@ -476,12 +475,23 @@ def _statute_article_lines(law, jo, branch):
                         if line:
                             lines.append(line)
 
-        if not alignable and hang_moks:
-            for mok in hang_moks:
+        if not alignable and parent_moks:
+            for mok in parent_moks:
                 for raw in _flatten_content(mok.get("목내용")).splitlines():
                     line = " ".join(raw.split())
                     if line:
                         lines.append(line)
+
+    _append_hos(unit)
+    for hang in _to_list(unit.get("항")):
+        if not isinstance(hang, dict):
+            continue
+        hang_text = _flatten_content(hang.get("항내용"))
+        for raw in hang_text.splitlines():
+            line = " ".join(raw.split())
+            if line:
+                lines.append(line)
+        _append_hos(hang)
     return lines
 
 
