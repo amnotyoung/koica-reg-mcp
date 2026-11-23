@@ -90,20 +90,23 @@ class WeeklyLawTests(unittest.TestCase):
         }
         self.assertEqual(source_text(doc, "제3조제1항제2호나목"), "나. 2호 나목")
 
-    def test_unit_level_ho_and_html_cleanup_preserve_revision_tags(self):
+    def test_unit_level_ho_and_html_cleanup_strip_revision_annotations(self):
         doc = {
             "조문": {
                 "조문단위": [{
                     "조문여부": "조문",
                     "조문번호": "2",
-                    "조문내용": "제2조(정의) 이 법에서 사용하는 용어의 뜻은 다음과 같다.",
+                    "조문내용": "제2조(정의) 이 법에서 사용하는 용어의 뜻은 다음과 같다. [전문개정 2011.3.29.]",
                     "호": [
                         {"호번호": "1.", "호내용": "1. &quot;개인정보&quot;란&nbsp;정보를 말한다.<br/>&lt;개정 2026.1.1.&gt;"},
+                        {"호번호": "2.", "호내용": "2. 삭제 <2020.1.1.>"},
                     ],
                 }]
             }
         }
-        self.assertEqual(source_text(doc, "제2조제1호"), '1. "개인정보"란 정보를 말한다.\n<개정 2026.1.1.>')
+        self.assertEqual(source_text(doc, "제2조제1호"), '1. "개인정보"란 정보를 말한다.')
+        self.assertEqual(source_text(doc, "제2조제2호"), "2. 삭제")
+        self.assertNotIn("전문개정", source_text(doc, "제2조"))
 
     def test_changed_text_and_idempotent_second_read(self):
         result, reason = update_excerpt(OLD, "테스트법", "제7조제2항", NEW, lambda: BODY)
